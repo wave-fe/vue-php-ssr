@@ -4,6 +4,7 @@
   "description": "JavaScript to PHP transpiler.",
   "main": "index.js",
   "dependencies": {
+    "escodegen": "^1.9.1",
     "escope": "^3.6.0",
     "espree": "^3.5.4",
     "estemplate": "^0.5.1",

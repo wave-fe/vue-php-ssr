@@ -1,6 +1,7 @@
 let estraverse = require('estraverse');
 let escope = require('escope');
 let estemplate = require('estemplate');
+// let escodegen = require('escodegen');
 let {isClosureVariable} = require('./utils');
 module.exports = function (ast) {
     // 去掉with
@@ -21,20 +22,26 @@ module.exports = function (ast) {
         enter: function (node, parent) {
             // 处理所有的Identifier，也就是变量名
             // 判断是否是闭包变量，不是闭包的就需要添加this指针
-            // a.b在traverse到b的时候是identity，但是不应该加this
-            // 可以通过parent是否是MemberExpression来判断当前节点是否是在读取属性
             if (
-                node.type === 'Identifier'
-                && parent.type !== 'MemberExpression'
+                // a.b在traverse到b的时候是identity，但是不应该加this
+                // 可以通过parent是否是MemberExpression来判断当前节点是否是在读取属性
+                (node.type === 'Identifier'
+                    && parent.type !== 'MemberExpression')
+                // 另一种情况是a.b，读取到a的时候parent的object字段是a，property是b，可以通过判断是不是前一个字段来决定是否加this
+                || (node.type === 'Identifier'
+                    && parent.type === 'MemberExpression'
+                    && parent.object.name === node.name)
             ) {
                 if (!isClosureVariable(node, currentScope)) {
                 //     console.log('>>>', node.name, '<<<', ' is closure variable');
                 // }
                 // else {
                 //     console.log('>>>', node.name, '<<<', ' is not closure variable');
+                    //  一定要skip，不然会死循环，因为内部有ident的结构，会递归调用
                     this.skip();
                     // console.log('>>>', node.type, '<<<', node);
                     // console.log('>>>parent<<<', parent);
+                    // 返回一个this.xxx的结构
                     return {
                         "type": "MemberExpression",
                         "computed": false,
@@ -54,4 +61,6 @@ module.exports = function (ast) {
             // do stuff
         }
     });
+    // console.log(JSON.stringify(ast));
+    // console.log(escodegen.generate(ast));
 };

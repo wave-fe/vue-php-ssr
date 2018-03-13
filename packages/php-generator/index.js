@@ -6,8 +6,8 @@ var core = require('./core'),
 let templateTranspiler = require('./template-transpiler');
 
 
-function compileTemplate(ast) {
-    return compile(ast, templateTranspiler);
+function compileTemplate(code) {
+    return compile(code, templateTranspiler);
 };
 
 function compile(code, traverser) {
@@ -320,7 +320,15 @@ function compile(code, traverser) {
       content = "array(" + elements.join(", ") + ")";
 
     } else if (node.type == "Property") {
-      var property = (node.key.type == 'Identifier') ? node.key.name : node.key.value;
+        // console.log('>>>debug ', node.type, node);
+        var property = '';
+        if (node.key.type === 'Literal') {
+          property = (node.key.type == 'Identifier') ? node.key.name : node.key.value;
+        }
+        else {
+          property = (node.key.property.type == 'Identifier') ? node.key.property.name : node.key.property.value;
+        }
+      // var property = (node.key.type == 'Identifier') ? node.key.name : node.key.value;
       content = '"'+property+'" => ' + visit(node.value, node);
 
     } else if (node.type == "ReturnStatement") {

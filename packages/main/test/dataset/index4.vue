@@ -1,7 +1,6 @@
     <template>
-        <span v-for="l in list">
-            <span v-if="l === 1">hello ab{{l}}c</span>
-            <span v-else>world ab{{l}}c</span>
+        <span v-if="a.b.c.config.length || promote || banner.type">
+            {{banner.type}}
         </span>
     </template>
     <script>

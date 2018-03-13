@@ -1,0 +1,20 @@
+{
+    "name": "main",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "babel-node index.js",
+        "test": "babel-node test/index.js"
+    },
+    "devDependencies": {
+        "babel-preset-env": "^1.6.1",
+        "babel-cli": "^6.26.0"
+    },
+    "author": "li-yinan",
+    "license": "MIT",
+    "dependencies": {
+        "php-generator": "*",
+        "vue-template-compiler": "^2.5.13"
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "php-generator",
+  "version": "0.1.0",
+  "description": "JavaScript to PHP transpiler.",
+  "main": "index.js",
+  "dependencies": {
+    "escope": "^3.6.0",
+    "espree": "^3.5.4",
+    "estemplate": "^0.5.1",
+    "estraverse": "^4.2.0"
+  },
+  "keywords": [
+    "javascript",
+    "php",
+    "transpiler",
+    "transcompiler"
+  ],
+  "scripts": {
+    "test": "mocha ./test/suite.js"
+  },
+  "author": "liyinan",
+  "license": "MIT"
+}

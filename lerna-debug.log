@@ -1,0 +1,800 @@
+0 silly input []
+1 silly flags { _: [ 'bootstrap' ],
+1 silly flags   'reject-cycles': false,
+1 silly flags   rejectCycles: false,
+1 silly flags   args: [] }
+2 verbose rootPath /Users/liyinan/code/vue-php-ssr
+3 info version 2.9.0
+4 silly existsSync /Users/liyinan/code/vue-php-ssr/VERSION
+5 silly initialize attempt
+6 silly npmConfig { registry: undefined,
+6 silly npmConfig   npmClient: undefined,
+6 silly npmConfig   npmClientArgs: undefined,
+6 silly npmConfig   mutex: undefined }
+7 silly initialize success
+8 silly execute attempt
+9 info Bootstrapping 3 packages
+10 info lifecycle preinstall
+11 silly runScript preinstall main
+12 silly main
+13 silly runScript preinstall js2php
+14 silly js2php
+15 silly runScript preinstall vue
+16 silly vue
+17 silly hasDependencyInstalled main babel-preset-env
+18 silly dependencyIsSatisfied [ 'babel-preset-env',
+18 silly dependencyIsSatisfied   '^1.6.1',
+18 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/main/node_modules' ]
+19 verbose dependencyIsSatisfied babel-preset-env true
+20 silly hasDependencyInstalled main babel-cli
+21 silly dependencyIsSatisfied [ 'babel-cli',
+21 silly dependencyIsSatisfied   '^6.26.0',
+21 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/main/node_modules' ]
+22 verbose dependencyIsSatisfied babel-cli true
+23 silly hasDependencyInstalled main php-generator
+24 silly dependencyIsSatisfied [ 'php-generator',
+24 silly dependencyIsSatisfied   '*',
+24 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/main/node_modules' ]
+25 verbose dependencyIsSatisfied php-generator false
+26 silly hasDependencyInstalled main vue-template-compiler
+27 silly dependencyIsSatisfied [ 'vue-template-compiler',
+27 silly dependencyIsSatisfied   '^2.5.13',
+27 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/main/node_modules' ]
+28 verbose dependencyIsSatisfied vue-template-compiler true
+29 silly hasDependencyInstalled js2php escope
+30 silly dependencyIsSatisfied [ 'escope',
+30 silly dependencyIsSatisfied   '^3.6.0',
+30 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/php-generator/node_modules' ]
+31 verbose dependencyIsSatisfied escope true
+32 silly hasDependencyInstalled js2php espree
+33 silly dependencyIsSatisfied [ 'espree',
+33 silly dependencyIsSatisfied   '^3.5.4',
+33 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/php-generator/node_modules' ]
+34 verbose dependencyIsSatisfied espree true
+35 silly hasDependencyInstalled js2php estemplate
+36 silly dependencyIsSatisfied [ 'estemplate',
+36 silly dependencyIsSatisfied   '^0.5.1',
+36 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/php-generator/node_modules' ]
+37 verbose dependencyIsSatisfied estemplate true
+38 silly hasDependencyInstalled js2php estraverse
+39 silly dependencyIsSatisfied [ 'estraverse',
+39 silly dependencyIsSatisfied   '^4.2.0',
+39 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/php-generator/node_modules' ]
+40 verbose dependencyIsSatisfied estraverse true
+41 silly hasDependencyInstalled vue @types/node
+42 silly dependencyIsSatisfied [ '@types/node',
+42 silly dependencyIsSatisfied   '^8.0.33',
+42 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+43 verbose dependencyIsSatisfied @types/node true
+44 silly hasDependencyInstalled vue @types/webpack
+45 silly dependencyIsSatisfied [ '@types/webpack',
+45 silly dependencyIsSatisfied   '^3.0.13',
+45 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+46 verbose dependencyIsSatisfied @types/webpack true
+47 silly hasDependencyInstalled vue acorn
+48 silly dependencyIsSatisfied [ 'acorn',
+48 silly dependencyIsSatisfied   '^5.2.1',
+48 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+49 verbose dependencyIsSatisfied acorn true
+50 silly hasDependencyInstalled vue babel-core
+51 silly dependencyIsSatisfied [ 'babel-core',
+51 silly dependencyIsSatisfied   '^6.25.0',
+51 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+52 verbose dependencyIsSatisfied babel-core true
+53 silly hasDependencyInstalled vue babel-eslint
+54 silly dependencyIsSatisfied [ 'babel-eslint',
+54 silly dependencyIsSatisfied   '^8.0.3',
+54 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+55 verbose dependencyIsSatisfied babel-eslint true
+56 silly hasDependencyInstalled vue babel-helper-vue-jsx-merge-props
+57 silly dependencyIsSatisfied [ 'babel-helper-vue-jsx-merge-props',
+57 silly dependencyIsSatisfied   '^2.0.2',
+57 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+58 verbose dependencyIsSatisfied babel-helper-vue-jsx-merge-props true
+59 silly hasDependencyInstalled vue babel-loader
+60 silly dependencyIsSatisfied [ 'babel-loader',
+60 silly dependencyIsSatisfied   '^7.0.0',
+60 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+61 verbose dependencyIsSatisfied babel-loader true
+62 silly hasDependencyInstalled vue babel-plugin-istanbul
+63 silly dependencyIsSatisfied [ 'babel-plugin-istanbul',
+63 silly dependencyIsSatisfied   '^4.1.4',
+63 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+64 verbose dependencyIsSatisfied babel-plugin-istanbul true
+65 silly hasDependencyInstalled vue babel-plugin-syntax-dynamic-import
+66 silly dependencyIsSatisfied [ 'babel-plugin-syntax-dynamic-import',
+66 silly dependencyIsSatisfied   '^6.18.0',
+66 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+67 verbose dependencyIsSatisfied babel-plugin-syntax-dynamic-import true
+68 silly hasDependencyInstalled vue babel-plugin-syntax-jsx
+69 silly dependencyIsSatisfied [ 'babel-plugin-syntax-jsx',
+69 silly dependencyIsSatisfied   '^6.18.0',
+69 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+70 verbose dependencyIsSatisfied babel-plugin-syntax-jsx true
+71 silly hasDependencyInstalled vue babel-plugin-transform-vue-jsx
+72 silly dependencyIsSatisfied [ 'babel-plugin-transform-vue-jsx',
+72 silly dependencyIsSatisfied   '^3.4.3',
+72 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+73 verbose dependencyIsSatisfied babel-plugin-transform-vue-jsx true
+74 silly hasDependencyInstalled vue babel-preset-es2015
+75 silly dependencyIsSatisfied [ 'babel-preset-es2015',
+75 silly dependencyIsSatisfied   '^6.24.1',
+75 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+76 verbose dependencyIsSatisfied babel-preset-es2015 true
+77 silly hasDependencyInstalled vue babel-preset-flow-vue
+78 silly dependencyIsSatisfied [ 'babel-preset-flow-vue',
+78 silly dependencyIsSatisfied   '^1.0.0',
+78 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+79 verbose dependencyIsSatisfied babel-preset-flow-vue true
+80 silly hasDependencyInstalled vue buble
+81 silly dependencyIsSatisfied [ 'buble',
+81 silly dependencyIsSatisfied   '^0.18.0',
+81 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+82 verbose dependencyIsSatisfied buble true
+83 silly hasDependencyInstalled vue chalk
+84 silly dependencyIsSatisfied [ 'chalk',
+84 silly dependencyIsSatisfied   '^2.3.0',
+84 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+85 verbose dependencyIsSatisfied chalk true
+86 silly hasDependencyInstalled vue chromedriver
+87 silly dependencyIsSatisfied [ 'chromedriver',
+87 silly dependencyIsSatisfied   '^2.30.1',
+87 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+88 verbose dependencyIsSatisfied chromedriver true
+89 silly hasDependencyInstalled vue codecov.io
+90 silly dependencyIsSatisfied [ 'codecov.io',
+90 silly dependencyIsSatisfied   '^0.1.6',
+90 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+91 verbose dependencyIsSatisfied codecov.io true
+92 silly hasDependencyInstalled vue commitizen
+93 silly dependencyIsSatisfied [ 'commitizen',
+93 silly dependencyIsSatisfied   '^2.9.6',
+93 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+94 verbose dependencyIsSatisfied commitizen true
+95 silly hasDependencyInstalled vue conventional-changelog
+96 silly dependencyIsSatisfied [ 'conventional-changelog',
+96 silly dependencyIsSatisfied   '^1.1.3',
+96 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+97 verbose dependencyIsSatisfied conventional-changelog true
+98 silly hasDependencyInstalled vue cross-spawn
+99 silly dependencyIsSatisfied [ 'cross-spawn',
+99 silly dependencyIsSatisfied   '^5.1.0',
+99 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+100 verbose dependencyIsSatisfied cross-spawn true
+101 silly hasDependencyInstalled vue cz-conventional-changelog
+102 silly dependencyIsSatisfied [ 'cz-conventional-changelog',
+102 silly dependencyIsSatisfied   '^2.0.0',
+102 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+103 verbose dependencyIsSatisfied cz-conventional-changelog true
+104 silly hasDependencyInstalled vue de-indent
+105 silly dependencyIsSatisfied [ 'de-indent',
+105 silly dependencyIsSatisfied   '^1.0.2',
+105 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+106 verbose dependencyIsSatisfied de-indent true
+107 silly hasDependencyInstalled vue es6-promise
+108 silly dependencyIsSatisfied [ 'es6-promise',
+108 silly dependencyIsSatisfied   '^4.1.0',
+108 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+109 verbose dependencyIsSatisfied es6-promise true
+110 silly hasDependencyInstalled vue escodegen
+111 silly dependencyIsSatisfied [ 'escodegen',
+111 silly dependencyIsSatisfied   '^1.8.1',
+111 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+112 verbose dependencyIsSatisfied escodegen true
+113 silly hasDependencyInstalled vue eslint
+114 silly dependencyIsSatisfied [ 'eslint',
+114 silly dependencyIsSatisfied   '^4.13.1',
+114 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+115 verbose dependencyIsSatisfied eslint true
+116 silly hasDependencyInstalled vue eslint-loader
+117 silly dependencyIsSatisfied [ 'eslint-loader',
+117 silly dependencyIsSatisfied   '^1.7.1',
+117 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+118 verbose dependencyIsSatisfied eslint-loader true
+119 silly hasDependencyInstalled vue eslint-plugin-flowtype
+120 silly dependencyIsSatisfied [ 'eslint-plugin-flowtype',
+120 silly dependencyIsSatisfied   '^2.34.0',
+120 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+121 verbose dependencyIsSatisfied eslint-plugin-flowtype true
+122 silly hasDependencyInstalled vue eslint-plugin-jasmine
+123 silly dependencyIsSatisfied [ 'eslint-plugin-jasmine',
+123 silly dependencyIsSatisfied   '^2.8.4',
+123 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+124 verbose dependencyIsSatisfied eslint-plugin-jasmine true
+125 silly hasDependencyInstalled vue eslint-plugin-vue-libs
+126 silly dependencyIsSatisfied [ 'eslint-plugin-vue-libs',
+126 silly dependencyIsSatisfied   '^2.0.1',
+126 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+127 verbose dependencyIsSatisfied eslint-plugin-vue-libs true
+128 silly hasDependencyInstalled vue file-loader
+129 silly dependencyIsSatisfied [ 'file-loader',
+129 silly dependencyIsSatisfied   '^1.1.5',
+129 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+130 verbose dependencyIsSatisfied file-loader true
+131 silly hasDependencyInstalled vue flow-bin
+132 silly dependencyIsSatisfied [ 'flow-bin',
+132 silly dependencyIsSatisfied   '^0.61.0',
+132 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+133 verbose dependencyIsSatisfied flow-bin true
+134 silly hasDependencyInstalled vue hash-sum
+135 silly dependencyIsSatisfied [ 'hash-sum',
+135 silly dependencyIsSatisfied   '^1.0.2',
+135 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+136 verbose dependencyIsSatisfied hash-sum true
+137 silly hasDependencyInstalled vue he
+138 silly dependencyIsSatisfied [ 'he',
+138 silly dependencyIsSatisfied   '^1.1.1',
+138 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+139 verbose dependencyIsSatisfied he true
+140 silly hasDependencyInstalled vue http-server
+141 silly dependencyIsSatisfied [ 'http-server',
+141 silly dependencyIsSatisfied   '^0.10.0',
+141 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+142 verbose dependencyIsSatisfied http-server true
+143 silly hasDependencyInstalled vue jasmine
+144 silly dependencyIsSatisfied [ 'jasmine',
+144 silly dependencyIsSatisfied   '^2.6.0',
+144 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+145 verbose dependencyIsSatisfied jasmine true
+146 silly hasDependencyInstalled vue jasmine-core
+147 silly dependencyIsSatisfied [ 'jasmine-core',
+147 silly dependencyIsSatisfied   '^2.6.3',
+147 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+148 verbose dependencyIsSatisfied jasmine-core true
+149 silly hasDependencyInstalled vue karma
+150 silly dependencyIsSatisfied [ 'karma',
+150 silly dependencyIsSatisfied   '^1.7.0',
+150 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+151 verbose dependencyIsSatisfied karma true
+152 silly hasDependencyInstalled vue karma-chrome-launcher
+153 silly dependencyIsSatisfied [ 'karma-chrome-launcher',
+153 silly dependencyIsSatisfied   '^2.1.1',
+153 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+154 verbose dependencyIsSatisfied karma-chrome-launcher true
+155 silly hasDependencyInstalled vue karma-coverage
+156 silly dependencyIsSatisfied [ 'karma-coverage',
+156 silly dependencyIsSatisfied   '^1.1.1',
+156 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+157 verbose dependencyIsSatisfied karma-coverage true
+158 silly hasDependencyInstalled vue karma-firefox-launcher
+159 silly dependencyIsSatisfied [ 'karma-firefox-launcher',
+159 silly dependencyIsSatisfied   '^1.0.1',
+159 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+160 verbose dependencyIsSatisfied karma-firefox-launcher true
+161 silly hasDependencyInstalled vue karma-jasmine
+162 silly dependencyIsSatisfied [ 'karma-jasmine',
+162 silly dependencyIsSatisfied   '^1.1.0',
+162 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+163 verbose dependencyIsSatisfied karma-jasmine true
+164 silly hasDependencyInstalled vue karma-mocha-reporter
+165 silly dependencyIsSatisfied [ 'karma-mocha-reporter',
+165 silly dependencyIsSatisfied   '^2.2.3',
+165 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+166 verbose dependencyIsSatisfied karma-mocha-reporter true
+167 silly hasDependencyInstalled vue karma-phantomjs-launcher
+168 silly dependencyIsSatisfied [ 'karma-phantomjs-launcher',
+168 silly dependencyIsSatisfied   '^1.0.4',
+168 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+169 verbose dependencyIsSatisfied karma-phantomjs-launcher true
+170 silly hasDependencyInstalled vue karma-safari-launcher
+171 silly dependencyIsSatisfied [ 'karma-safari-launcher',
+171 silly dependencyIsSatisfied   '^1.0.0',
+171 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+172 verbose dependencyIsSatisfied karma-safari-launcher true
+173 silly hasDependencyInstalled vue karma-sauce-launcher
+174 silly dependencyIsSatisfied [ 'karma-sauce-launcher',
+174 silly dependencyIsSatisfied   '^1.1.0',
+174 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+175 verbose dependencyIsSatisfied karma-sauce-launcher true
+176 silly hasDependencyInstalled vue karma-sourcemap-loader
+177 silly dependencyIsSatisfied [ 'karma-sourcemap-loader',
+177 silly dependencyIsSatisfied   '^0.3.7',
+177 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+178 verbose dependencyIsSatisfied karma-sourcemap-loader true
+179 silly hasDependencyInstalled vue karma-webpack
+180 silly dependencyIsSatisfied [ 'karma-webpack',
+180 silly dependencyIsSatisfied   '^2.0.3',
+180 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+181 verbose dependencyIsSatisfied karma-webpack true
+182 silly hasDependencyInstalled vue lint-staged
+183 silly dependencyIsSatisfied [ 'lint-staged',
+183 silly dependencyIsSatisfied   '^6.0.0',
+183 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+184 verbose dependencyIsSatisfied lint-staged true
+185 silly hasDependencyInstalled vue lodash
+186 silly dependencyIsSatisfied [ 'lodash',
+186 silly dependencyIsSatisfied   '^4.17.4',
+186 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+187 verbose dependencyIsSatisfied lodash true
+188 silly hasDependencyInstalled vue lodash.template
+189 silly dependencyIsSatisfied [ 'lodash.template',
+189 silly dependencyIsSatisfied   '^4.4.0',
+189 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+190 verbose dependencyIsSatisfied lodash.template true
+191 silly hasDependencyInstalled vue lodash.uniq
+192 silly dependencyIsSatisfied [ 'lodash.uniq',
+192 silly dependencyIsSatisfied   '^4.5.0',
+192 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+193 verbose dependencyIsSatisfied lodash.uniq true
+194 silly hasDependencyInstalled vue lru-cache
+195 silly dependencyIsSatisfied [ 'lru-cache',
+195 silly dependencyIsSatisfied   '^4.1.1',
+195 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+196 verbose dependencyIsSatisfied lru-cache true
+197 silly hasDependencyInstalled vue nightwatch
+198 silly dependencyIsSatisfied [ 'nightwatch',
+198 silly dependencyIsSatisfied   '^0.9.16',
+198 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+199 verbose dependencyIsSatisfied nightwatch true
+200 silly hasDependencyInstalled vue nightwatch-helpers
+201 silly dependencyIsSatisfied [ 'nightwatch-helpers',
+201 silly dependencyIsSatisfied   '^1.2.0',
+201 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+202 verbose dependencyIsSatisfied nightwatch-helpers true
+203 silly hasDependencyInstalled vue phantomjs-prebuilt
+204 silly dependencyIsSatisfied [ 'phantomjs-prebuilt',
+204 silly dependencyIsSatisfied   '^2.1.14',
+204 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+205 verbose dependencyIsSatisfied phantomjs-prebuilt true
+206 silly hasDependencyInstalled vue resolve
+207 silly dependencyIsSatisfied [ 'resolve',
+207 silly dependencyIsSatisfied   '^1.3.3',
+207 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+208 verbose dependencyIsSatisfied resolve true
+209 silly hasDependencyInstalled vue rollup
+210 silly dependencyIsSatisfied [ 'rollup',
+210 silly dependencyIsSatisfied   '^0.52.1',
+210 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+211 verbose dependencyIsSatisfied rollup true
+212 silly hasDependencyInstalled vue rollup-plugin-alias
+213 silly dependencyIsSatisfied [ 'rollup-plugin-alias',
+213 silly dependencyIsSatisfied   '^1.3.1',
+213 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+214 verbose dependencyIsSatisfied rollup-plugin-alias true
+215 silly hasDependencyInstalled vue rollup-plugin-babel
+216 silly dependencyIsSatisfied [ 'rollup-plugin-babel',
+216 silly dependencyIsSatisfied   '^3.0.2',
+216 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+217 verbose dependencyIsSatisfied rollup-plugin-babel true
+218 silly hasDependencyInstalled vue rollup-plugin-buble
+219 silly dependencyIsSatisfied [ 'rollup-plugin-buble',
+219 silly dependencyIsSatisfied   '^0.18.0',
+219 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+220 verbose dependencyIsSatisfied rollup-plugin-buble true
+221 silly hasDependencyInstalled vue rollup-plugin-commonjs
+222 silly dependencyIsSatisfied [ 'rollup-plugin-commonjs',
+222 silly dependencyIsSatisfied   '^8.0.2',
+222 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+223 verbose dependencyIsSatisfied rollup-plugin-commonjs true
+224 silly hasDependencyInstalled vue rollup-plugin-flow-no-whitespace
+225 silly dependencyIsSatisfied [ 'rollup-plugin-flow-no-whitespace',
+225 silly dependencyIsSatisfied   '^1.0.0',
+225 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+226 verbose dependencyIsSatisfied rollup-plugin-flow-no-whitespace true
+227 silly hasDependencyInstalled vue rollup-plugin-node-resolve
+228 silly dependencyIsSatisfied [ 'rollup-plugin-node-resolve',
+228 silly dependencyIsSatisfied   '^3.0.0',
+228 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+229 verbose dependencyIsSatisfied rollup-plugin-node-resolve true
+230 silly hasDependencyInstalled vue rollup-plugin-replace
+231 silly dependencyIsSatisfied [ 'rollup-plugin-replace',
+231 silly dependencyIsSatisfied   '^2.0.0',
+231 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+232 verbose dependencyIsSatisfied rollup-plugin-replace true
+233 silly hasDependencyInstalled vue rollup-watch
+234 silly dependencyIsSatisfied [ 'rollup-watch',
+234 silly dependencyIsSatisfied   '^4.0.0',
+234 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+235 verbose dependencyIsSatisfied rollup-watch true
+236 silly hasDependencyInstalled vue selenium-server
+237 silly dependencyIsSatisfied [ 'selenium-server',
+237 silly dependencyIsSatisfied   '^2.53.1',
+237 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+238 verbose dependencyIsSatisfied selenium-server true
+239 silly hasDependencyInstalled vue serialize-javascript
+240 silly dependencyIsSatisfied [ 'serialize-javascript',
+240 silly dependencyIsSatisfied   '^1.3.0',
+240 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+241 verbose dependencyIsSatisfied serialize-javascript true
+242 silly hasDependencyInstalled vue shelljs
+243 silly dependencyIsSatisfied [ 'shelljs',
+243 silly dependencyIsSatisfied   '^0.7.8',
+243 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+244 verbose dependencyIsSatisfied shelljs true
+245 silly hasDependencyInstalled vue typescript
+246 silly dependencyIsSatisfied [ 'typescript',
+246 silly dependencyIsSatisfied   '^2.7.1',
+246 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+247 verbose dependencyIsSatisfied typescript true
+248 silly hasDependencyInstalled vue uglify-js
+249 silly dependencyIsSatisfied [ 'uglify-js',
+249 silly dependencyIsSatisfied   '^3.0.15',
+249 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+250 verbose dependencyIsSatisfied uglify-js true
+251 silly hasDependencyInstalled vue webpack
+252 silly dependencyIsSatisfied [ 'webpack',
+252 silly dependencyIsSatisfied   '^3.10.0',
+252 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+253 verbose dependencyIsSatisfied webpack true
+254 silly hasDependencyInstalled vue weex-js-runtime
+255 silly dependencyIsSatisfied [ 'weex-js-runtime',
+255 silly dependencyIsSatisfied   '^0.23.5',
+255 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+256 verbose dependencyIsSatisfied weex-js-runtime true
+257 silly hasDependencyInstalled vue weex-styler
+258 silly dependencyIsSatisfied [ 'weex-styler',
+258 silly dependencyIsSatisfied   '^0.3.0',
+258 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+259 verbose dependencyIsSatisfied weex-styler true
+260 silly hasDependencyInstalled vue yorkie
+261 silly dependencyIsSatisfied [ 'yorkie',
+261 silly dependencyIsSatisfied   '^1.0.1',
+261 silly dependencyIsSatisfied   '/Users/liyinan/code/vue-php-ssr/packages/vue/node_modules' ]
+262 verbose dependencyIsSatisfied yorkie true
+263 silly root dependencies []
+264 silly leaf dependencies {
+264 silly leaf dependencies   "main": [
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-preset-env@^1.6.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-cli@^6.26.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "php-generator@*",
+264 silly leaf dependencies       "isSatisfied": false
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "vue-template-compiler@^2.5.13",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     }
+264 silly leaf dependencies   ],
+264 silly leaf dependencies   "js2php": [
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "escope@^3.6.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "espree@^3.5.4",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "estemplate@^0.5.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "estraverse@^4.2.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     }
+264 silly leaf dependencies   ],
+264 silly leaf dependencies   "vue": [
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "@types/node@^8.0.33",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "@types/webpack@^3.0.13",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "acorn@^5.2.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-core@^6.25.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-eslint@^8.0.3",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-helper-vue-jsx-merge-props@^2.0.2",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-loader@^7.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-plugin-istanbul@^4.1.4",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-plugin-syntax-dynamic-import@^6.18.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-plugin-syntax-jsx@^6.18.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-plugin-transform-vue-jsx@^3.4.3",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-preset-es2015@^6.24.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "babel-preset-flow-vue@^1.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "buble@^0.18.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "chalk@^2.3.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "chromedriver@^2.30.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "codecov.io@^0.1.6",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "commitizen@^2.9.6",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "conventional-changelog@^1.1.3",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "cross-spawn@^5.1.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "cz-conventional-changelog@^2.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "de-indent@^1.0.2",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "es6-promise@^4.1.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "escodegen@^1.8.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "eslint@^4.13.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "eslint-loader@^1.7.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "eslint-plugin-flowtype@^2.34.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "eslint-plugin-jasmine@^2.8.4",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "eslint-plugin-vue-libs@^2.0.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "file-loader@^1.1.5",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "flow-bin@^0.61.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "hash-sum@^1.0.2",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "he@^1.1.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "http-server@^0.10.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "jasmine@^2.6.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "jasmine-core@^2.6.3",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma@^1.7.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-chrome-launcher@^2.1.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-coverage@^1.1.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-firefox-launcher@^1.0.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-jasmine@^1.1.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-mocha-reporter@^2.2.3",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-phantomjs-launcher@^1.0.4",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-safari-launcher@^1.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-sauce-launcher@^1.1.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-sourcemap-loader@^0.3.7",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "karma-webpack@^2.0.3",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "lint-staged@^6.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "lodash@^4.17.4",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "lodash.template@^4.4.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "lodash.uniq@^4.5.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "lru-cache@^4.1.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "nightwatch@^0.9.16",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "nightwatch-helpers@^1.2.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "phantomjs-prebuilt@^2.1.14",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "resolve@^1.3.3",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup@^0.52.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup-plugin-alias@^1.3.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup-plugin-babel@^3.0.2",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup-plugin-buble@^0.18.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup-plugin-commonjs@^8.0.2",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup-plugin-flow-no-whitespace@^1.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup-plugin-node-resolve@^3.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup-plugin-replace@^2.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "rollup-watch@^4.0.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "selenium-server@^2.53.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "serialize-javascript@^1.3.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "shelljs@^0.7.8",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "typescript@^2.7.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "uglify-js@^3.0.15",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "webpack@^3.10.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "weex-js-runtime@^0.23.5",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "weex-styler@^0.3.0",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     },
+264 silly leaf dependencies     {
+264 silly leaf dependencies       "dependency": "yorkie@^1.0.1",
+264 silly leaf dependencies       "isSatisfied": true
+264 silly leaf dependencies     }
+264 silly leaf dependencies   ]
+264 silly leaf dependencies }
+265 info Installing external dependencies
+266 verbose actions 1 actions, concurrency 4
+267 silly installInDir main [ 'babel-preset-env@^1.6.1',
+267 silly installInDir   'babel-cli@^6.26.0',
+267 silly installInDir   'php-generator@*',
+267 silly installInDir   'vue-template-compiler@^2.5.13' ]
+268 silly installInDir backup /Users/liyinan/code/vue-php-ssr/packages/main/package.json
+269 silly rename [ '/Users/liyinan/code/vue-php-ssr/packages/main/package.json',
+269 silly rename   '/Users/liyinan/code/vue-php-ssr/packages/main/package.json.lerna_backup' ]
+270 silly installInDir writing tempJson { dependencies:
+270 silly installInDir    { 'babel-preset-env': '^1.6.1',
+270 silly installInDir      'babel-cli': '^6.26.0',
+270 silly installInDir      'php-generator': '*',
+270 silly installInDir      'vue-template-compiler': '^2.5.13' } }
+271 silly getExecOpts { cwd: '/Users/liyinan/code/vue-php-ssr/packages/main' }
+272 silly installInDir [ 'npm', [ 'install' ] ]
+273 silly installInDir cleanup /Users/liyinan/code/vue-php-ssr/packages/main/package.json
+274 silly renameSync [ '/Users/liyinan/code/vue-php-ssr/packages/main/package.json.lerna_backup',
+274 silly renameSync   '/Users/liyinan/code/vue-php-ssr/packages/main/package.json' ]
+275 verbose installed leaf main
+276 error execute callback with error
+277 error Error: Command failed: npm install
+277 error npm ERR! code E404
+277 error npm ERR! 404 Not Found: php-generator@*
+277 error
+277 error npm ERR! A complete log of this run can be found in:
+277 error npm ERR!     /Users/liyinan/.npm/_logs/2018-03-12T04_07_53_699Z-debug.log
+277 error
+277 error     at Promise.all.then.arr (/Users/liyinan/.npm/_npx/25903/lib/node_modules/lerna/node_modules/execa/index.js:236:11)
+277 error     at <anonymous>

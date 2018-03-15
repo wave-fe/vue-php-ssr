@@ -3,9 +3,13 @@ import estemplate from 'estemplate';
 import {analyze} from 'escope';
 import escodegen from 'escodegen';
 import {clone} from '../util';
+import parseOptions from '../parseOptions';
 
 function getExportObject(ast) {
-    let scopeManager = analyze(ast);
+    let scopeManager = analyze(ast, {
+        sourceType: parseOptions.sourceType,
+        ecmaVersion: parseOptions.ecmaFeatures.ecmaVersion
+    });
     let currentScope = scopeManager.acquire(ast);
     let exportObject = esquery(ast, 'ExportDefaultDeclaration')[0];
     if (!exportObject) {
@@ -43,30 +47,27 @@ function processComputed(ast) {
     return computed;
 }
 
-function obj2class(ast) {
-    let computed = processComputed(ast);
-
-    // 利用estemplate生成class模板
-    let classAst = estemplate(`
-        class <%= name %> extends Vue_Base {}
-    `, {
-        name: {
-            "type": "Identifier",
-            "name": "test"
-        }
+function processMethods(ast) {
+    // 找到所有computed
+    let methods = esquery(ast, 'ObjectExpression>Property[key.name="methods"]>ObjectExpression>Property');
+    // 当前只处理get的computed，后续需要判断是否是可以set的，
+    // 复制一份ast，分别生成set和get
+    methods = methods.map(function (item) {
+        // 从 property 修改为 MethodDefinition
+        item.type = 'MethodDefinition';
+        // 从 init 修改为get
+        item.kind = 'method';
+        return item;
     });
-    // 找到classbody部分
-    let classBody = esquery(classAst, 'ClassBody')[0];
-    // 把computed放到body里
-    classBody.body = [...classBody.body, ...computed];
-
-    return classAst;
-    // console.log(escodegen.generate(classAst));
+    return methods;
 }
 
 export default function (ast) {
     // 查找export default {}
     let exportObject = getExportObject(ast);
-    return obj2class(exportObject);
+    return [
+        ...processComputed(exportObject),
+        ...processMethods(exportObject)
+    ];
     // console.log(JSON.stringify(exportObject));
 }

@@ -2,6 +2,8 @@ import estraverse from 'estraverse';
 import {analyze} from 'escope';
 // let escodegen = require('escodegen');
 import {isClosureVariable} from '../util';
+import parseOptions from '../parseOptions';
+
 export default function (ast) {
     // 去掉with
     estraverse.replace(ast, {
@@ -13,7 +15,10 @@ export default function (ast) {
         }
     });
     // 分析scope
-    let scopeManager = analyze(ast);
+    let scopeManager = analyze(ast, {
+        sourceType: parseOptions.sourceType,
+        ecmaVersion: parseOptions.ecmaFeatures.ecmaVersion
+    });
     let currentScope = scopeManager.acquire(ast);
 
     // 为函数调用和变量增加this，闭包不增加
@@ -60,6 +65,9 @@ export default function (ast) {
             // do stuff
         }
     });
+    let functionDeclaration = ast.body[0];
+    functionDeclaration.id.name = '_render';
+    return functionDeclaration;
     // console.log(JSON.stringify(ast));
     // console.log(escodegen.generate(ast));
 };

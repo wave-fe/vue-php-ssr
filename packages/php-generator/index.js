@@ -323,6 +323,9 @@ function generate(ast) {
         if (node.key.type === 'Literal') {
           property = (node.key.type == 'Identifier') ? node.key.name : node.key.value;
         }
+        else if (node.key.type === 'Identifier') {
+          property = node.key.name;
+        }
         else {
           property = (node.key.property.type == 'Identifier') ? node.key.property.name : node.key.property.value;
         }

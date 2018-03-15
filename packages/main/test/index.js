@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import compiler from '../index';
 
-let file = fs.readFileSync(path.resolve(__dirname, './dataset/index5.vue'));
+let file = fs.readFileSync(path.resolve(__dirname, './dataset/index3.vue'));
 
 let compiled = compiler.compile(file.toString());
 console.log(compiled.phpCode);

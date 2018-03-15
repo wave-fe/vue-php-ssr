@@ -11,7 +11,7 @@
                     list: [1, 2, 3, 4]
                 };
             },
-            method: {
+            methods: {
                 sayHello(item) {
                     return 'hello' + item;
                 }

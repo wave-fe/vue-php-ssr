@@ -3,14 +3,12 @@ var core = require('./core'),
     utils = require('./utils'),
     espree = require('espree');
 
-let templateTranspiler = require('./template-transpiler');
+function compile(code) {
+    let ast = parse(code);
+    return generate(ast);
+}
 
-
-function compileTemplate(code) {
-    return compile(code, templateTranspiler);
-};
-
-function compile(code, traverser) {
+function parse(code) {
   var ast = espree.parse(code, {
     // loc : true,
     // range : true,
@@ -45,10 +43,10 @@ function compile(code, traverser) {
       experimentalObjectRestSpread: true // allow experimental object rest/spread
     }
   });
+    return ast;
+}
 
-  if (traverser) {
-      traverser(ast);
-  }
+function generate(ast) {
 
   var rootScope = scope.create(ast, scope.KIND_ROOT);
 
@@ -595,7 +593,8 @@ function compile(code, traverser) {
   // return "<?php\n" + visit(ast);
   return visit(ast);
 };
+
 module.exports = {
-    compile: compile,
-    compileTemplate: compileTemplate
+    compile,
+    generate
 };

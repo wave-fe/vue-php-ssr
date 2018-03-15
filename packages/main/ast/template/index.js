@@ -1,9 +1,8 @@
-let estraverse = require('estraverse');
-let escope = require('escope');
-let estemplate = require('estemplate');
+import estraverse from 'estraverse';
+import {analyze} from 'escope';
 // let escodegen = require('escodegen');
-let {isClosureVariable} = require('./utils');
-module.exports = function (ast) {
+import {isClosureVariable} from '../util';
+export default function (ast) {
     // 去掉with
     estraverse.replace(ast, {
         enter: function (node, parent) {
@@ -14,7 +13,7 @@ module.exports = function (ast) {
         }
     });
     // 分析scope
-    let scopeManager = escope.analyze(ast);
+    let scopeManager = analyze(ast);
     let currentScope = scopeManager.acquire(ast);
 
     // 为函数调用和变量增加this，闭包不增加

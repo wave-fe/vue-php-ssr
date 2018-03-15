@@ -14,6 +14,13 @@
     "author": "li-yinan",
     "license": "MIT",
     "dependencies": {
+        "escodegen": "^1.9.1",
+        "escope": "^3.6.0",
+        "espree": "^3.5.4",
+        "espurify": "^1.7.0",
+        "esquery": "^1.0.0",
+        "estemplate": "^0.5.1",
+        "estraverse": "^4.2.0",
         "php-generator": "*",
         "vue-template-compiler": "^2.5.13"
     }

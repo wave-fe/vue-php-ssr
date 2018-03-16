@@ -4,13 +4,40 @@ import {parse, replace} from './ast/index';
 import {addNamespace} from './ast/util';
 import templateProcess from './ast/template/index';
 import scriptProcess from './ast/script/index';
+import config from './config';
 import {genClass, addMethod, addMethods} from './ast/genClass';
+import fs from 'fs';
+import path from 'path';
 
-function compile(vueContent) {
-    let namespace = 'test';
+export async function compileFile(filePath) {
+    return new Promise(function (resolve, reject) {
+        // 读取文件
+        fs.readFile(filePath, function (err, data) {
+            if (err) {
+                reject(err);
+            }
+            let fileInfo = path.parse(filePath);
+            let relativePath = path.relative(config.baseDir, fileInfo.dir);
+            let namespace = relativePath.split(path.sep).join('.');
+            let ret = compile(data.toString(),{
+                namespace,
+                dir: fileInfo.dir,
+                className: fileInfo.name
+            });
+            resolve(ret);
+        });
+    });
+}
+
+export function compile(vueContent, options = {}) {
+    let {
+        namespace = 'test',
+        dir = '',
+        className = 'test'
+    } = options;
 
     // 生成class的ast
-    let classAst = genClass(namespace);
+    let classAst = genClass(className);
 
     // 把vue文件拆分成template、script、style几个模块
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);
@@ -33,7 +60,7 @@ function compile(vueContent) {
         exportObject,
         computed,
         methods
-    } = scriptProcess(scriptAst);
+    } = scriptProcess(scriptAst, options);
     addMethods(classAst, computed);
     addMethods(classAst, methods);
 
@@ -52,6 +79,3 @@ function compile(vueContent) {
     };
 }
 
-export default {
-    compile
-};

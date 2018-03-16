@@ -3,6 +3,8 @@ import estemplate from 'estemplate';
 import {analyze} from 'escope';
 import escodegen from 'escodegen';
 import {clone} from '../util';
+import config from '../../config';
+import path from 'path';
 import parseOptions from '../parseOptions';
 
 function getExportObject(ast) {
@@ -62,7 +64,24 @@ function processMethods(ast) {
     return methods;
 }
 
-export default function (ast) {
+function processImport(ast, options) {
+    let dir = options.dir || '';
+    let imports = esquery(ast, 'ImportDeclaration');
+    imports.map(function (item) {
+        if (/^[\.\/\\]/.test(item.source.value)) {
+            // 是相对路径
+            // 先把import a from '../a';中的../a转换为绝对路径
+            let importPath = path.resolve(dir, item.source.value);
+            // 再计算和baseDir的相对路径
+            let relativePath = path.relative(config.baseDir, importPath);
+            // 最后修改import的路径
+            item.source.value = relativePath.split(path.sep).join('.');
+        }
+    });
+}
+
+export default function (ast,options) {
+    processImport(ast, options);
     // 查找export default {}
     let exportObject = getExportObject(ast);
     return {

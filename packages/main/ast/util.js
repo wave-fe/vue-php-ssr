@@ -29,3 +29,4 @@ export function addNamespace(ast, name) {
         
     });
 }
+

@@ -37,7 +37,7 @@ export function compile(vueContent, options = {}) {
     } = options;
 
     // 生成class的ast
-    let classAst = genClass(className);
+    let classAst = genClass(className, 'Vue_Base');
 
     // 把vue文件拆分成template、script、style几个模块
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);

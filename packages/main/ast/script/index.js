@@ -24,8 +24,13 @@ function getExportObject(ast) {
         // 比如 let a = {}; export default a;
         if (exportObject.type === 'Identifier') {
             let ref = currentScope.resolve(exportObject);
-            // console.log(ref.resolved.defs[0].node.init);
-            exportObject = ref.resolved.defs[0].node.init;
+            if (ref) {
+                // console.log(ref.resolved.defs[0].node.init);
+                exportObject = ref.resolved.defs[0].node.init;
+            }
+            else {
+                throw 'export form unknown';
+            }
         }
         else {
             throw 'export form unknown';
@@ -74,8 +79,15 @@ function processImport(ast, options) {
             let importPath = path.resolve(dir, item.source.value);
             // 再计算和baseDir的相对路径
             let relativePath = path.relative(config.baseDir, importPath);
-            // 最后修改import的路径
-            item.source.value = relativePath.split(path.sep).join('.');
+            // 最后把修改import后路径保存在namespace字段
+            item.namespace = {
+                type: 'Literal',
+                value: relativePath.split(path.sep).join('.')
+            };
+        }
+        else {
+            // 最后把修改import后路径保存在namespace字段
+            item.namespace = item.source;
         }
     });
 }

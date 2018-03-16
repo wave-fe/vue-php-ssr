@@ -1,14 +1,23 @@
 import esquery from 'esquery';
 import estemplate from 'estemplate';
 
-export function genClass(name) {
+export function genClass(name, base) {
     // 利用estemplate生成class模板
-    return estemplate(`
-        class <%= name %> extends Vue_Base {}
-    `, {
+    let template = '';
+    if (base) {
+        template = 'class <%= name %> extends <%= base %> {}';
+    }
+    else {
+        template = 'class <%= name %> {}';
+    }
+    return estemplate(template, {
         name: {
             "type": "Identifier",
             "name": name
+        },
+        base: {
+            "type": "Identifier",
+            "name": base
         }
     });
 };

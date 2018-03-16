@@ -14,8 +14,8 @@
                 }
             }
         };
-        export default a;
-        // export default {};
+        // export default a;
+        export default {};
     </script>
     <style lang="styl" scoped>
         .hello

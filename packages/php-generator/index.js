@@ -531,7 +531,9 @@ function generate(ast) {
       }
 
     } else if (node.type == "ImportDefaultSpecifier") {
-      var namespace = utils.classize(node.parent.source.value);
+      var namespace = utils.classize(node.parent.namespace.value);
+      var modulePath = node.parent.source.value;
+      content += "require_once(\"" + modulePath + ".php\");\n";
       content += "use \\" + namespace;
 
       // alias

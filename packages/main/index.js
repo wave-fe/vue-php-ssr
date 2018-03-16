@@ -17,7 +17,7 @@ export async function compileFile(filePath) {
                 reject(err);
             }
             let fileInfo = path.parse(filePath);
-            let relativePath = path.relative(config.baseDir, fileInfo.dir);
+            let relativePath = path.relative(config.baseDir, path.resolve(fileInfo.dir, fileInfo.name));
             let namespace = relativePath.split(path.sep).join('.');
             let ret = compile(data.toString(),{
                 namespace,

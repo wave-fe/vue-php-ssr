@@ -42,6 +42,7 @@
 
 <script>
 import _ from 'lodash';
+import comp from './index1';
 import Swipe from '../components/swipe/swipe';
 import SwipeItem from '../components/swipe/swipe-item';
 export default {

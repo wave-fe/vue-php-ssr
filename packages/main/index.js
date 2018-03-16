@@ -1,14 +1,16 @@
 let vueTemplateCompiler = require('vue-template-compiler');
 let phpGenerator = require('php-generator');
-import {parse, compose} from './ast/index';
+import {parse, replace} from './ast/index';
+import {addNamespace} from './ast/util';
 import templateProcess from './ast/template/index';
 import scriptProcess from './ast/script/index';
 import {genClass, addMethod, addMethods} from './ast/genClass';
 
 function compile(vueContent) {
+    let namespace = 'test';
 
     // 生成class的ast
-    let classAst = genClass('test');
+    let classAst = genClass(namespace);
 
     // 把vue文件拆分成template、script、style几个模块
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);
@@ -27,13 +29,22 @@ function compile(vueContent) {
 
     // 生成script的ast
     let scriptAst = parse(script.content);
-    // let scriptAst = parse("import a from 'a'");
-    let methodsAst = scriptProcess(scriptAst);
-    addMethods(classAst, methodsAst);
+    let {
+        exportObject,
+        computed,
+        methods
+    } = scriptProcess(scriptAst);
+    addMethods(classAst, computed);
+    addMethods(classAst, methods);
+
+    scriptAst = replace(scriptAst, exportObject, classAst);
+    addNamespace(scriptAst, namespace);
+
 
     // 把改造完的ast生成php code
     // let phpCode = phpGenerator.generate(templateAst);
-    let phpCode = phpGenerator.generate(classAst);
+    // let phpCode = phpGenerator.generate(classAst);
+    let phpCode = phpGenerator.generate(scriptAst);
 
     return {
         vdom,

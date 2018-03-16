@@ -65,9 +65,10 @@ function processMethods(ast) {
 export default function (ast) {
     // 查找export default {}
     let exportObject = getExportObject(ast);
-    return [
-        ...processComputed(exportObject),
-        ...processMethods(exportObject)
-    ];
+    return {
+        exportObject,
+        computed: processComputed(exportObject),
+        methods: processMethods(exportObject)
+    };
     // console.log(JSON.stringify(exportObject));
 }

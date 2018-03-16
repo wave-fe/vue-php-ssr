@@ -318,7 +318,6 @@ function generate(ast) {
       content = "array(" + elements.join(", ") + ")";
 
     } else if (node.type == "Property") {
-        // console.log('>>>debug ', node.type, node);
         var property = '';
         if (node.key.type === 'Literal') {
           property = (node.key.type == 'Identifier') ? node.key.name : node.key.value;
@@ -517,17 +516,28 @@ function generate(ast) {
 
 
       // Modules & Export (http://wiki.ecmascript.org/doku.php?id=harmony:modules_examples)
-    } else if (node.type == "ModuleDeclaration") {
-      content = "namespace " + utils.classize(node.id.value) + ";\n";
-      content += visit(node.body, node);
+    } else if (node.type == "NamespaceDeclaration") {
+      content = "namespace " + utils.classize(node.id.name) + ";\n";
 
     } else if (node.type == "ExportNamedDeclaration") {
+      content = visit(node.declaration, node);
+
+    } else if (node.type == "ExportDefaultDeclaration") {
       content = visit(node.declaration, node);
 
     } else if (node.type == "ImportDeclaration") {
       for (var i=0,length = node.specifiers.length;i<length;i++) {
         content += visit(node.specifiers[i], node);
       }
+
+    } else if (node.type == "ImportDefaultSpecifier") {
+      var namespace = utils.classize(node.parent.source.value);
+      content += "use \\" + namespace;
+
+      // alias
+      if (node.local) { content += " as " + node.local.name; }
+
+      content += ";\n";
 
     } else if (node.type == "ImportSpecifier") {
       var namespace = utils.classize(node.parent.source.value);

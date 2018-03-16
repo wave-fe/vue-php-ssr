@@ -1,4 +1,5 @@
 import espree from 'espree';
+import estraverse from 'estraverse';
 import parseOptions from './parseOptions';
 
 export function parse(code, options) {
@@ -8,14 +9,14 @@ export function parse(code, options) {
     return espree.parse(code, options);
 };
 
-/**
- * compose template ast & script ast & style ast
- *
- * @param {EsprimaAst} templateAst
- * @param {EsprimaAst} scriptAst
- * @param {EsprimaAst} styleAst
- *
- * @return {EsprimaAst}
-*/
-export function compose(templateAst, scriptAst, styleAst) {
-};
+export function replace(ast, originalAst, newAst) {
+    estraverse.replace(ast, {
+        enter: function (node, parent) {
+            if (node === originalAst) {
+                this.break();
+                return newAst;
+            }
+        }
+    });
+    return ast;
+}

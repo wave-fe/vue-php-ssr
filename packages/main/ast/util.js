@@ -17,3 +17,15 @@ export function isClosureVariable(ident, currentScope) {
 export function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
+
+export function addNamespace(ast, name) {
+    let programBody = ast.body;
+    programBody.unshift({
+        "type": "NamespaceDeclaration",
+        "id": {
+            "type": "Identifier",
+            "name": name
+        }
+        
+    });
+}

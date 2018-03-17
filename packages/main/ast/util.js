@@ -1,3 +1,5 @@
+import path from 'path';
+import {baseDir, baseClassPath} from '../config';
 export function isClosureVariable(ident, currentScope) {
     let scope = currentScope;
     let count = 0;
@@ -26,7 +28,27 @@ export function addNamespace(ast, name) {
             "type": "Identifier",
             "name": name
         }
-        
     });
 }
 
+export function getPackageInfo(filePath) {
+    if (!filePath) {
+        return {};
+    }
+    let {dir, name} = path.parse(filePath);
+    let filePathWithoutExt = path.resolve(dir, name);
+    let relativeToRoot = path.relative(baseDir, filePathWithoutExt);
+    let namespace = relativeToRoot.split(path.sep).join('.');
+    return {
+        name,
+        dir,
+        namespace
+    };
+}
+
+export function getBaseInfo() {
+    if (!baseClassPath) {
+        return {};
+    }
+    return getPackageInfo(baseClassPath);
+}

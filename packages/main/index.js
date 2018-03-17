@@ -1,10 +1,10 @@
 let vueTemplateCompiler = require('vue-template-compiler');
 let phpGenerator = require('php-generator');
 import {parse, replace} from './ast/index';
-import {addNamespace} from './ast/util';
+import {addNamespace, getPackageInfo, getBaseInfo} from './ast/util';
 import templateProcess from './ast/template/index';
 import scriptProcess from './ast/script/index';
-import config from './config';
+import {baseClassPath} from './config';
 import {genClass, addMethod, addMethods} from './ast/genClass';
 import fs from 'fs';
 import path from 'path';
@@ -16,28 +16,30 @@ export async function compileFile(filePath) {
             if (err) {
                 reject(err);
             }
-            let fileInfo = path.parse(filePath);
-            let relativePath = path.relative(config.baseDir, path.resolve(fileInfo.dir, fileInfo.name));
-            let namespace = relativePath.split(path.sep).join('.');
-            let ret = compile(data.toString(),{
-                namespace,
-                dir: fileInfo.dir,
-                className: fileInfo.name
-            });
+            let {
+                dir,
+                name
+            } = getPackageInfo(filePath);
+            let ret = compile(data.toString(),{filePath});
+            // 把生成的代码写入文件
+            let phpPath = path.resolve(dir, name + '.php');
+            fs.writeFileSync(phpPath, ret.phpCode);
             resolve(ret);
         });
     });
 }
 
 export function compile(vueContent, options = {}) {
+    let filePath = options.filePath;
     let {
-        namespace = 'test',
-        dir = '',
-        className = 'test'
-    } = options;
+        name,
+        dir,
+        namespace
+    } = getPackageInfo(filePath);
 
+    let baseName = getBaseInfo().name;
     // 生成class的ast
-    let classAst = genClass(className, 'Vue_Base');
+    let classAst = genClass(name, baseName);
 
     // 把vue文件拆分成template、script、style几个模块
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);
@@ -54,8 +56,14 @@ export function compile(vueContent, options = {}) {
     addMethod(classAst, templateAst);
 
 
+    let content = script.content;
     // 生成script的ast
-    let scriptAst = parse(script.content);
+    if (baseName) {
+        let classToBase = path.relative(dir, baseClassPath);
+
+        content = `import ${baseName} from '${classToBase}';${script.content}`
+    }
+    let scriptAst = parse(content);
     let {
         exportObject,
         computed,

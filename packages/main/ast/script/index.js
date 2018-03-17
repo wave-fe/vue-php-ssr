@@ -2,7 +2,7 @@ import esquery from 'esquery';
 import estemplate from 'estemplate';
 import {analyze} from 'escope';
 import escodegen from 'escodegen';
-import {clone} from '../util';
+import {clone, getPackageInfo, getBaseInfo} from '../util';
 import config from '../../config';
 import path from 'path';
 import parseOptions from '../parseOptions';
@@ -70,19 +70,19 @@ function processMethods(ast) {
 }
 
 function processImport(ast, options) {
-    let dir = options.dir || '';
+    let dir = getPackageInfo(options.filePath).dir;
+
     let imports = esquery(ast, 'ImportDeclaration');
     imports.map(function (item) {
         if (/^[\.\/\\]/.test(item.source.value)) {
             // 是相对路径
             // 先把import a from '../a';中的../a转换为绝对路径
             let importPath = path.resolve(dir, item.source.value);
-            // 再计算和baseDir的相对路径
-            let relativePath = path.relative(config.baseDir, importPath);
+            let {namespace} = getPackageInfo(importPath);
             // 最后把修改import后路径保存在namespace字段
             item.namespace = {
                 type: 'Literal',
-                value: relativePath.split(path.sep).join('.')
+                value: namespace
             };
         }
         else {

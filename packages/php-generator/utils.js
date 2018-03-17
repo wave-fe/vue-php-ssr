@@ -9,7 +9,8 @@ module.exports = {
     classize: function (string) {
         var modules = string.split(".");
         if (modules.length == 1) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
+            // return string.charAt(0).toUpperCase() + string.slice(1);
+            return string;
         } else {
             var m = [];
             for (var i=0; i<modules.length; i++) {

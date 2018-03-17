@@ -1,7 +1,7 @@
 export default {
-    // loc : true,
-    // range : true,
-    // tokens : true,
+    loc : true,
+    range : true,
+    tokens : true,
     comment : true,
     sourceType: 'module',
     ecmaFeatures: {

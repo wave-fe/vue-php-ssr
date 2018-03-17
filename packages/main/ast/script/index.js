@@ -69,7 +69,7 @@ function processMethods(ast) {
     return methods;
 }
 
-function processImport(ast, options) {
+export function processImport(ast, options) {
     let dir = getPackageInfo(options.filePath).dir;
 
     let imports = esquery(ast, 'ImportDeclaration');
@@ -78,11 +78,11 @@ function processImport(ast, options) {
             // 是相对路径
             // 先把import a from '../a';中的../a转换为绝对路径
             let importPath = path.resolve(dir, item.source.value);
-            let {namespace} = getPackageInfo(importPath);
+            let {useNamespace} = getPackageInfo(importPath);
             // 最后把修改import后路径保存在namespace字段
             item.namespace = {
                 type: 'Literal',
-                value: namespace
+                value: useNamespace
             };
         }
         else {

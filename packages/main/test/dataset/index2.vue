@@ -1,5 +1,5 @@
     <template>
-        <span v-for="l in list">
+        <span>
             <span v-if="l === 1">hello ab{{l}}c</span>
             <span v-else>world ab{{l}}c</span>
         </span>
@@ -13,9 +13,6 @@
                 };
             },
             method: {
-                sayHello(item) {
-                    return 'hello' + item;
-                }
             }
         };
     </script>

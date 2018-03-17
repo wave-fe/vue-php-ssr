@@ -1,3 +1,4 @@
 packages/main/node_modules
 *.swp
 packages/php-generator/node_modules
+*.php

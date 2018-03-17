@@ -39,9 +39,11 @@ export function getPackageInfo(filePath) {
     let filePathWithoutExt = path.resolve(dir, name);
     let relativeToRoot = path.relative(baseDir, filePathWithoutExt);
     let namespace = relativeToRoot.split(path.sep).join('.');
+    let useNamespace = namespace + '.' + name;
     return {
         name,
         dir,
+        useNamespace,
         namespace
     };
 }
@@ -52,3 +54,4 @@ export function getBaseInfo() {
     }
     return getPackageInfo(baseClassPath);
 }
+

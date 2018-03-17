@@ -3,33 +3,85 @@ let phpGenerator = require('php-generator');
 import {parse, replace} from './ast/index';
 import {addNamespace, getPackageInfo, getBaseInfo} from './ast/util';
 import templateProcess from './ast/template/index';
-import scriptProcess from './ast/script/index';
+import scriptProcess, {processImport} from './ast/script/index';
 import {baseClassPath} from './config';
 import {genClass, addMethod, addMethods} from './ast/genClass';
 import fs from 'fs';
 import path from 'path';
 
-export async function compileFile(filePath) {
+export async function compile(filePath) {
+    let {ext} = path.parse(filePath);
+    if (ext === '.vue') {
+        return compileSFCFile(filePath);
+    }
+    else if (ext === '.js') {
+        return compileJsFile(filePath);
+    }
+    else {
+        throw 'file type not support: ' + filePath;
+    }
+}
+
+export async function compileSFCFile(filePath) {
     return new Promise(function (resolve, reject) {
         // 读取文件
         fs.readFile(filePath, function (err, data) {
             if (err) {
                 reject(err);
+                return;
             }
             let {
                 dir,
                 name
             } = getPackageInfo(filePath);
-            let ret = compile(data.toString(),{filePath});
+            let ret = compileSFC(data.toString(),{filePath});
             // 把生成的代码写入文件
             let phpPath = path.resolve(dir, name + '.php');
-            fs.writeFileSync(phpPath, ret.phpCode);
-            resolve(ret);
+            fs.writeFile(phpPath, ret.phpCode, function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(ret);
+            });
         });
     });
 }
 
-export function compile(vueContent, options = {}) {
+export async function compileJsFile(filePath) {
+    return new Promise(function (resolve, reject) {
+        // 读取文件
+        fs.readFile(filePath, function (err, data) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            let {
+                dir,
+                namespace,
+                name
+            } = getPackageInfo(filePath);
+
+            let ast = parse(data);
+            processImport(ast, {filePath});
+            addNamespace(ast, namespace);
+            let phpCode = phpGenerator.generate(ast);
+            // 把生成的代码写入文件
+            let phpPath = path.resolve(dir, name + '.php');
+            fs.writeFile(phpPath, phpCode, function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve({
+                    phpCode
+                });
+            });
+        });
+    });
+}
+
+export function compileSFC(vueContent, options = {}) {
     let filePath = options.filePath;
     let {
         name,

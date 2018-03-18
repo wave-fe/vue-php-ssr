@@ -542,9 +542,11 @@ function generate(ast) {
       content += "use \\" + namespace;
 
       // alias
-      if (node.local) { content += " as " + node.local.name; }
+      if (node.local) {
+          content += " as " + node.local.name + ";";
+      }
 
-      content += ";\n";
+      content += "\n";
 
     } else if (node.type == "ImportSpecifier") {
       var namespace = utils.classize(node.parent.source.value);

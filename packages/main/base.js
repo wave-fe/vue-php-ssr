@@ -4,11 +4,18 @@ export class base {
     }
 
     _c(tag, children = []) {
-        let str = '';
-        for (var i = 0; i < children.length; i++) {
-            str = str + children[i];
+        let depClass = this.components[tag];
+        if (depClass) {
+            let instance = new depClass();
+            return instance.render();
         }
-        return `<${tag}>${str}</${tag}>`;
+        else {
+            let str = '';
+            for (var i = 0; i < children.length; i++) {
+                str = str + children[i];
+            }
+            return `<${tag}>${str}</${tag}>`;
+        }
     }
 
     _ssrNode(content) {

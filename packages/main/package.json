@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "babel-node index.js",
-        "run": "babel-node test/index.js;php test/run.php",
+        "test": "babel-node test/index.js;php test/run.php",
         "build": "babel-node test/index.js"
     },
     "devDependencies": {

@@ -3,7 +3,7 @@
             <span class="hello" v-for="item1 in getList()">
                 {{this.sayHello(item1)}}
             </span>
-            <test/>
+            <index2/>
         </div>
     </template>
     <script>

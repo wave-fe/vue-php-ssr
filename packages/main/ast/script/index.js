@@ -2,17 +2,12 @@ import esquery from 'esquery';
 import estemplate from 'estemplate';
 import {analyze} from 'escope';
 import escodegen from 'escodegen';
-import {clone, getPackageInfo, getBaseInfo} from '../util';
+import {clone, getPackageInfo, getBaseInfo, defAnalyze} from '../util';
 import config from '../../config';
 import path from 'path';
 import parseOptions from '../parseOptions';
 
-function getExportObject(ast) {
-    let scopeManager = analyze(ast, {
-        sourceType: parseOptions.sourceType,
-        ecmaVersion: parseOptions.ecmaFeatures.ecmaVersion
-    });
-    let currentScope = scopeManager.acquire(ast);
+function getExportObject(ast, scope) {
     let exportObject = esquery(ast, 'ExportDefaultDeclaration')[0];
     if (!exportObject) {
         // 没有export
@@ -23,7 +18,7 @@ function getExportObject(ast) {
         // 其他export形式，
         // 比如 let a = {}; export default a;
         if (exportObject.type === 'Identifier') {
-            let ref = currentScope.resolve(exportObject);
+            let ref = scope.resolve(exportObject);
             if (ref) {
                 // console.log(ref.resolved.defs[0].node.init);
                 exportObject = ref.resolved.defs[0].node.init;
@@ -69,12 +64,27 @@ function processMethods(ast) {
     return methods;
 }
 
-function processComponents(ast) {
+function processComponents(ast, options, getDef) {
+    let dir = getPackageInfo(options.filePath).dir;
     // 找到所有 components
     let components = esquery(ast, 'ObjectExpression>Property[key.name="components"]')[0];
     // 把 type 从 property 改为 classproperty
     // 按照ast标准本应是ClassProperty，但是espree不认，只好用使用原始的property，到php-generator里再判断是否是类属性，然后生成不一样的代码
     // components.type = 'ClassProperty';
+    // 找到所有依赖的组件，把变量引用替换成路径
+    // 本来按照js语法是可以直接传递class引用的，生成代码都ok了，一切都非常美好，
+    // 但是作为世界上最好的语言，php没法传递class引用，只好传递class名字
+    esquery(components, 'Property>ObjectExpression>Property').map(function (component) {
+        let def = getDef(component.key);
+        let importPath = path.resolve(dir, def.parent.source.value);
+        let {useNamespaceConverted} = getPackageInfo(importPath);
+        // 把变量引用换成字符串
+        component.value = {
+            "type": "Literal",
+            "value": useNamespaceConverted,
+            "raw": "\"" + useNamespaceConverted + "\""
+        };
+    });
     return components;
 }
 
@@ -103,13 +113,19 @@ export function processImport(ast, options) {
 
 
 export default function (ast,options) {
+    let scopeManager = analyze(ast, {
+        sourceType: parseOptions.sourceType,
+        ecmaVersion: parseOptions.ecmaFeatures.ecmaVersion
+    });
+    let getDef = defAnalyze(ast);
+
     processImport(ast, options);
     // 查找export default {}
-    let exportObject = getExportObject(ast);
+    let exportObject = getExportObject(ast, scopeManager);
     return {
         exportObject,
         computed: processComputed(exportObject),
-        components: processComponents(exportObject),
+        components: processComponents(exportObject, options, getDef),
         methods: processMethods(exportObject)
     };
     // console.log(JSON.stringify(exportObject));

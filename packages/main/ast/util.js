@@ -1,5 +1,9 @@
 import path from 'path';
+import WeakMap from 'es6-weak-map';
+import {analyze} from 'escope';
 import {baseDir, baseClassPath} from '../config';
+import parseOptions from './parseOptions';
+
 export function isClosureVariable(ident, currentScope) {
     let scope = currentScope;
     let count = 0;
@@ -40,10 +44,12 @@ export function getPackageInfo(filePath) {
     let relativeToRoot = path.relative(baseDir, filePathWithoutExt);
     let namespace = relativeToRoot.split(path.sep).join('.');
     let useNamespace = namespace + '.' + name;
+    let useNamespaceConverted = useNamespace.split('.').join('\\');
     return {
         name,
         dir,
         useNamespace,
+        useNamespaceConverted,
         namespace
     };
 }
@@ -55,3 +61,25 @@ export function getBaseInfo() {
     return getPackageInfo(baseClassPath);
 }
 
+export function defAnalyze(ast) {
+    let scopes = analyze(ast, {
+        sourceType: parseOptions.sourceType,
+        ecmaVersion: parseOptions.ecmaFeatures.ecmaVersion
+    }).scopes;
+
+    let map = new WeakMap();
+    var scope;
+
+    while (scope = scopes.shift()) {
+        scope.references.map(function (reference) {
+            if (!map.has(reference.identifier)) {
+                map.set(reference.identifier, reference.resolved.defs[0]);
+            }
+        });
+        scopes = scopes.concat(scope.childScopes);
+    }
+
+    return function (identifier) {
+        return map.get(identifier);
+    };
+}

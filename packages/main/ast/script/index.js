@@ -55,7 +55,7 @@ function processComputed(ast) {
 }
 
 function processMethods(ast) {
-    // 找到所有computed
+    // 找到所有 method
     let methods = esquery(ast, 'ObjectExpression>Property[key.name="methods"]>ObjectExpression>Property');
     // 当前只处理get的computed，后续需要判断是否是可以set的，
     // 复制一份ast，分别生成set和get
@@ -67,6 +67,15 @@ function processMethods(ast) {
         return item;
     });
     return methods;
+}
+
+function processComponents(ast) {
+    // 找到所有 components
+    let components = esquery(ast, 'ObjectExpression>Property[key.name="components"]')[0];
+    // 把 type 从 property 改为 classproperty
+    // 按照ast标准本应是ClassProperty，但是espree不认，只好用使用原始的property，到php-generator里再判断是否是类属性，然后生成不一样的代码
+    // components.type = 'ClassProperty';
+    return components;
 }
 
 export function processImport(ast, options) {
@@ -92,6 +101,7 @@ export function processImport(ast, options) {
     });
 }
 
+
 export default function (ast,options) {
     processImport(ast, options);
     // 查找export default {}
@@ -99,6 +109,7 @@ export default function (ast,options) {
     return {
         exportObject,
         computed: processComputed(exportObject),
+        components: processComponents(exportObject),
         methods: processMethods(exportObject)
     };
     // console.log(JSON.stringify(exportObject));

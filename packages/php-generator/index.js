@@ -328,8 +328,13 @@ function generate(ast) {
         else {
           property = (node.key.property.type == 'Identifier') ? node.key.property.name : node.key.property.value;
         }
-      // var property = (node.key.type == 'Identifier') ? node.key.name : node.key.value;
-      content = '"'+property+'" => ' + visit(node.value, node);
+        // var property = (node.key.type == 'Identifier') ? node.key.name : node.key.value;
+        if (parent.type === 'ClassBody') {
+            content = 'public $' + property + ' = ' + visit(node.value, node) + ';\n';
+        }
+        else {
+            content = '"'+property+'" => ' + visit(node.value, node);
+        }
 
     } else if (node.type == "ReturnStatement") {
       semicolon = true;

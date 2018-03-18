@@ -5,7 +5,7 @@ import {addNamespace, getPackageInfo, getBaseInfo} from './ast/util';
 import templateProcess from './ast/template/index';
 import scriptProcess, {processImport} from './ast/script/index';
 import {baseClassPath} from './config';
-import {genClass, addMethod, addMethods} from './ast/genClass';
+import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
 import fs from 'fs';
 import path from 'path';
 
@@ -119,10 +119,12 @@ export function compileSFC(vueContent, options = {}) {
     let {
         exportObject,
         computed,
+        components,
         methods
     } = scriptProcess(scriptAst, options);
     addMethods(classAst, computed);
     addMethods(classAst, methods);
+    addProperty(classAst, components);
 
     scriptAst = replace(scriptAst, exportObject, classAst);
     addNamespace(scriptAst, namespace);

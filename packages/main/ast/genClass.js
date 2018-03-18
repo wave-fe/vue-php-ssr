@@ -23,6 +23,9 @@ export function genClass(name, base) {
 };
 
 export function addMethod(classAst, methodAst) {
+    if (!methodAst) {
+        return;
+    }
     // 找到classbody部分
     let classBody = esquery(classAst, 'ClassBody')[0];
     // 把computed放到body里
@@ -38,4 +41,14 @@ export function addMethods(classAst, methodAstArr) {
     classBody.body = [...classBody.body, ...methodAstArr];
 
     return classAst;
+}
+
+export function addProperty(classAst, property) {
+    if (!property) {
+        return;
+    }
+    // 找到classbody部分
+    let classBody = esquery(classAst, 'ClassBody')[0];
+    // 把computed放到body里
+    classBody.body.unshift(property);
 }

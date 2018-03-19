@@ -1,9 +1,10 @@
     <template functional>
-        <div>
+        <div :b="hello" class="oh-class">
             <span class="hello" v-for="item1 in getList()">
                 {{this.sayHello(item1)}}
             </span>
-            <index2/>
+            <index2 :a="hello"/>
+            <p/>
         </div>
     </template>
     <script>

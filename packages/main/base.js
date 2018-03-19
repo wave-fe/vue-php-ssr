@@ -15,7 +15,10 @@ export class base {
         return content;
     }
 
-    _c(tag, children = []) {
+    _c(tag, attrs, children = []) {
+        if (empty(children)) {
+            children = attrs;
+        }
         if (array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];
             let instance = new depClass();

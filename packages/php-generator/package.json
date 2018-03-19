@@ -16,9 +16,6 @@
     "transpiler",
     "transcompiler"
   ],
-  "scripts": {
-    "test": "mocha ./test/suite.js"
-  },
   "author": "liyinan",
   "license": "MIT"
 }

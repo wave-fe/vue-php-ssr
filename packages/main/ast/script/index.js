@@ -68,6 +68,21 @@ function processComponents(ast, options, getDef) {
     let dir = getPackageInfo(options.filePath).dir;
     // 找到所有 components
     let components = esquery(ast, 'ObjectExpression>Property[key.name="components"]')[0];
+    // 如果没找到就返回一个空数组，保证components永远可读
+    if (!components) {
+        return {
+            type: 'Property',
+            key: {
+                type: 'Identifier',
+                    name: 'components'
+            },
+            value: {
+                type: 'ObjectExpression',
+                properties: []
+            },
+            kind: 'init'
+        };
+    }
     // 把 type 从 property 改为 classproperty
     // 按照ast标准本应是ClassProperty，但是espree不认，只好用使用原始的property，到php-generator里再判断是否是类属性，然后生成不一样的代码
     // components.type = 'ClassProperty';
@@ -86,6 +101,15 @@ function processComponents(ast, options, getDef) {
         };
     });
     return components;
+}
+
+function processData(ast) {
+    let data = esquery(ast, 'ObjectExpression>Property[key.name="data"]')[0];
+    // 从 property 修改为 MethodDefinition
+    data.type = 'MethodDefinition';
+    // 从 init 修改为get
+    data.kind = 'method';
+    return data;
 }
 
 export function processImport(ast, options) {
@@ -124,6 +148,7 @@ export default function (ast,options) {
     let exportObject = getExportObject(ast, scopeManager);
     return {
         exportObject,
+        data: processData(exportObject),
         computed: processComputed(exportObject),
         components: processComponents(exportObject, options, getDef),
         methods: processMethods(exportObject)

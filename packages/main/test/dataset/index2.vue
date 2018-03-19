@@ -1,7 +1,7 @@
     <template>
         <span>
-            <span v-if="l === 1">hello ab{{l}}c</span>
-            <span v-else>world ab{{l}}c</span>
+            <span v-if="lol === 1">hello ab{{sayHello}}c</span>
+            <span v-else>world ab{{lol}}c</span>
         </span>
     </template>
     <script>
@@ -9,10 +9,13 @@
             data: function () {
                 return {
                     a: 1,
-                    list: [1, 2, 3, 4]
+                    list: [1, 2, 3, 4],
+                    lol: 'hello'
                 };
             },
             method: {
+                sayHello() {
+                }
             }
         };
     </script>

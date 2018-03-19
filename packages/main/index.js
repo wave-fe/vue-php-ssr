@@ -117,6 +117,7 @@ export function compileSFC(vueContent, options = {}) {
     }
     let scriptAst = parse(content);
     let {
+        data,
         exportObject,
         computed,
         components,
@@ -125,6 +126,7 @@ export function compileSFC(vueContent, options = {}) {
     addMethods(classAst, computed);
     addMethods(classAst, methods);
     addProperty(classAst, components);
+    addProperty(classAst, data);
 
     scriptAst = replace(scriptAst, exportObject, classAst);
     addNamespace(scriptAst, namespace);

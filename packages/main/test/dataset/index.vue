@@ -1,4 +1,4 @@
-    <template>
+    <template functional>
         <div>
             <span class="hello" v-for="item1 in getList()">
                 {{this.sayHello(item1)}}
@@ -18,6 +18,11 @@
                     a: 1,
                     list: [1, 2, 3, 4]
                 };
+            },
+            computed: {
+                hello() {
+                    return 'hello world';
+                }
             },
             methods: {
                 getList() {

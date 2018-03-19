@@ -243,7 +243,14 @@ function generate(ast) {
         }
 
         if (node.computed) {
-          content = visit(node.object, node) + "[" + visit(node.property, node) + "]";
+          if (node.object.type === "ThisExpression") {
+              // this[xxx] 会被解析成 this->$xxx
+              // 但是aaa[xxx]不会改变
+            content = visit(node.object, node) + "->" + visit(node.property, node);
+          }
+          else {
+            content = visit(node.object, node) + "[" + visit(node.property, node) + "]";
+          }
         } else {
           node.property.isMemberExpression = true;
           content = visit(node.object, node) + accessor + visit(node.property, node);

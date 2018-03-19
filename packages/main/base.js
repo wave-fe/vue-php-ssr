@@ -1,11 +1,23 @@
 export class base {
+    constructor() {
+        let method = 'data';
+        let data = this.data();
+        for (key in data) {
+            this[key] = data[key];
+        }
+    }
+
+    data() {
+        return {};
+    }
+
     _s(content) {
         return content;
     }
 
     _c(tag, children = []) {
-        let depClass = this.components[tag];
-        if (depClass) {
+        if (array_key_exists(tag, this.components)) {
+            let depClass = this.components[tag];
             let instance = new depClass();
             return instance.render();
         }

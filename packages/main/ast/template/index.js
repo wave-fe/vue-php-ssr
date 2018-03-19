@@ -37,14 +37,8 @@ export default function (ast) {
                     && parent.object.name === node.name)
             ) {
                 if (!isClosureVariable(node, currentScope)) {
-                //     console.log('>>>', node.name, '<<<', ' is closure variable');
-                // }
-                // else {
-                //     console.log('>>>', node.name, '<<<', ' is not closure variable');
                     //  一定要skip，不然会死循环，因为内部有ident的结构，会递归调用
                     this.skip();
-                    // console.log('>>>', node.type, '<<<', node);
-                    // console.log('>>>parent<<<', parent);
                     // 返回一个this.xxx的结构
                     return {
                         "type": "MemberExpression",

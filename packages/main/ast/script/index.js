@@ -116,7 +116,7 @@ export function processImport(ast, options) {
     let dir = getPackageInfo(options.filePath).dir;
 
     let imports = esquery(ast, 'ImportDeclaration');
-    imports.map(function (item) {
+    return imports.map(function (item) {
         if (/^[\.\/\\]/.test(item.source.value)) {
             // 是相对路径
             // 先把import a from '../a';中的../a转换为绝对路径
@@ -127,12 +127,15 @@ export function processImport(ast, options) {
                 type: 'Literal',
                 value: useNamespace
             };
+            return importPath;
         }
         else {
             // 最后把修改import后路径保存在namespace字段
             item.namespace = item.source;
         }
-    });
+    })
+    // 筛选出非空子集，就是所有的相对路径模块
+    .filter(item => !!item);
 }
 
 
@@ -143,11 +146,12 @@ export default function (ast,options) {
     });
     let getDef = defAnalyze(ast);
 
-    processImport(ast, options);
+    let importPaths = processImport(ast, options);
     // 查找export default {}
     let exportObject = getExportObject(ast, scopeManager);
     return {
         exportObject,
+        importPaths,
         data: processData(exportObject),
         computed: processComputed(exportObject),
         components: processComponents(exportObject, options, getDef),

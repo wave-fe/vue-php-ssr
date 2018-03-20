@@ -9,6 +9,44 @@ import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
 import fs from 'fs';
 import path from 'path';
 
+function getFilePath(importPath) {
+    let ext = ['', '.js', '.vue', '.jsx', '.es6'];
+    for (var i = 0; i < ext.length; i++) {
+        let p = importPath + ext[i];
+        if(fs.existsSync(p)) {
+            return p;
+        }
+    }
+    return;
+}
+
+export async function recursiveCompile(filePath) {
+    let compiledPath = {};
+    async function rCompile(filePath) {
+        let existsPath = getFilePath(filePath);
+
+        if (!existsPath) {
+            return;
+        }
+
+        if (compiledPath[filePath]) {
+            return;
+        }
+
+        compiledPath[filePath] = true;
+
+        console.log('compiling file: ', existsPath);
+
+        let {importPaths} = await compile(existsPath);
+        let promises = importPaths.map(async function (importPath) {
+            return await rCompile(importPath);
+        });
+
+        return await Promise.all(promises);
+    }
+    return await rCompile(filePath);
+}
+
 export async function compile(filePath) {
     let {ext} = path.parse(filePath);
     if (ext === '.vue') {
@@ -63,7 +101,7 @@ export async function compileJsFile(filePath) {
             } = getPackageInfo(filePath);
 
             let ast = parse(data);
-            processImport(ast, {filePath});
+            let importPaths = processImport(ast, {filePath});
             addNamespace(ast, namespace);
             let phpCode = phpGenerator.generate(ast);
             // 把生成的代码写入文件
@@ -74,6 +112,7 @@ export async function compileJsFile(filePath) {
                     return;
                 }
                 resolve({
+                    importPaths,
                     phpCode
                 });
             });
@@ -118,6 +157,7 @@ export function compileSFC(vueContent, options = {}) {
     let scriptAst = parse(content);
     let {
         data,
+        importPaths,
         exportObject,
         computed,
         components,
@@ -139,6 +179,7 @@ export function compileSFC(vueContent, options = {}) {
 
     return {
         vdom,
+        importPaths,
         phpCode
     };
 }

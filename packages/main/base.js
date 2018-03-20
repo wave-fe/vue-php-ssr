@@ -15,7 +15,10 @@ export class base {
         return content;
     }
 
-    _c(tag, children = []) {
+    _c(tag, attrs, children = []) {
+        if (empty(children)) {
+            children = attrs;
+        }
         // 子组件
         if (array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];

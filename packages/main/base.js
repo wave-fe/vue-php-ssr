@@ -11,14 +11,42 @@ export class base {
         return {};
     }
 
+    _e() {
+        return '';
+    }
+
     _s(content) {
         return content;
     }
 
-    _c(tag, attrs, children = []) {
-        if (empty(children)) {
-            children = attrs;
+    isPrimitive(val) {
+        if (is_numeric(val) || is_string(val)) {
+            return true;
         }
+        return false;
+    }
+
+    isPlainArray(arr) {
+        if (is_array(arr)) {
+            keys = array_keys(arr);
+            return keys === array_keys(keys);
+        }
+        return false;
+    }
+
+    _c(tag, data = [], children = [], normalizationType = 0, alwaysNormalize = false) {
+        // 这段抄的vue/src/core/vdom/create-element.js#createElement
+        if (this.isPlainArray(data) || this.isPrimitive(data)) {
+            normalizationType = children;
+            children = data;
+            data = null;
+        }
+
+        if (alwaysNormalize) {
+            normalizationType = 2;
+        }
+        // 抄到这，下面是自己写的了
+
         // 子组件
         if (array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];

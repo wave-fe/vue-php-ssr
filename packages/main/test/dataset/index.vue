@@ -6,6 +6,7 @@
                 escape test {{esc}}
             </span>
             <index2 :a="hello"/>
+            <index2 v-if="hello" a="hello"/>
         </div>
     </template>
     <script>

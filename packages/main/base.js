@@ -4,9 +4,9 @@ export class base {
         // 处理props
         if (isset(this.props)) {
             for (key in this.props) {
-                let props = this.props[key];
-                if (array_key_exists(key, props)) {
-                    this[key] = props.default;
+                let prop = this.props[key];
+                if (array_key_exists('default', prop)) {
+                    this[key] = prop['default'];
                 }
             }
         }
@@ -27,6 +27,14 @@ export class base {
 
     _s(content) {
         return content;
+    }
+
+    setProps(props = []) {
+        for (key in props) {
+            if (array_key_exists(key, this.props)) {
+                this[key] = props[key];
+            }
+        }
     }
 
     isPrimitive(val) {
@@ -61,6 +69,10 @@ export class base {
         if (isset(this.components) && array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];
             let instance = new depClass();
+            // 传递attr
+            if (array_key_exists('attrs', data)) {
+                instance.setProps(data['attrs']);
+            }
             return instance.render();
         }
         else {

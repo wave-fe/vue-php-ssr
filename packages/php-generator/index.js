@@ -133,9 +133,9 @@ function generate(ast) {
       content = visit(node.left, node) + " " + (node.operator || "=") + " " + visit(node.right, node);
 
     } else if (node.type == "ConditionalExpression") {
-      content = "(" + visit(node.test, node) + ")" +
+      content = "((" + visit(node.test, node) + ")" +
         " ? " + visit(node.consequent, node) +
-        " : " + visit(node.alternate, node);
+        " : " + visit(node.alternate, node) + ")";
 
     } else if (node.type == "UnaryExpression") {
 

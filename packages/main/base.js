@@ -26,13 +26,22 @@ export class base {
     }
 
     _s(content) {
+        if (content === true) {
+            return 'true';
+        }
+        else if (content === false) {
+            return 'false';
+        }
+        else if (is_array(content)) {
+            return json_encode(content);
+        }
         return content;
     }
 
     setProps(props = []) {
         for (key in props) {
             if (array_key_exists(key, this.props)) {
-                this[key] = props[key];
+                this[key] = this._s(props[key]);
             }
         }
     }
@@ -84,7 +93,7 @@ export class base {
             // 处理attrs
             if (isset(data['attrs'])) {
                 for (key in data['attrs']) {
-                    attrs.push(key + '="' + data['attrs'][key] + '"');
+                    attrs.push(key + '="' + this._s(data['attrs'][key]) + '"');
                 }
             }
             let attrStr = '';

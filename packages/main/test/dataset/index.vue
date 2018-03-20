@@ -1,9 +1,11 @@
     <template functional>
         <div>
-            <span class="hello" v-for="item1 in getList()">
+            <span :class="hello" v-for="item1 in getList()">
                 {{this.sayHello(item1)}}
+                test!{{hello}}!test
+                escape test {{esc}}
             </span>
-            <index2/>
+            <index2 :a="hello"/>
         </div>
     </template>
     <script>
@@ -16,12 +18,16 @@
             data: function () {
                 return {
                     a: 1,
+                    esc: '<hello></hello>',
                     list: [1, 2, 3, 4]
                 };
             },
             computed: {
                 hello() {
-                    return 'hello world';
+                    return 'hello ' + this.world;
+                },
+                world() {
+                    return 'world'
                 }
             },
             methods: {

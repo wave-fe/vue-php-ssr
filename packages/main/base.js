@@ -16,6 +16,7 @@ export class base {
     }
 
     _c(tag, children = []) {
+        // 子组件
         if (array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];
             let instance = new depClass();
@@ -51,6 +52,31 @@ export class base {
     }
 
     _ssrEscape(content) {
+        return content
+            .replace('"', '&quot;')
+            .replace('\'', '&#39;')
+            .replace('\&', '&amp;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;');
+    }
+
+    _ssrAttr(content) {
+        return content;
+    }
+    
+    _ssrAttrs(content) {
+        return content;
+    }
+
+    _ssrDOMProps(content) {
+        return content;
+    }
+
+    _ssrClass(content) {
+        return content;
+    }
+
+    _ssrStyle(content) {
         return content;
     }
 

@@ -1,6 +1,6 @@
     <template functional>
-        <div>
-            <span :class="hello" v-for="item1 in getList()">
+        <div async>
+            <span class="static-class" :class="hello" v-for="item1 in getList()">
                 {{this.sayHello(item1)}}
                 test!{{hello}}!test
                 escape test {{esc}}

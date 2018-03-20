@@ -80,7 +80,15 @@ export class base {
             for (var i = 0; i < children.length; i++) {
                 str = str + children[i];
             }
-            return `<${tag}>${str}</${tag}>`;
+            let attrs = [];
+            // 处理attrs
+            if (isset(data['attrs'])) {
+                for (key in data['attrs']) {
+                    attrs.push(key + '="' + data['attrs'][key] + '"');
+                }
+            }
+            let attrStr = attrs.join(' ');
+            return `<${tag} ${attrStr}>${str}</${tag}>`;
         }
     }
 
@@ -129,7 +137,7 @@ export class base {
     }
 
     _ssrClass(content) {
-        return content;
+        return ' class="' + content + '"';
     }
 
     _ssrStyle(content) {

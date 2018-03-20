@@ -87,8 +87,11 @@ export class base {
                     attrs.push(key + '="' + data['attrs'][key] + '"');
                 }
             }
-            let attrStr = attrs.join(' ');
-            return `<${tag} ${attrStr}>${str}</${tag}>`;
+            let attrStr = '';
+            if (attrs.length) {
+                attrStr = ' ' + attrs.join(' ');
+            }
+            return `<${tag}${attrStr}>${str}</${tag}>`;
         }
     }
 
@@ -125,6 +128,8 @@ export class base {
     }
 
     _ssrAttr(content) {
+        var_dump('>>>content<<<');
+        var_dump(content);
         return content;
     }
     
@@ -136,8 +141,8 @@ export class base {
         return content;
     }
 
-    _ssrClass(content) {
-        return ' class="' + content + '"';
+    _ssrClass(staticClass, dynamicClass) {
+        return ' class="' + staticClass + ' ' + dynamicClass + '"';
     }
 
     _ssrStyle(content) {

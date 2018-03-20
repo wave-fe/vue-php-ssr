@@ -1,11 +1,11 @@
     <template functional>
-        <div async>
+        <div :async="true">
             <span class="static-class" :class="hello" v-for="item1 in getList()">
-                {{this.sayHello(item1)}}
+                {{sayHello(item1)}}
                 test!{{hello}}!test
                 escape test {{esc}}
             </span>
-            <index2 :a="hello", b="b"/>
+            <index2 :a="hello" :lol="1"/>
             <index2 v-if="hello" a="hello"/>
         </div>
     </template>

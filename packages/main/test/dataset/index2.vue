@@ -7,11 +7,18 @@
     </template>
     <script>
         export default {
-            props: ['a'],
+            // props: ['a', 'lol'],
+            props: {
+                a: {
+                    default: 1
+                },
+                lol: {
+                    default: 1
+                }
+            },
             data: function () {
                 return {
                     list: [1, 2, 3, 4],
-                    lol: 'lol'
                 };
             },
             methods: {

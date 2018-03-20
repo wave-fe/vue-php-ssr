@@ -156,17 +156,19 @@ export function compileSFC(vueContent, options = {}) {
     }
     let scriptAst = parse(content);
     let {
-        data,
-        importPaths,
-        exportObject,
-        computed,
         components,
-        methods
+        computed,
+        data,
+        exportObject,
+        importPaths,
+        methods,
+        props
     } = scriptProcess(scriptAst, options);
     addMethods(classAst, computed);
     addMethods(classAst, methods);
     addProperty(classAst, components);
     addProperty(classAst, data);
+    addProperty(classAst, props);
 
     scriptAst = replace(scriptAst, exportObject, classAst);
     addNamespace(scriptAst, namespace);

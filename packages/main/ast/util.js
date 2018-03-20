@@ -73,7 +73,9 @@ export function defAnalyze(ast) {
     while (scope = scopes.shift()) {
         scope.references.map(function (reference) {
             if (!map.has(reference.identifier)) {
-                map.set(reference.identifier, reference.resolved.defs[0]);
+                if (reference.resolved) {
+                    map.set(reference.identifier, reference.resolved.defs[0]);
+                }
             }
         });
         scopes = scopes.concat(scope.childScopes);

@@ -1,6 +1,16 @@
 export class base {
     constructor() {
-        let method = 'data';
+        var key;
+        // 处理props
+        if (isset(this.props)) {
+            for (key in this.props) {
+                let props = this.props[key];
+                if (array_key_exists(key, props)) {
+                    this[key] = props.default;
+                }
+            }
+        }
+        // 处理data
         let data = this.data();
         for (key in data) {
             this[key] = data[key];
@@ -48,7 +58,7 @@ export class base {
         // 抄到这，下面是自己写的了
 
         // 子组件
-        if (array_key_exists(tag, this.components)) {
+        if (isset(this.components) && array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];
             let instance = new depClass();
             return instance.render();
@@ -60,6 +70,9 @@ export class base {
             }
             return `<${tag}>${str}</${tag}>`;
         }
+    }
+
+    setAttrs() {
     }
 
     _ssrNode(content) {

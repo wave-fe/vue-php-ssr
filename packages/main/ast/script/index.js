@@ -20,7 +20,6 @@ function getExportObject(ast, scope) {
         if (exportObject.type === 'Identifier') {
             let ref = scope.resolve(exportObject);
             if (ref) {
-                // console.log(ref.resolved.defs[0].node.init);
                 exportObject = ref.resolved.defs[0].node.init;
             }
             else {
@@ -68,20 +67,8 @@ function processComponents(ast, options, getDef) {
     let dir = getPackageInfo(options.filePath).dir;
     // 找到所有 components
     let components = esquery(ast, 'ObjectExpression>Property[key.name="components"]')[0];
-    // 如果没找到就返回一个空数组，保证components永远可读
     if (!components) {
-        return {
-            type: 'Property',
-            key: {
-                type: 'Identifier',
-                    name: 'components'
-            },
-            value: {
-                type: 'ObjectExpression',
-                properties: []
-            },
-            kind: 'init'
-        };
+        return;
     }
     // 把 type 从 property 改为 classproperty
     // 按照ast标准本应是ClassProperty，但是espree不认，只好用使用原始的property，到php-generator里再判断是否是类属性，然后生成不一样的代码
@@ -110,6 +97,86 @@ function processData(ast) {
     // 从 init 修改为get
     data.kind = 'method';
     return data;
+}
+
+/**
+ * 修改props的ast，props有很多形式1、数组, 2、对象xxx: String, 3、对象xxx: {type: String}
+ * 最后都转化为对象xxx: {default: xxx}
+ * 只保留default属性，其他的类型检测不在php里做，php只管最稳定的输出首屏dom
+ * 至于有些代码写的传入类型和props不匹配，会在浏览器console里提示的，
+ * 开发者自己去改就好了，在首屏渲染就不矫情这些事了
+ *
+ * @param {AST} ast export的ast
+ *
+ * @return {AST=}
+ */
+function processProps(ast) {
+    // 数组形式的props
+    let props = esquery(ast, 'ObjectExpression>Property[key.name="props"]')[0];
+    if (!props) {
+        return;
+    }
+
+    if (props.value.type === 'ObjectExpression') {
+        // 删除default以外所有属性
+        props.value.properties.map(function (node) {
+            if (node.value.type === 'ObjectExpression') {
+                // 只保留default字段
+                node.value.properties = node.value.properties.filter(function (property) {
+                     return property.key.name === 'default';
+                });
+            }
+            else {
+                // node.value一定是一个object
+                // 避免运行时判断这判断那的，烦
+                node.value = {
+                    "type": "ObjectExpression",
+                    "properties": []
+                }
+            }
+        });
+        return props;
+    }
+
+    let elements = [];
+    if (props.value.type === 'ArrayExpression') {
+        // 把数组转换成对象
+        // props: ['a', 'b', 'c']
+        // 转换成
+        // props: {
+        //  a: {},
+        //  b: {},
+        //  c: {}
+        // }
+        props.value.elements.map(function (node) {
+            elements.push({
+                type: "Property",
+                method: false,
+                shorthand: false,
+                computed: false,
+                key: {
+                    type: "Identifier",
+                    name: node.value
+                },
+                value: {
+                    type: "ObjectExpression",
+                    properties: []
+                },
+                kind: "init"
+            });
+        });
+
+        props.value = {
+            type: "ObjectExpression",
+            properties: []
+        };
+
+        props.value.properties = props.value.properties.concat(elements);
+
+        return props;
+    }
+
+    return;
 }
 
 export function processImport(ast, options) {
@@ -155,7 +222,7 @@ export default function (ast,options) {
         data: processData(exportObject),
         computed: processComputed(exportObject),
         components: processComponents(exportObject, options, getDef),
-        methods: processMethods(exportObject)
+        methods: processMethods(exportObject),
+        props: processProps(exportObject)
     };
-    // console.log(JSON.stringify(exportObject));
 }

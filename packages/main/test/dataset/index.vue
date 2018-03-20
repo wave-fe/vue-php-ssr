@@ -16,6 +16,16 @@
             components: {
                 index2
             },
+            // props: ['a', 'b', 'c'],
+            props: {
+                a: {
+                    type: String,
+                    default: 'a'
+                },
+                b: {
+                    type: String
+                }
+            },
             data: function () {
                 return {
                     a: 1,

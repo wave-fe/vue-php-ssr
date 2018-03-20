@@ -62,6 +62,4 @@ export default function (ast) {
     let functionDeclaration = ast.body[0];
     functionDeclaration.id.name = '_render';
     return functionDeclaration;
-    // console.log(JSON.stringify(ast));
-    // console.log(escodegen.generate(ast));
 };

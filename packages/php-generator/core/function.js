@@ -39,7 +39,7 @@ function apply(node, isCall) {
       type: 'Identifier',
       name: method,
     },
-    args: arsg
+    args: args
   };
 }
 

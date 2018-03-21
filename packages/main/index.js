@@ -10,14 +10,21 @@ import fs from 'fs';
 import path from 'path';
 
 function getFilePath(importPath) {
-    let ext = ['', '.js', '.vue', '.jsx', '.es6'];
+    let ext = ['', '.js', '.vue', '.jsx', '.es6', '/index.js', '/index.vue', '/index.jsx', '/index.es6'];
     for (var i = 0; i < ext.length; i++) {
         let p = importPath + ext[i];
         if(fs.existsSync(p)) {
-            return p;
+            let stats = fs.statSync(p);
+            if (stats.isFile()) {
+                return p;
+            }
         }
     }
     return;
+}
+
+function ifNeedProcess(filePath) {
+    return /\.js$|\.vue$|\.jsx$|\.es6/.test(filePath);
 }
 
 export async function recursiveCompile(filePath) {
@@ -26,6 +33,10 @@ export async function recursiveCompile(filePath) {
         let existsPath = getFilePath(filePath);
 
         if (!existsPath) {
+            return;
+        }
+        
+        if (!ifNeedProcess(existsPath)) {
             return;
         }
 

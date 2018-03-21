@@ -230,8 +230,9 @@ function generate(ast) {
           property = node.property;
         }
 
-        object.static = (object.name || object.value || "").match(/^[A-Z]/);
-        property.static = (property.name || property.value || "").match(/^[A-Z]/);
+        // object.static = (object.name || object.value || "").match(/^[A-Z]/);
+        object.static = /^[A-Z]/.test(object.name || object.value || "");
+        property.static = /^[A-Z]/.test(property.name || property.value || "");
 
         var accessor;
         if (node.property.static && object.static) {
@@ -465,11 +466,11 @@ function generate(ast) {
 
     } else if (node.type == "ForStatement") {
       content = "for (";
-      content += visit(node.init, node);
-      content += visit(node.test, node) + ";" ;
-      content += visit(node.update, node);
+      node.init && (content += visit(node.init, node));
+      node.test && (content += visit(node.test, node) + ";" );
+      node.update && (content += visit(node.update, node));
       content += ") {";
-      content += visit(node.body, node);
+      node.body && (content += visit(node.body, node));
       content += "}";
 
     } else if (node.type == "ForInStatement" || node.type == "ForOfStatement") {
@@ -511,6 +512,9 @@ function generate(ast) {
     } else if (node.type == "BreakStatement") {
       content = "break;";
 
+    } else if (node.type == "ContinueStatement") {
+      content = "continue;";
+
     } else if (node.type == "NewExpression") {
       // re-use CallExpression for NewExpression's
       var newNode = utils.clone(node);
@@ -526,6 +530,11 @@ function generate(ast) {
 
       content = visit(node, node.parent);
 
+    } else if (node.type == "RestElement") {
+      content += "..." + node.argument.name;
+
+    } else if (node.type == "SpreadElement") {
+      content += "..." + visit(node.argument, node);
 
       // Modules & Export (http://wiki.ecmascript.org/doku.php?id=harmony:modules_examples)
     } else if (node.type == "NamespaceDeclaration") {

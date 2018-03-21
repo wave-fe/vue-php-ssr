@@ -77,9 +77,7 @@ function processComponents(ast, options, getDef) {
     // 本来按照js语法是可以直接传递class引用的，生成代码都ok了，一切都非常美好，
     // 但是作为世界上最好的语言，php没法传递class引用，只好传递class名字
     esquery(components, 'Property>ObjectExpression>Property').map(function (component) {
-        // console.log('>>component<<', component);
         let def = getDef(component.key);
-        // console.log('>>def<<', def);
         let importPath = path.resolve(dir, def.parent.source.value);
         let {useNamespaceConverted} = getPackageInfo(importPath);
         // 把变量引用换成字符串

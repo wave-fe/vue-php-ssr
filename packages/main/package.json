@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "babel-node index.js",
-        "test": "babel-node test/index.js;php test/run.php",
+        "test": "babel-node test/index.js;php output/test/run.php",
         "build": "babel-node test/index.js"
     },
     "devDependencies": {
@@ -22,6 +22,7 @@
         "esquery": "^1.0.0",
         "estemplate": "^0.5.1",
         "estraverse": "^4.2.0",
+        "mkdirp": "^0.5.1",
         "php-generator": "*",
         "vue-template-compiler": "^2.5.13"
     }

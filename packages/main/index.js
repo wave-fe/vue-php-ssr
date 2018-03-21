@@ -4,10 +4,12 @@ import {parse, replace} from './ast/index';
 import {addNamespace, getPackageInfo, getBaseInfo} from './ast/util';
 import templateProcess from './ast/template/index';
 import scriptProcess, {processImport} from './ast/script/index';
-import {baseClassPath} from './config';
+import {baseClassPath, outputPath} from './config';
 import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
+import {getOutputFilePath} from './utils';
 import fs from 'fs';
 import path from 'path';
+import mkdirp from 'mkdirp';
 
 function getFilePath(importPath) {
     let ext = ['', '.js', '.vue', '.jsx', '.es6', '/index.js', '/index.vue', '/index.jsx', '/index.es6'];
@@ -86,12 +88,19 @@ export async function compileSFCFile(filePath) {
             let ret = compileSFC(data.toString(),{filePath});
             // 把生成的代码写入文件
             let phpPath = path.resolve(dir, name + '.php');
-            fs.writeFile(phpPath, ret.phpCode, function (err) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(ret);
+            let {
+                outputFileDir,
+                outputFilePath
+            } = getOutputFilePath(phpPath);
+            mkdirp(outputFileDir, function () {
+
+                fs.writeFile(outputFilePath, ret.phpCode, function (err) {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(ret);
+                });
             });
         });
     });
@@ -117,14 +126,22 @@ export async function compileJsFile(filePath) {
             let phpCode = phpGenerator.generate(ast);
             // 把生成的代码写入文件
             let phpPath = path.resolve(dir, name + '.php');
-            fs.writeFile(phpPath, phpCode, function (err) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve({
-                    importPaths,
-                    phpCode
+
+            let {
+                outputFileDir,
+                outputFilePath
+            } = getOutputFilePath(phpPath);
+
+            mkdirp(outputFileDir, function () {
+                fs.writeFile(outputFilePath, phpCode, function (err) {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve({
+                        importPaths,
+                        phpCode
+                    });
                 });
             });
         });

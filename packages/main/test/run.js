@@ -1,5 +1,6 @@
 // import Component from './dataset/index';
-import Component from './homepage/main';
+// import Component from './homepage/main';
+import Component from './homepage/views/index';
 // import Component from './homepage/components/utils/mint-ui/src/utils/dom.js';
 
 let instance = new Component();

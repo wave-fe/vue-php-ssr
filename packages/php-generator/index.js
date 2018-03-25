@@ -555,18 +555,30 @@ function generate(ast) {
       var namespace = utils.classize(node.parent.namespace.value);
       var modulePath = node.parent.source.value;
       content += "require_once(dirname(__FILE__) . \"\/" + modulePath + ".php\");\n";
-      content += "use \\" + namespace;
+      // 为了hack php use function的约定
+      // 如果import名字是以func开头，则表示需要导出的是function
+      content += 'use ';
+      if (node.local && /^func/.test(node.local.name)) {
+          content += "function ";
+      }
+      content += "\\" + namespace + (node.raw === undefined ? "" : "\\" + node.raw);
 
       // alias
       if (node.local) {
-          content += " as " + node.local.name + ";";
+          content += " as " + node.local.name;
       }
 
-      content += "\n";
+      content += ";\n";
 
     } else if (node.type == "ImportSpecifier") {
-      var namespace = utils.classize(node.parent.source.value);
-      content += "use \\" + namespace + "\\" + node.imported.name;
+      var namespace = utils.classize(node.parent.namespace.value);
+      var modulePath = node.parent.source.value;
+      content += "require_once(dirname(__FILE__) . \"\/" + modulePath + ".php\");\n";
+      content += 'use ';
+      if (node.local && /^func/.test(node.local.name)) {
+          content += "function ";
+      }
+      content += "\\" + namespace + "\\" + node.imported.name;
 
       // alias
       if (node.local) { content += " as " + node.local.name; }

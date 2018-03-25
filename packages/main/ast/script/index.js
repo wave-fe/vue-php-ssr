@@ -191,17 +191,30 @@ export function processImport(ast, options) {
             // 是相对路径
             // 先把import a from '../a';中的../a转换为绝对路径
             let importPath = path.resolve(dir, item.source.value);
-            let {useNamespace} = getPackageInfo(importPath);
+            let {namespace} = getPackageInfo(importPath);
             // 最后把修改import后路径保存在namespace字段
             item.namespace = {
                 type: 'Literal',
-                value: useNamespace
+                value: namespace
             };
+            // 处理default export
+            item.specifiers.map(function (specifier) {
+                if (specifier.type === 'ImportDefaultSpecifier') {
+                    specifier.raw = 'defaultexport';
+                }
+            });
             return importPath;
         }
         else {
-            // 最后把修改import后路径保存在namespace字段
-            item.namespace = item.source;
+            // 绝对路径
+            // 包含两种可能
+            // 1、只有模块名: vue
+            // 2、模块下某个文件: vue/dist/vue.min.js
+            let namespace = item.source.value.split(path.sep).join('.');
+            item.namespace = {
+                type: 'Literal',
+                value: namespace
+            };
         }
     })
     // 筛选出非空子集，就是所有的相对路径模块

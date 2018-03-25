@@ -151,14 +151,13 @@ export async function compileJsFile(filePath) {
 export function compileSFC(vueContent, options = {}) {
     let filePath = options.filePath;
     let {
-        name,
         dir,
         namespace
     } = getPackageInfo(filePath);
 
     let baseName = getBaseInfo().name;
     // 生成class的ast
-    let classAst = genClass(name, baseName);
+    let classAst = genClass('defaultexport', baseName);
 
     // 把vue文件拆分成template、script、style几个模块
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);

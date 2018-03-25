@@ -42,8 +42,13 @@ export function getPackageInfo(filePath) {
     let {dir, name} = path.parse(filePath);
     let filePathWithoutExt = path.resolve(dir, name);
     let relativeToRoot = path.relative(baseDir, filePathWithoutExt);
+    // for example
+    // src/main/xxx.js#function yyy
+    // namespace => src.main.xxx
     let namespace = relativeToRoot.split(path.sep).join('.');
+    // useNamespace => src.main.xxx.yyy
     let useNamespace = namespace + '.' + name;
+    // useNamespaceConverted => src\main\xxx\yyy
     let useNamespaceConverted = useNamespace.split('.').join('\\');
     return {
         name,

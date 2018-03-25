@@ -4,7 +4,7 @@ import {parse, replace} from './ast/index';
 import {addNamespace, getPackageInfo, getBaseInfo} from './ast/util';
 import templateProcess from './ast/template/index';
 import scriptProcess, {processImport} from './ast/script/index';
-import {baseClassPath, outputPath} from './config';
+import {baseClassPath, outputPath, defaultClassName} from './config';
 import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
 import {getOutputFilePath} from './utils';
 import fs from 'fs';
@@ -157,7 +157,7 @@ export function compileSFC(vueContent, options = {}) {
 
     let baseName = getBaseInfo().name;
     // 生成class的ast
-    let classAst = genClass('defaultexport', baseName);
+    let classAst = genClass(defaultClassName, baseName);
 
     // 把vue文件拆分成template、script、style几个模块
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);

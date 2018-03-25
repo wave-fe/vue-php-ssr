@@ -1,10 +1,10 @@
 let vueTemplateCompiler = require('vue-template-compiler');
 let phpGenerator = require('php-generator');
 import {parse, replace} from './ast/index';
-import {addNamespace, getPackageInfo, getBaseInfo} from './ast/util';
+import {addNamespace, getPackageInfo, getBaseInfo, defaultExport2NamedExport} from './ast/util';
 import templateProcess from './ast/template/index';
 import scriptProcess, {processImport} from './ast/script/index';
-import {baseClassPath, outputPath, defaultClassName} from './config';
+import {baseClassPath, outputPath, defaultExportName} from './config';
 import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
 import {getOutputFilePath} from './utils';
 import fs from 'fs';
@@ -121,6 +121,7 @@ export async function compileJsFile(filePath) {
             } = getPackageInfo(filePath);
 
             let ast = parse(data);
+            defaultExport2NamedExport(ast);
             let importPaths = processImport(ast, {filePath});
             addNamespace(ast, namespace);
             let phpCode = phpGenerator.generate(ast);
@@ -157,7 +158,7 @@ export function compileSFC(vueContent, options = {}) {
 
     let baseName = getBaseInfo().name;
     // 生成class的ast
-    let classAst = genClass(defaultClassName, baseName);
+    let classAst = genClass(defaultExportName, baseName);
 
     // 把vue文件拆分成template、script、style几个模块
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);

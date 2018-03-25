@@ -3,7 +3,7 @@ import estemplate from 'estemplate';
 import {analyze} from 'escope';
 import escodegen from 'escodegen';
 import {clone, getPackageInfo, getBaseInfo, defAnalyze} from '../util';
-import {defaultClassName} from '../../config';
+import {defaultExportName} from '../../config';
 import path from 'path';
 import parseOptions from '../parseOptions';
 
@@ -200,7 +200,7 @@ export function processImport(ast, options) {
             // 处理default export
             item.specifiers.map(function (specifier) {
                 if (specifier.type === 'ImportDefaultSpecifier') {
-                    specifier.raw = defaultClassName;
+                    specifier.raw = defaultExportName;
                 }
             });
             return importPath;

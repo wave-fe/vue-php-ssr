@@ -18,6 +18,6 @@ export const baseDir = cc.baseDir || path.resolve(__dirname);
 
 export const baseClassPath = cc.baseClassPath || path.resolve('./base');
 
-export const defaultClassName = cc.defaultClassName || 'defaultexport';
+export const defaultExportName = cc.defaultExportName || 'defaultexport';
 
 export const outputPath = cc.outputPath ? path.resolve(runPath, cc.outputPath) : path.resolve('./output');

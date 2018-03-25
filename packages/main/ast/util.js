@@ -1,7 +1,8 @@
 import path from 'path';
+import esquery from 'esquery';
 import WeakMap from 'es6-weak-map';
 import {analyze} from 'escope';
-import {baseDir, baseClassPath} from '../config';
+import {baseDir, baseClassPath, defaultExportName} from '../config';
 import parseOptions from './parseOptions';
 
 export function isClosureVariable(ident, currentScope) {
@@ -88,5 +89,29 @@ export function defAnalyze(ast) {
 
     return function (identifier) {
         return map.get(identifier);
+    };
+}
+
+export function defaultExport2NamedExport(ast) {
+    let exportObject = esquery(ast, 'ExportDefaultDeclaration')[0];
+    if (!exportObject) {
+        return;
+    }
+    let originDeclaration = clone(exportObject.declaration);
+    exportObject = exportObject.declaration;
+    exportObject.type = 'ExportNamedDeclaration';
+    exportObject.declaration = {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": defaultExportName
+            },
+            "init": originDeclaration
+          }
+        ],
+        "kind": "const"
     };
 }

@@ -3,6 +3,7 @@ import estemplate from 'estemplate';
 import {analyze} from 'escope';
 import escodegen from 'escodegen';
 import {clone, getPackageInfo, defAnalyze} from '../util';
+import {getFilePath} from '../../utils';
 import {defaultExportName, packagePath} from '../../config';
 import path from 'path';
 import parseOptions from '../parseOptions';
@@ -202,8 +203,18 @@ export function processImport(ast, options) {
                 // 包名仅仅是xxx
                 importPath = path.resolve(packagePath, item.source.value, 'index');
             }
-            item.source.value = path.relative(dir, importPath);
         }
+
+        // 根据路径查找磁盘上存在的文件，
+        // 比如，import xxx from './xxx', 
+        // 查找./xxx是否存在,不存在就继续查找./xxx/index等
+        let filePathInfo = getFilePath(importPath);
+
+        if (filePathInfo) {
+            importPath = filePathInfo.filePathWithOutExt;
+        }
+
+        item.source.value = path.relative(dir, importPath);
         let {namespace} = getPackageInfo(importPath);
         // 最后把修改import后路径保存在namespace字段
         item.namespace = {

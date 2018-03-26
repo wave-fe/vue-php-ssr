@@ -22,7 +22,11 @@ export function getFilePath(importPath) {
         if(fs.existsSync(p)) {
             let stats = fs.statSync(p);
             if (stats.isFile()) {
-                return p;
+                return {
+                    filePath: p,
+                    // 当前名称文件没找到，找到了index文件
+                    filePathWithOutExt: i > 4 ? importPath + '/index' : importPath
+                };
             }
         }
     }

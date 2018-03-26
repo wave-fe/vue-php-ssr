@@ -18,11 +18,13 @@ function ifNeedProcess(filePath) {
 export async function recursiveCompile(filePath) {
     let compiledPath = {};
     async function rCompile(filePath) {
-        let existsPath = getFilePath(filePath);
+        let filePathInfo = getFilePath(filePath);
 
-        if (!existsPath) {
+        if (!filePathInfo) {
             return;
         }
+
+        let existsPath = filePathInfo.filePath;
         
         if (!ifNeedProcess(existsPath)) {
             return;

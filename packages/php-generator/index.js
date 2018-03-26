@@ -86,6 +86,7 @@ function generate(ast) {
 
     } else if (node.type == "Identifier") {
       var identifier = (node.name || node.value);
+      identifier = identifier.replace(/\$/g, '_');
 
       if (!node.static && !node.isCallee && !node.isMemberExpression) {
         scope.get(node).getDefinition(node);
@@ -100,6 +101,9 @@ function generate(ast) {
     } else if (node.type == "Literal") {
 
       var value = (node.raw.match(/^["']undefined["']$/)) ? "NULL" : node.raw;
+      if (/^\//.test(value)) {
+          value = '\'' + value + '\'';
+      }
       content = value;
 
     } else if (node.type == "BinaryExpression" || node.type == "LogicalExpression") {
@@ -307,7 +311,7 @@ function generate(ast) {
         // x => x * 2
         content += "return " + func_contents + ";\n";
       } else {
-        content += func_contents;
+        content += func_contents + ";\n";
       }
       content += "}\n";
 
@@ -531,7 +535,7 @@ function generate(ast) {
       content = visit(node, node.parent);
 
     } else if (node.type == "RestElement") {
-      content += "..." + node.argument.name;
+      content += "...$" + node.argument.name;
 
     } else if (node.type == "SpreadElement") {
       content += "..." + visit(node.argument, node);
@@ -628,6 +632,8 @@ function generate(ast) {
     } else if (node.type === "ThrowStatement") {
       content += "throw " + visit(node.argument, node);
       semicolon = true;
+    } else if (node.type === "EmptyStatement") {
+        // nothing;
     } else {
       console.log("'" + node.type + "' not implemented.", node);
     }

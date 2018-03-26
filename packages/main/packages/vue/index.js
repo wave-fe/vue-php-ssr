@@ -1,4 +1,3 @@
-// class name 保持跟文件名一致
 export default class vue {
     constructor() {
         var key;

@@ -43,10 +43,10 @@ function getNamespaceFromFilepath(filePath) {
     // for example
     // src/main/xxx.js#function yyy
     // namespace => src.main.xxx
-    let namespace = relativeToRoot.split(path.sep).join('.').replace('-', '');
+    let namespace = relativeToRoot.split(path.sep).join('.').replace(/\-/g, '');
     let namespaceConverted = namespace.split('.').join('\\');
     // useNamespace => src.main.xxx.yyy
-    let useNamespace = namespace + '.' + name;
+    let useNamespace = namespace + '.' + defaultExportName;
     // useNamespaceConverted => src\main\xxx\yyy
     let useNamespaceConverted = useNamespace.split('.').join('\\');
     return {

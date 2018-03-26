@@ -2,8 +2,8 @@ import esquery from 'esquery';
 import estemplate from 'estemplate';
 import {analyze} from 'escope';
 import escodegen from 'escodegen';
-import {clone, getPackageInfo, getBaseInfo, defAnalyze} from '../util';
-import {defaultExportName} from '../../config';
+import {clone, getPackageInfo, defAnalyze} from '../util';
+import {defaultExportName, packagePath} from '../../config';
 import path from 'path';
 import parseOptions from '../parseOptions';
 
@@ -187,35 +187,36 @@ export function processImport(ast, options) {
 
     let imports = esquery(ast, 'ImportDeclaration');
     return imports.map(function (item) {
+        let importPath;
         if (/^[\.\/\\]/.test(item.source.value)) {
             // 是相对路径
             // 先把import a from '../a';中的../a转换为绝对路径
-            let importPath = path.resolve(dir, item.source.value);
-            let {namespace} = getPackageInfo(importPath);
-            // 最后把修改import后路径保存在namespace字段
-            item.namespace = {
-                type: 'Literal',
-                value: namespace
-            };
-            // 处理default export
-            item.specifiers.map(function (specifier) {
-                if (specifier.type === 'ImportDefaultSpecifier') {
-                    specifier.raw = defaultExportName;
-                }
-            });
-            return importPath;
+            importPath = path.resolve(dir, item.source.value);
+        }else {
+            // 绝对路径，从packages路径加载第三方包
+            if (/[\/\\]/.test(item.source.value)) {
+                // 如果包名是xxx/yyy
+                importPath = path.resolve(packagePath, item.source.value);
+            }
+            else {
+                // 包名仅仅是xxx
+                importPath = path.resolve(packagePath, item.source.value, 'index');
+            }
+            item.source.value = path.relative(dir, importPath);
         }
-        else {
-            // 绝对路径
-            // 包含两种可能
-            // 1、只有模块名: vue
-            // 2、模块下某个文件: vue/dist/vue.min.js
-            let namespace = item.source.value.split(path.sep).join('.');
-            item.namespace = {
-                type: 'Literal',
-                value: namespace
-            };
-        }
+        let {namespace} = getPackageInfo(importPath);
+        // 最后把修改import后路径保存在namespace字段
+        item.namespace = {
+            type: 'Literal',
+            value: namespace
+        };
+        // 处理default export
+        item.specifiers.map(function (specifier) {
+            if (specifier.type === 'ImportDefaultSpecifier') {
+                specifier.raw = defaultExportName;
+            }
+        });
+        return importPath;
     })
     // 筛选出非空子集，就是所有的相对路径模块
     .filter(item => !!item);

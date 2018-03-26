@@ -4,26 +4,12 @@ import {parse, replace} from './ast/index';
 import {addNamespace, getPackageInfo, getBaseInfo, defaultExport2NamedExport} from './ast/util';
 import templateProcess from './ast/template/index';
 import scriptProcess, {processImport} from './ast/script/index';
-import {baseClassPath, outputPath, defaultExportName} from './config';
+import {outputPath, defaultExportName} from './config';
 import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
-import {getOutputFilePath} from './utils';
+import {getOutputFilePath, getFilePath} from './utils';
 import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
-
-function getFilePath(importPath) {
-    let ext = ['', '.js', '.vue', '.jsx', '.es6', '/index.js', '/index.vue', '/index.jsx', '/index.es6'];
-    for (var i = 0; i < ext.length; i++) {
-        let p = importPath + ext[i];
-        if(fs.existsSync(p)) {
-            let stats = fs.statSync(p);
-            if (stats.isFile()) {
-                return p;
-            }
-        }
-    }
-    return;
-}
 
 function ifNeedProcess(filePath) {
     return /\.js$|\.vue$|\.jsx$|\.es6/.test(filePath);
@@ -121,7 +107,7 @@ export async function compileJsFile(filePath) {
             } = getPackageInfo(filePath);
 
             let ast = parse(data);
-            defaultExport2NamedExport(ast);
+            defaultExport2NamedExport(ast, filePath);
             let importPaths = processImport(ast, {filePath});
             addNamespace(ast, namespace);
             let phpCode = phpGenerator.generate(ast);
@@ -156,7 +142,7 @@ export function compileSFC(vueContent, options = {}) {
         namespace
     } = getPackageInfo(filePath);
 
-    let baseName = getBaseInfo().name;
+    let baseName = 'vue';
     // 生成class的ast
     let classAst = genClass(defaultExportName, baseName);
 
@@ -175,13 +161,7 @@ export function compileSFC(vueContent, options = {}) {
     addMethod(classAst, templateAst);
 
 
-    let content = script.content;
-    // 生成script的ast
-    if (baseName) {
-        let classToBase = path.relative(dir, baseClassPath);
-
-        content = `import ${baseName} from '${classToBase}';${script.content}`
-    }
+    let content = `import ${baseName} from '${baseName}';${script.content}`
     let scriptAst = parse(content);
     let {
         components,

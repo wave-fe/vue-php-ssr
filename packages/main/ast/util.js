@@ -2,7 +2,7 @@ import path from 'path';
 import esquery from 'esquery';
 import WeakMap from 'es6-weak-map';
 import {analyze} from 'escope';
-import {baseDir, baseClassPath, defaultExportName} from '../config';
+import {baseDir, defaultExportName} from '../config';
 import parseOptions from './parseOptions';
 
 export function isClosureVariable(ident, currentScope) {
@@ -36,10 +36,7 @@ export function addNamespace(ast, name) {
     });
 }
 
-export function getPackageInfo(filePath) {
-    if (!filePath) {
-        return {};
-    }
+function getNamespaceFromFilepath(filePath) {
     let {dir, name} = path.parse(filePath);
     let filePathWithoutExt = path.resolve(dir, name);
     let relativeToRoot = path.relative(baseDir, filePathWithoutExt);
@@ -47,10 +44,29 @@ export function getPackageInfo(filePath) {
     // src/main/xxx.js#function yyy
     // namespace => src.main.xxx
     let namespace = relativeToRoot.split(path.sep).join('.');
+    let namespaceConverted = namespace.split('.').join('\\');
     // useNamespace => src.main.xxx.yyy
     let useNamespace = namespace + '.' + name;
     // useNamespaceConverted => src\main\xxx\yyy
     let useNamespaceConverted = useNamespace.split('.').join('\\');
+    return {
+        namespace,
+        namespaceConverted,
+        useNamespace,
+        useNamespaceConverted
+    };
+}
+
+export function getPackageInfo(filePath) {
+    if (!filePath) {
+        return {};
+    }
+    let {dir, name} = path.parse(filePath);
+    let {
+        namespace,
+        useNamespace,
+        useNamespaceConverted
+    } = getNamespaceFromFilepath(filePath);
     return {
         name,
         dir,
@@ -58,13 +74,6 @@ export function getPackageInfo(filePath) {
         useNamespaceConverted,
         namespace
     };
-}
-
-export function getBaseInfo() {
-    if (!baseClassPath) {
-        return {};
-    }
-    return getPackageInfo(baseClassPath);
 }
 
 export function defAnalyze(ast) {
@@ -92,26 +101,38 @@ export function defAnalyze(ast) {
     };
 }
 
-export function defaultExport2NamedExport(ast) {
+export function defaultExport2NamedExport(ast, filePath) {
     let exportObject = esquery(ast, 'ExportDefaultDeclaration')[0];
     if (!exportObject) {
         return;
     }
-    let originDeclaration = clone(exportObject.declaration);
-    exportObject = exportObject.declaration;
-    exportObject.type = 'ExportNamedDeclaration';
-    exportObject.declaration = {
-        "type": "VariableDeclaration",
-        "declarations": [
-          {
-            "type": "VariableDeclarator",
-            "id": {
-              "type": "Identifier",
-              "name": defaultExportName
-            },
-            "init": originDeclaration
-          }
-        ],
-        "kind": "const"
-    };
+
+    if (exportObject.declaration.type === 'ClassDeclaration') {
+        let namedExport = clone(exportObject);
+        namedExport.type = 'ExportNamedDeclaration';
+        namedExport.declaration.id.name = defaultExportName;
+        let programAst = esquery(ast, 'Program')[0];
+        programAst.body.unshift(namedExport);
+    }
+    else {
+        // 不是class的就直接变量导出
+
+        let originDeclaration = clone(exportObject.declaration);
+        exportObject = exportObject.declaration;
+        exportObject.type = 'ExportNamedDeclaration';
+        exportObject.declaration = {
+            "type": "VariableDeclaration",
+            "declarations": [
+              {
+                "type": "VariableDeclarator",
+                "id": {
+                  "type": "Identifier",
+                  "name": defaultExportName
+                },
+                "init": originDeclaration
+              }
+            ],
+            "kind": "const"
+        };
+    }
 }

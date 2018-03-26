@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import {
     baseDir,
     outputPath
@@ -12,4 +13,18 @@ export function getOutputFilePath(filePath) {
         outputFileDir: parsedPath.dir,
         outputFilePath
     };
+}
+
+export function getFilePath(importPath) {
+    let ext = ['', '.js', '.vue', '.jsx', '.es6', '/index.js', '/index.vue', '/index.jsx', '/index.es6'];
+    for (var i = 0; i < ext.length; i++) {
+        let p = importPath + ext[i];
+        if(fs.existsSync(p)) {
+            let stats = fs.statSync(p);
+            if (stats.isFile()) {
+                return p;
+            }
+        }
+    }
+    return;
 }

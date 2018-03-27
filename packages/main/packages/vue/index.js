@@ -17,6 +17,9 @@ export default class vue {
         }
     }
 
+    static use(plugin) {
+    }
+
     data() {
         return {};
     }

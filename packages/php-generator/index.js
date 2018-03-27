@@ -127,7 +127,46 @@ function generate(ast) {
         // 字符串连接用点号，但是数字相加还要再考虑怎么做
         content = visit(node.left, node) + "." + visit(node.right, node);
       } else {
-        content = visit(node.left, node) + " " + node.operator + " " + visit(node.right, node);
+        let priorities = [
+            // 留一个占位，优先级从1开始
+            ['placeholder'],
+            ['||'],
+            ['&&'],
+            ['|'],
+            ['^'],
+            ['&'],
+            ['==', '!=', '===', '!=='],
+            ['>', '<', '>=', '<='],
+            ['>>', '<<', '>>>'],
+            ['+', '-'],
+            ['*', '/', '%']
+        ];
+
+        function comparePriority(a = '', b = '') {
+            function getPriority (operator) {
+                if (!operator) {
+                    return Infinity;
+                }
+                return priorities.findIndex(priority => priority.find(p => p === operator)) || Infinity;
+            }
+            return getPriority(a) > getPriority(b);
+        }
+
+        let left;
+        let right;
+        if (comparePriority(node.operator, node.left.operator)) {
+            left = '(' + visit(node.left, node) + ')';
+        }
+        else {
+            left = visit(node.left, node);
+        }
+        if (comparePriority(node.operator, node.right.operator)) {
+            right = '(' + visit(node.right, node) + ')';
+        }
+        else {
+            right = visit(node.right, node);
+        }
+        content = left + " " + node.operator + " " + right;
       }
 
     } else if (node.type == "AssignmentExpression" ||

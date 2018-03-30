@@ -12,15 +12,15 @@ export function genClass(name, base) {
     }
     return estemplate(template, {
         name: {
-            "type": "Identifier",
-            "name": name
+            type: 'Identifier',
+            name: name
         },
         base: {
-            "type": "Identifier",
-            "name": base
+            type: 'Identifier',
+            name: base
         }
     });
-};
+}
 
 export function addMethod(classAst, methodAst) {
     if (!methodAst) {

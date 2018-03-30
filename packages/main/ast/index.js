@@ -7,11 +7,11 @@ export function parse(code, options) {
     options = Object.assign({}, parseOptions, options);
 
     return espree.parse(code, options);
-};
+}
 
 export function replace(ast, originalAst, newAst) {
     estraverse.replace(ast, {
-        enter: function (node, parent) {
+        enter: function (node) {
             if (node === originalAst) {
                 this.break();
                 return newAst;

@@ -7,19 +7,17 @@ import parseOptions from './parseOptions';
 
 export function isClosureVariable(ident, currentScope) {
     let scope = currentScope;
-    let count = 0;
     while (scope) {
         let variables = scope.variables;
         for (var j = 0; j < variables.length; j++) {
-            count++;
             if (variables[j].name === ident.name) {
                 return true;
             }
         }
-        scope = scope.upper
+        scope = scope.upper;
     }
     return false;
-};
+}
 
 export function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
@@ -28,10 +26,10 @@ export function clone(obj) {
 export function addNamespace(ast, name) {
     let programBody = ast.body;
     programBody.unshift({
-        "type": "NamespaceDeclaration",
-        "id": {
-            "type": "Identifier",
-            "name": name
+        type: 'NamespaceDeclaration',
+        id: {
+            type: 'Identifier',
+            name: name
         }
     });
 }
@@ -43,7 +41,7 @@ function getNamespaceFromFilepath(filePath) {
     // for example
     // src/main/xxx.js#function yyy
     // namespace => src.main.xxx
-    let namespace = relativeToRoot.split(path.sep).join('.').replace(/\-/g, '');
+    let namespace = relativeToRoot.split(path.sep).join('.').replace(/-/g, '');
     let namespaceConverted = namespace.split('.').join('\\');
     // useNamespace => src.main.xxx.yyy
     let useNamespace = namespace + '.' + defaultExportName;
@@ -101,7 +99,7 @@ export function defAnalyze(ast) {
     };
 }
 
-export function defaultExport2NamedExport(ast, filePath) {
+export function defaultExport2NamedExport(ast) {
     let exportObject = esquery(ast, 'ExportDefaultDeclaration')[0];
     if (!exportObject) {
         return;
@@ -121,18 +119,18 @@ export function defaultExport2NamedExport(ast, filePath) {
         exportObject = exportObject.declaration;
         exportObject.type = 'ExportNamedDeclaration';
         exportObject.declaration = {
-            "type": "VariableDeclaration",
-            "declarations": [
-              {
-                "type": "VariableDeclarator",
-                "id": {
-                  "type": "Identifier",
-                  "name": defaultExportName
-                },
-                "init": originDeclaration
-              }
+            type: 'VariableDeclaration',
+            declarations: [
+                {
+                    type: 'VariableDeclarator',
+                    id: {
+                        type: 'Identifier',
+                        name: defaultExportName
+                    },
+                    init: originDeclaration
+                }
             ],
-            "kind": "const"
+            kind: 'const'
         };
     }
 }

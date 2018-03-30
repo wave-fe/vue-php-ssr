@@ -1,8 +1,6 @@
 import esquery from 'esquery';
-import estemplate from 'estemplate';
 import {analyze} from 'escope';
-import escodegen from 'escodegen';
-import {clone, getPackageInfo, defAnalyze} from '../util';
+import {getPackageInfo, defAnalyze} from '../util';
 import {getFilePath} from '../../utils';
 import {defaultExportName, packagePath} from '../../config';
 import path from 'path';
@@ -83,9 +81,9 @@ function processComponents(ast, options, getDef) {
         let {useNamespaceConverted} = getPackageInfo(importPath);
         // 把变量引用换成字符串
         component.value = {
-            "type": "Literal",
-            "value": useNamespaceConverted,
-            "raw": "\"" + useNamespaceConverted + "\""
+            type: 'Literal',
+            value: useNamespaceConverted,
+            raw: '"' + useNamespaceConverted + '"'
         };
     });
     return components;
@@ -127,16 +125,16 @@ function processProps(ast) {
             if (node.value.type === 'ObjectExpression') {
                 // 只保留default字段
                 node.value.properties = node.value.properties.filter(function (property) {
-                     return property.key.name === 'default';
+                    return property.key.name === 'default';
                 });
             }
             else {
                 // node.value一定是一个object
                 // 避免运行时判断这判断那的，烦
                 node.value = {
-                    "type": "ObjectExpression",
-                    "properties": []
-                }
+                    type: 'ObjectExpression',
+                    properties: []
+                };
             }
         });
         return props;
@@ -154,24 +152,24 @@ function processProps(ast) {
         // }
         props.value.elements.map(function (node) {
             elements.push({
-                type: "Property",
+                type: 'Property',
                 method: false,
                 shorthand: false,
                 computed: false,
                 key: {
-                    type: "Identifier",
+                    type: 'Identifier',
                     name: node.value
                 },
                 value: {
-                    type: "ObjectExpression",
+                    type: 'ObjectExpression',
                     properties: []
                 },
-                kind: "init"
+                kind: 'init'
             });
         });
 
         props.value = {
-            type: "ObjectExpression",
+            type: 'ObjectExpression',
             properties: []
         };
 
@@ -189,13 +187,13 @@ export function processImport(ast, options) {
     let imports = esquery(ast, 'ImportDeclaration');
     return imports.map(function (item) {
         let importPath;
-        if (/^[\.\/\\]/.test(item.source.value)) {
+        if (/^[./\\]/.test(item.source.value)) {
             // 是相对路径
             // 先把import a from '../a';中的../a转换为绝对路径
             importPath = path.resolve(dir, item.source.value);
         }else {
             // 绝对路径，从packages路径加载第三方包
-            if (/[\/\\]/.test(item.source.value)) {
+            if (/[/\\]/.test(item.source.value)) {
                 // 如果包名是xxx/yyy
                 importPath = path.resolve(packagePath, item.source.value);
             }
@@ -230,7 +228,7 @@ export function processImport(ast, options) {
         return importPath;
     })
     // 筛选出非空子集，就是所有的相对路径模块
-    .filter(item => !!item);
+        .filter(item => !!item);
 }
 
 

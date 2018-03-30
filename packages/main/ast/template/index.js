@@ -7,7 +7,7 @@ import parseOptions from '../parseOptions';
 export default function (ast) {
     // 去掉with
     estraverse.replace(ast, {
-        enter: function (node, parent) {
+        enter: function (node) {
             if (node.type == 'WithStatement') {
                 return node.body;
 
@@ -41,12 +41,12 @@ export default function (ast) {
                     this.skip();
                     // 返回一个this.xxx的结构
                     return {
-                        "type": "MemberExpression",
-                        "computed": false,
-                        "object": {
-                            "type": "ThisExpression"
+                        type: 'MemberExpression',
+                        computed: false,
+                        object: {
+                            type: 'ThisExpression'
                         },
-                        "property": node
+                        property: node
                     };
                 }
             }
@@ -62,4 +62,4 @@ export default function (ast) {
     let functionDeclaration = ast.body[0];
     functionDeclaration.id.name = '_render';
     return functionDeclaration;
-};
+}

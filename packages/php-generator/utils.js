@@ -1,3 +1,22 @@
+let priorities = [
+    // 留一个占位，优先级从1开始
+    ['placeholder'],
+    ['='],
+    ['?:'],// 三元表达式
+    ['||'],
+    ['&&'],
+    ['|'],
+    ['^'],
+    ['&'],
+    ['==', '!=', '===', '!=='],
+    ['>', '<', '>=', '<='],
+    ['>>', '<<', '>>>'],
+    ['+', '-'],
+    ['*', '/', '%'],
+    ['-', '~', '!', 'delete', 'new', 'typeof', 'void'],
+    ['.', '[]', '()']
+];
+
 module.exports = {
     //
     // classize:
@@ -56,5 +75,14 @@ module.exports = {
         }
 
         return isRegExp;
+    },
+    comparePriority: function (a = '', b = '') {
+        function getPriority (operator) {
+            if (!operator) {
+                return Infinity;
+            }
+            return priorities.findIndex(priority => priority.find(p => p === operator)) || Infinity;
+        }
+        return getPriority(a) > getPriority(b);
     }
 };

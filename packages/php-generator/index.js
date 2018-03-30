@@ -127,46 +127,38 @@ function generate(ast) {
         // 字符串连接用点号，但是数字相加还要再考虑怎么做
         content = visit(node.left, node) + "." + visit(node.right, node);
       } else {
-        let priorities = [
-            // 留一个占位，优先级从1开始
-            ['placeholder'],
-            ['||'],
-            ['&&'],
-            ['|'],
-            ['^'],
-            ['&'],
-            ['==', '!=', '===', '!=='],
-            ['>', '<', '>=', '<='],
-            ['>>', '<<', '>>>'],
-            ['+', '-'],
-            ['*', '/', '%']
-        ];
+        let operator;
+        let type = parent.type;
 
-        function comparePriority(a = '', b = '') {
-            function getPriority (operator) {
-                if (!operator) {
-                    return Infinity;
-                }
-                return priorities.findIndex(priority => priority.find(p => p === operator)) || Infinity;
-            }
-            return getPriority(a) > getPriority(b);
+        if (
+            type === 'AssignmentExpression'
+            || type === 'VariableDeclarator'
+        ) {
+            operator = '=';
         }
-
-        let left;
-        let right;
-        if (comparePriority(node.operator, node.left.operator)) {
-            left = '(' + visit(node.left, node) + ')';
+        else if (type === 'ConditionalExpression') {
+            operator = '?:';
+        }
+        else if (type === 'UnaryExpression') {
+            operator = parent.operator;
+        }
+        else if (type === 'NewExpression') {
+            operator = 'new';
+        }
+        else if (type === 'MemberExpression') {
+            operator = '.';
+        }
+        else if (type === 'CallExpression') {
+            operator = '()';
         }
         else {
-            left = visit(node.left, node);
+            operator = parent.operator;
         }
-        if (comparePriority(node.operator, node.right.operator)) {
-            right = '(' + visit(node.right, node) + ')';
+
+        content = visit(node.left, node) + ' ' + node.operator + ' ' + visit(node.right, node);
+        if (utils.comparePriority(operator, node.operator)) {
+            content = '(' + content + ')';
         }
-        else {
-            right = visit(node.right, node);
-        }
-        content = left + " " + node.operator + " " + right;
       }
 
     } else if (node.type == "AssignmentExpression" ||

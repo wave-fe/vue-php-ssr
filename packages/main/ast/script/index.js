@@ -211,20 +211,35 @@ export function processImport(ast, options) {
         if (filePathInfo) {
             importPath = filePathInfo.filePathWithOutExt;
         }
+        let originalPath = item.source.value;
 
         item.source.value = path.relative(dir, importPath);
         let {namespace} = getPackageInfo(importPath);
         // 最后把修改import后路径保存在namespace字段
-        item.namespace = {
-            type: 'Literal',
-            value: namespace
-        };
-        // 处理default export
-        item.specifiers.map(function (specifier) {
-            if (specifier.type === 'ImportDefaultSpecifier') {
-                specifier.raw = defaultExportName;
-            }
-        });
+        // 如果找到的是php就不增加命名空间
+        // 毕竟人家写的代码，也不知道用没用命名空间
+        let filePath = '';
+        if (filePathInfo) {
+            filePath = filePathInfo.filePath;
+        }
+        if (/php$/.test(filePath)) {
+            item.namespace = {
+                type: 'Literal',
+                value: originalPath 
+            };
+        }
+        else {
+            item.namespace = {
+                type: 'Literal',
+                value: namespace
+            };
+            // 处理default export
+            item.specifiers.map(function (specifier) {
+                if (specifier.type === 'ImportDefaultSpecifier') {
+                    specifier.raw = defaultExportName;
+                }
+            });
+        }
         return importPath;
     })
     // 筛选出非空子集，就是所有的相对路径模块

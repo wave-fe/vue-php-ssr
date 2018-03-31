@@ -6,8 +6,9 @@
     "scripts": {
         "lint": "eslint .",
         "dev": "babel-node index.js",
-        "test": "babel-node test/index.js;php output/test/run.php",
-        "build": "babel-node test/index.js"
+        "server": "open http://localhost:8000/output/test/ && php -S localhost:8000",
+        "test": "npm run build;php output/test/index.php",
+        "build": "sh scripts/build.sh"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

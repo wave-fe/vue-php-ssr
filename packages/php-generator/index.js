@@ -88,7 +88,7 @@ function generate(ast) {
       var identifier = (node.name || node.value);
       identifier = identifier.replace(/\$/g, '_');
 
-      if (!node.static && !node.isCallee && !node.isMemberExpression) {
+      if (!node.static && !node.isCallee && !node.isMemberExpression && identifier !== '__FILE__') {
         scope.get(node).getDefinition(node);
         content = "$";
       }
@@ -587,38 +587,40 @@ function generate(ast) {
       }
 
     } else if (node.type == "ImportDefaultSpecifier") {
-      var namespace = utils.classize(node.parent.namespace.value);
       var modulePath = node.parent.source.value;
       content += "require_once(dirname(__FILE__) . \"\/" + modulePath + ".php\");\n";
-      // 为了hack php use function的约定
-      // 如果import名字是以func开头，则表示需要导出的是function
-      content += 'use ';
-      if (node.local && /^func/.test(node.local.name)) {
-          content += "function ";
+      if (node.parent.namespace) {
+          content += 'use ';
+          // 为了hack php use function的约定
+          // 如果import名字是以func开头，则表示需要导出的是function
+          if (node.local && /^func/.test(node.local.name)) {
+              content += "function ";
+          }
+          var namespace = utils.classize(node.parent.namespace.value);
+          content += "\\" + namespace + (node.raw === undefined ? "" : "\\" + node.raw);
+          // alias
+          if (node.local) {
+              content += " as " + node.local.name;
+          }
+          content += ";\n";
       }
-      content += "\\" + namespace + (node.raw === undefined ? "" : "\\" + node.raw);
-
-      // alias
-      if (node.local) {
-          content += " as " + node.local.name;
-      }
-
-      content += ";\n";
 
     } else if (node.type == "ImportSpecifier") {
-      var namespace = utils.classize(node.parent.namespace.value);
       var modulePath = node.parent.source.value;
       content += "require_once(dirname(__FILE__) . \"\/" + modulePath + ".php\");\n";
-      content += 'use ';
-      if (node.local && /^func/.test(node.local.name)) {
-          content += "function ";
+      if (node.parent.namespace) {
+          content += 'use ';
+          if (node.local && /^func/.test(node.local.name)) {
+              content += "function ";
+          }
+          var namespace = utils.classize(node.parent.namespace.value);
+          content += "\\" + namespace + "\\" + node.imported.name;
+          // alias
+          if (node.local) { content += " as " + node.local.name; }
+          content += ";\n";
       }
-      content += "\\" + namespace + "\\" + node.imported.name;
 
-      // alias
-      if (node.local) { content += " as " + node.local.name; }
 
-      content += ";\n";
 
     } else if (node.type == "TemplateLiteral") {
       var expressions = node.expressions

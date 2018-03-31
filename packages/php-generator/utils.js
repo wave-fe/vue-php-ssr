@@ -84,5 +84,14 @@ module.exports = {
             return priorities.findIndex(priority => priority.find(p => p === operator)) || Infinity;
         }
         return getPriority(a) > getPriority(b);
+    },
+    isConst: function(name) {
+        if (!name) {
+            return false;
+        }
+        if (name.toLocaleUpperCase() === name) {
+            return true;
+        }
+        return false;
     }
 };

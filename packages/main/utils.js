@@ -16,7 +16,7 @@ export function getOutputFilePath(filePath) {
 }
 
 export function getFilePath(importPath) {
-    let ext = ['', '.js', '.vue', '.jsx', '.es6', '/index.js', '/index.vue', '/index.jsx', '/index.es6'];
+    let ext = ['', '.js', '.vue', '.jsx', '.es6', '.php', '/index.js', '/index.vue', '/index.jsx', '/index.es6', '/index.php'];
     for (var i = 0; i < ext.length; i++) {
         let p = importPath + ext[i];
         if(fs.existsSync(p)) {
@@ -25,7 +25,7 @@ export function getFilePath(importPath) {
                 return {
                     filePath: p,
                     // 当前名称文件没找到，找到了index文件
-                    filePathWithOutExt: i > 4 ? importPath + '/index' : importPath
+                    filePathWithOutExt: i > 5 ? importPath + '/index' : importPath
                 };
             }
         }

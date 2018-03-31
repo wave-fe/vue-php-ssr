@@ -11,6 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
 
+let baseName = 'base';
 function ifNeedProcess(filePath) {
     return /\.js$|\.vue$|\.jsx$|\.es6/.test(filePath);
 }
@@ -108,7 +109,15 @@ export async function compileJsFile(filePath) {
                 name
             } = getPackageInfo(filePath);
 
-            let ast = parse(data);
+            let content = data;
+            // base文件本身就不import base了
+            if (!/base\.index/.test(namespace )) {
+                content = `
+                    import {func_add} from '${baseName}';
+                    ${data}
+                `;
+            }
+            let ast = parse(content);
             defaultExport2NamedExport(ast, filePath);
             let importPaths = processImport(ast, {filePath});
             addNamespace(ast, namespace);
@@ -144,9 +153,9 @@ export function compileSFC(vueContent, options = {}) {
         namespace
     } = getPackageInfo(filePath);
 
-    let baseName = 'vue';
+    let vueName = 'vue';
     // 生成class的ast
-    let classAst = genClass(defaultExportName, baseName);
+    let classAst = genClass(defaultExportName, vueName);
 
     // 把vue文件拆分成template、script、style几个模块
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);
@@ -163,7 +172,11 @@ export function compileSFC(vueContent, options = {}) {
     addMethod(classAst, templateAst);
 
 
-    let content = `import ${baseName} from '${baseName}';${script.content}`
+    let content = `
+        import {_add} from '${baseName}';
+        import ${vueName} from '${vueName}';
+        ${script.content}
+    `;
     let scriptAst = parse(content);
     let {
         components,

@@ -125,7 +125,7 @@ function generate(ast) {
 
       } else if (node.operator === "+") {
         // 字符串连接用点号，但是数字相加还要再考虑怎么做
-        content = visit(node.left, node) + "." + visit(node.right, node);
+        content = 'func_add(' + visit(node.left, node) + "," + visit(node.right, node) + ')';
       } else {
         let operator;
         let type = parent.type;

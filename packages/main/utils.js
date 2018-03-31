@@ -16,7 +16,8 @@ export function getOutputFilePath(filePath) {
 }
 
 export function getFilePath(importPath) {
-    let ext = ['', '.js', '.vue', '.jsx', '.es6', '.php', '/index.js', '/index.vue', '/index.jsx', '/index.es6', '/index.php'];
+    // 有限判断php，有php的文件会覆盖js转换的实现
+    let ext = ['', '.php', '.js', '.vue', '.jsx', '.es6', '/index.php', '/index.js', '/index.vue', '/index.jsx', '/index.es6'];
     for (var i = 0; i < ext.length; i++) {
         let p = importPath + ext[i];
         if(fs.existsSync(p)) {

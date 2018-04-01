@@ -1,5 +1,5 @@
 export default class vue {
-    constructor() {
+    constructor(props=[]) {
         var key;
         // 处理props
         if (isset(this.props)) {
@@ -13,6 +13,7 @@ export default class vue {
                 }
             }
         }
+        this.setProps(props);
         // 处理data
         let data = this.data();
         for (key in data) {
@@ -47,7 +48,8 @@ export default class vue {
     setProps(props = []) {
         for (key in props) {
             if (array_key_exists(key, this.props)) {
-                this[key] = this._s(props[key]);
+                // this[key] = this._s(props[key]);
+                this[key] = props[key];
             }
         }
     }
@@ -83,11 +85,7 @@ export default class vue {
         // 子组件
         if (isset(this.components) && array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];
-            let instance = new depClass();
-            // 传递attr
-            if (array_key_exists('attrs', data)) {
-                instance.setProps(data['attrs']);
-            }
+            let instance = new depClass(data['attrs']);
             return instance.render();
         }
         else {
@@ -143,8 +141,8 @@ export default class vue {
     }
 
     _ssrAttr(content) {
-        var_dump('>>>content<<<');
-        var_dump(content);
+        // var_dump('>>>content<<<');
+        // var_dump(content);
         return content;
     }
     

@@ -80,7 +80,11 @@ function generate(ast) {
                         left: {
                             type: "MemberExpression",
                             object: node.init,
-                            property: property.key,
+                            property: {
+                                type: "Literal",
+                                value: property.key.name,
+                                raw: "'" + property.key.name + "'"
+                            },
                             computed: true 
                         },
                         operator: "||",
@@ -91,7 +95,11 @@ function generate(ast) {
                     init = {
                         type: "MemberExpression",
                         object: node.init,
-                        property: property.key,
+                        property: {
+                            type: "Literal",
+                            value: property.key.name,
+                            raw: "'" + property.key.name + "'"
+                        },
                         computed: true 
                     };
                 }

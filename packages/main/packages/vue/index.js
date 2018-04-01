@@ -8,6 +8,9 @@ export default class vue {
                 if (array_key_exists('default', prop)) {
                     this[key] = prop['default'];
                 }
+                else {
+                    this[key] = null;
+                }
             }
         }
         // 处理data
@@ -161,7 +164,10 @@ export default class vue {
         return content;
     }
 
-    render() {
+    render(data = {}) {
+        for (key in data) {
+            this[key] = data[key];
+        }
         return this._render();
     }
 }

@@ -111,7 +111,7 @@ export async function compileJsFile(filePath) {
 
             let content = data;
             // base文件本身就不import base了
-            if (!/base\.index/.test(namespace )) {
+            if (!/base\.index/.test(namespace)) {
                 content = `
                     import {func_add} from '${baseName}';
                     ${data}
@@ -173,7 +173,7 @@ export function compileSFC(vueContent, options = {}) {
 
 
     let content = `
-        import {_add} from '${baseName}';
+        import {func_add} from '${baseName}';
         import ${vueName} from '${vueName}';
         ${script.content}
     `;

@@ -79,11 +79,12 @@ function processComponents(ast, options, getDef) {
         let def = getDef(component.key);
         let importPath = path.resolve(dir, def.parent.source.value);
         let {useNamespaceConverted} = getPackageInfo(importPath);
+        let namespace = useNamespaceConverted.replace(/\\/g, '\\\\');
         // 把变量引用换成字符串
         component.value = {
             type: 'Literal',
-            value: useNamespaceConverted,
-            raw: '"' + useNamespaceConverted + '"'
+            value: namespace,
+            raw: '"' + namespace + '"'
         };
     });
     return components;

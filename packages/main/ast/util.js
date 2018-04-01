@@ -110,7 +110,7 @@ export function defaultExport2NamedExport(ast) {
         namedExport.type = 'ExportNamedDeclaration';
         namedExport.declaration.id.name = defaultExportName;
         let programAst = esquery(ast, 'Program')[0];
-        programAst.body.unshift(namedExport);
+        programAst.body.push(namedExport);
     }
     else {
         // 不是class的就直接变量导出

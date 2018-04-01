@@ -1,6 +1,6 @@
 // import Component from './dataset/index';
 import Component from './homepage/src/views';
-// import smarty from './config';
+import smarty from './config';
 // import Component from './homepage/views/feed';
 // import Component from './homepage/views/index';
 // import Component from './homepage/components/utils/mint-ui/src/utils/dom.js';

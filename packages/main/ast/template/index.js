@@ -1,4 +1,5 @@
 import estraverse from 'estraverse';
+import esquery from 'esquery';
 import {analyze} from 'escope';
 // let escodegen = require('escodegen');
 import {isClosureVariable} from '../util';
@@ -8,9 +9,16 @@ export default function (ast) {
     // 去掉with
     estraverse.replace(ast, {
         enter: function (node) {
-            if (node.type == 'WithStatement') {
+            if (node.type === 'WithStatement') {
                 return node.body;
 
+            }
+            // 移除自定义事件，php对函数引用没法处理
+            if (
+                node.type === 'Property'
+                && node.key.name === 'on'
+            ) {
+                this.remove();
             }
         }
     });

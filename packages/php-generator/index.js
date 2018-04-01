@@ -69,20 +69,65 @@ function generate(ast) {
       }
 
     } else if (node.type == "VariableDeclarator") {
-      scope.get(node).register(node);
+        if (node.id.type === 'ObjectPattern') {
+            let properties = node.id.properties;
+            let defs = properties.map(function (property) {
+                // let {a=1}  = b; => let a = b.a || 1;
+                let init;
+                if (property.type === 'AssignmentPattern') {
+                    init = {
+                        type: "LogicalExpression",
+                        left: {
+                            type: "MemberExpression",
+                            object: node.init,
+                            property: property.key,
+                            computed: true 
+                        },
+                        operator: "||",
+                        right: property.value.right
+                    }; 
+                }
+                else {
+                    init = {
+                        type: "MemberExpression",
+                        object: node.init,
+                        property: property.key,
+                        computed: true 
+                    };
+                }
+                let newNode = {
+                    type: "VariableDeclaration",
+                    declarations: [
+                        {
+                            type: "VariableDeclarator",
+                            id: property.key,
+                            init: init
+                        }
+                    ],
+                    kind: "var"
+                };
+                scope.get(node).register(newNode);
+                return '$' + property.key.name
+                    + ' = ' + visit(init, node) + ';';
+            });
+            content = defs.join('\n') + '\n';
+        }
+        else {
+            scope.get(node).register(node);
 
-      // declaration of one variable
-      content = '$' + node.id.name;
+            // declaration of one variable
+            content = '$' + node.id.name;
 
-      if (node.init) {
-        content += ' = ' + visit(node.init, node);
-        semicolon = true;
-      } else if (node.parent.parent.type !== "ForInStatement" &&
-        node.parent.parent.type !== "ForStatement" &&
-        node.parent.parent.type !== "ForOfStatement") {
-        content += ' = null';
-        semicolon = true;
-      }
+            if (node.init) {
+                content += ' = ' + visit(node.init, node);
+                semicolon = true;
+            } else if (node.parent.parent.type !== "ForInStatement" &&
+                node.parent.parent.type !== "ForStatement" &&
+                node.parent.parent.type !== "ForOfStatement") {
+                content += ' = null';
+                semicolon = true;
+            }
+        }
 
     } else if (node.type == "Identifier") {
       var identifier = (node.name || node.value);

@@ -158,8 +158,8 @@ export function compileSFC(vueContent, options = {}) {
     let classAst = genClass(defaultExportName, vueName);
 
     // 把vue文件拆分成template、script、style几个模块
+    // style 不处理了，使用webpack extract出来的css，省心
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);
-
 
     // 用ssrCompile对template模块进行处理
     let vdom = vueTemplateCompiler.ssrCompileToFunctions(template.content);

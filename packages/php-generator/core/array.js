@@ -41,6 +41,20 @@ module.exports = {
     };
   },
 
+  concat: function(node) {
+    var args = utils.clone(node.parent.arguments);
+    node.parent.arguments = false;
+
+    return {
+      type: 'CallExpression',
+      callee: {
+        type: 'Identifier',
+        name: 'array_merge',
+      },
+      arguments: args.length ? [ node.parent.callee.object, args[0] ] : [node.parent.callee.object]
+    };
+  },
+
   push: function(node) {
     var args = utils.clone(node.parent.arguments);
     node.parent.arguments = false;

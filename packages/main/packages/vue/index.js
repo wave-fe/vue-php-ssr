@@ -100,6 +100,20 @@ export default class vue {
                     attrs.push(key + '="' + this._s(data['attrs'][key]) + '"');
                 }
             }
+            let classArr = [];
+            if ('staticClass' in data) {
+                classArr.push(data['staticClass']);
+            }
+            if ('class' in data) {
+                for (var key in data['class']) {
+                    if (data['class'][key]) {
+                        classArr.push(key);
+                    }
+                }
+            }
+            if (classArr.length) {
+                attrs.push('class="' + classArr.join(' ') + '"');
+            }
             let attrStr = '';
             if (attrs.length) {
                 attrStr = ' ' + attrs.join(' ');
@@ -155,7 +169,18 @@ export default class vue {
     }
 
     _ssrClass(staticClass, dynamicClass) {
-        return ' class="' + staticClass + ' ' + dynamicClass + '"';
+        let classArr = [];
+        if (staticClass) {
+            classArr.push(staticClass);
+        }
+        if (dynamicClass) {
+            for (var key in dynamicClass) {
+                if (dynamicClass[key]) {
+                    classArr.push(key);
+                }
+            }
+        }
+        return ' class="' + classArr.join(' ') + '"';
     }
 
     _ssrStyle(content) {

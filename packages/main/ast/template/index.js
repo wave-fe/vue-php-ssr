@@ -32,6 +32,13 @@ export default function (ast) {
     // 为函数调用和变量增加this，闭包不增加
     estraverse.replace(ast, {
         enter: function (node, parent) {
+            // 把directive里的expression的双引号变为单引号，因为php里双引号字符串会被解析，"$parent"这种会被认为是变量，然后报错，单引号字符串就没问题了
+            if (
+                node.type === 'Property'
+                && node.key.name === 'expression'
+            ) {
+                node.value.raw = '\'' + node.value.value + '\'';
+            }
             // 处理所有的Identifier，也就是变量名
             // 判断是否是闭包变量，不是闭包的就需要添加this指针
             if (

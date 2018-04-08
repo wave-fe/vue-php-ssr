@@ -46,7 +46,13 @@ export default class vue {
     _t(name, fallback=[], props=[], bindObject=[]) {
         if (name in this._slot) {
             let slotFn = this._slot[name];
-            return slotFn(props) || fallback;
+            let result = slotFn(props);
+            if (result) {
+                return result;
+            }
+            else {
+                return fallback;
+            }
         }
         return '';
     }
@@ -98,7 +104,7 @@ export default class vue {
         if (this.isPlainArray(data) || this.isPrimitive(data)) {
             normalizationType = children;
             children = data;
-            data = null;
+            data = [];
         }
 
         if (alwaysNormalize) {
@@ -112,7 +118,13 @@ export default class vue {
         if (isset(this.components) && array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];
             let instance = new depClass(data, children);
+
+            if ('model' in data) {
+                this.value = data['model']['value'];
+            }
+
             return function () {
+                // print(">>>"+tag+"<<<\n");
                 instance.$parent = this.childrenInstance[0];
                 this.childrenInstance.unshift(instance);
                 let html = instance.render();
@@ -176,7 +188,7 @@ export default class vue {
     }
 
     _ssrList(content, cb) {
-        return this._l(content, cb);
+        return this._jump(this._l(content, cb));
     }
 
     _ssrEscape(content) {

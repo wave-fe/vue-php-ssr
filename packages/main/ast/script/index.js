@@ -79,7 +79,9 @@ function processComponents(ast, options, getDef) {
         let def = getDef(component.key);
         let importPath = path.resolve(dir, def.parent.source.value);
         let {useNamespaceConverted} = getPackageInfo(importPath);
+        // console.log('>>><<<', getPackageInfo(importPath));
         let namespace = useNamespaceConverted.replace(/\\/g, '\\\\');
+        component.key.name = component.key.name.replace(/-/g, '').toLowerCase();
         // 把变量引用换成字符串
         component.value = {
             type: 'Literal',

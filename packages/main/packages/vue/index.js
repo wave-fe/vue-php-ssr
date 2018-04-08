@@ -1,9 +1,9 @@
+import {hyphenate as func_hyphenate} from './util';
 export default class vue {
-    constructor(data=[]) {
-        var key;
+    constructor(data=[], children=[]) {
         // 处理props
         if (isset(this.props)) {
-            for (key in this.props) {
+            for (var key in this.props) {
                 let prop = this.props[key];
                 if (array_key_exists('default', prop)) {
                     this[key] = prop['default'];
@@ -13,15 +13,23 @@ export default class vue {
                 }
             }
         }
-        if ('scopedSlots' in data) {
-            this.scopedSlots = data['scopedSlots'];
+        this._slot = {
+            default: function (props=[]) {
+                return children;
+            } 
+        };
+        // if ('scopedSlots' in data) {
+        //     this.$scopedSlots = data['scopedSlots'] || [];
+        // }
+        if ('attrs' in data) {
+            this.setProps(data['attrs']);
         }
-        this.setProps(data);
         // 处理data
         let d = this.data();
-        for (key in d) {
+        for (var key in d) {
             this[key] = d[key];
         }
+        this.childrenInstance = [this];
     }
 
     static use(plugin) {
@@ -36,13 +44,16 @@ export default class vue {
     }
 
     _t(name, fallback=[], props=[], bindObject=[]) {
-        var_dump(this);
-        exit();
+        if (name in this._slot) {
+            let slotFn = this._slot[name];
+            return slotFn(props) || fallback;
+        }
+        return '';
     }
 
     // text node
     _v(content) {
-        return content;
+        return this._s(content);
     }
 
     _s(content) {
@@ -96,21 +107,25 @@ export default class vue {
         // 抄到这，下面是自己写的了
 
         // 子组件
+        tag = tag.replace(/-/g, '').toLowerCase();
+        this.tag = tag;
         if (isset(this.components) && array_key_exists(tag, this.components)) {
             let depClass = this.components[tag];
-            let instance;
-            if ('attrs' in data) {
-                instance = new depClass(data['attrs']);
-            }
-            else {
-                instance = new depClass();
-            }
-            return instance.render();
+            let instance = new depClass(data, children);
+            return function () {
+                instance.$parent = this.childrenInstance[0];
+                this.childrenInstance.unshift(instance);
+                let html = instance.render();
+                this.childrenInstance.shift();
+                return html;
+            };
         }
         else {
-            let str = '';
-            for (var i = 0; i < children.length; i++) {
-                str = str + children[i];
+            if (is_array(children)) {
+                arr = children
+            }
+            else {
+                arr = [children];
             }
             let attrs = [];
             // 处理attrs
@@ -137,31 +152,31 @@ export default class vue {
             if (attrs.length) {
                 attrStr = ' ' + attrs.join(' ');
             }
-            return `<${tag}${attrStr}>${str}</${tag}>`;
+            arr.unshift(`<${tag}${attrStr}>`);
+            arr.push(`</${tag}>`);
+            return arr;
         }
     }
 
     setAttrs() {
     }
 
-    _ssrNode(content) {
-        return content;
+    _ssrNode(open, close="", children=[], normalizationType=1) {
+        children.unshift(open);
+        children.push(close);
+        return children;
     }
 
     _l(content, cb) {
-        let str = '';
+        let arr = [];
         for (var i = 0; i < content.length; i++) {
-            str = str + cb(content[i]);
+            arr.push(cb(content[i], i));
         }
-        return str;
+        return arr;
     }
 
     _ssrList(content, cb) {
-        let str = '';
-        for (var i = 0; i < content.length; i++) {
-            str = str + cb(content[i]);
-        }
-        return str;
+        return this._l(content, cb);
     }
 
     _ssrEscape(content) {
@@ -173,18 +188,8 @@ export default class vue {
             .replace('>', '&gt;');
     }
 
-    _ssrAttr(content) {
-        // var_dump('>>>content<<<');
-        // var_dump(content);
-        return content;
-    }
-    
-    _ssrAttrs(content) {
-        return content;
-    }
-
-    _ssrDOMProps(content) {
-        return content;
+    _ssrAttr(key='', value='') {
+        return ' ' + key + '="' + this._s(value) + '"';
     }
 
     _ssrClass(staticClass, dynamicClass) {
@@ -202,14 +207,56 @@ export default class vue {
         return ' class="' + classArr.join(' ') + '"';
     }
 
-    _ssrStyle(content) {
-        return content;
+    _ssrStyle(staticStyle={}, dynamic={}, extra={}) {
+        let style = {};
+        if (staticStyle) {
+            style = array_merge(style, staticStyle);
+        }
+        if (dynamic) {
+            style = array_merge(style, dynamic);
+        }
+        if (extra) {
+            style = array_merge(style, extra);
+        }
+        let styleText = '';
+        for (var key in style) {
+            let value = style[key];
+            let hyphenatedKey = func_hyphenate(key);
+            if (is_array(value)) {
+                for (var i = 0; i < value.length; i++) {
+                    styleText = styleText + `${hyphenatedKey}:${value[i]};`;
+                }
+            }
+            else {
+                styleText = styleText + `${hyphenatedKey}:${value};`;
+            }
+        }
+        if (styleText) {
+            styleText = ' style=' + JSON.stringify(this._s(styleText));
+        }
+        return styleText;
+    }
+
+    _jump(d) {
+        if (typeof d === 'object') {
+            return this._jump(d());
+        }
+        if (typeof d === 'array') {
+            let html = '';
+            for (var i = 0; i < d.length; i++) {
+                html = html + this._jump(d[i]);
+            }
+            return html;
+        }
+        else {
+            return d;
+        }
     }
 
     render(data = {}) {
         for (key in data) {
             this[key] = data[key];
         }
-        return this._render();
+        return this._jump(this._render());
     }
 }

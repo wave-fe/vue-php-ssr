@@ -1,6 +1,12 @@
 import {hyphenate as func_hyphenate} from './util';
-export default class vue {
+export default class Vue {
     constructor(data=[], children=[]) {
+        if (!isset(self.staticComponents)) {
+            self.staticComponents = {};
+        }
+        if (!isset(self.plugins)) {
+            self.plugins = {};
+        }
         // 处理props
         if (isset(this.props)) {
             for (var key in this.props) {
@@ -30,9 +36,27 @@ export default class vue {
             this[key] = d[key];
         }
         this.childrenInstance = [this];
+
+        // new Vue()时参数的处理
+        if ('ssrEntry' in data) {
+            this.ssrEntry = data['ssrEntry'];
+        }
+
+        if ('router' in data) {
+            this.router = data['router'];
+        }
+
+        if ('components' in data) {
+            this.components = data['components'];
+        }
     }
 
-    static use(plugin) {
+    static use(Comp) {
+        // var_dump(new Comp());
+    }
+
+    static component(name, comp) {
+        self.staticComponents[name] = comp;
     }
 
     data() {
@@ -99,6 +123,16 @@ export default class vue {
         return false;
     }
 
+    _getComp(tag) {
+        if (isset(this.components) && array_key_exists(tag, this.components)) {
+            return this.components[tag];
+        }
+        // else if (array_key_exists(tag, staticClass)) {
+        //     return staticClass[tag];
+        // }
+        return null;
+    }
+
     _c(tag, data = [], children = [], normalizationType = 0, alwaysNormalize = false) {
         // 这段抄的vue/src/core/vdom/create-element.js#createElement
         if (this.isPlainArray(data) || this.isPrimitive(data)) {
@@ -115,9 +149,9 @@ export default class vue {
         // 子组件
         tag = tag.replace(/-/g, '').toLowerCase();
         this.tag = tag;
-        if (isset(this.components) && array_key_exists(tag, this.components)) {
-            let depClass = this.components[tag];
-            let instance = new depClass(data, children);
+        let comp = this._getComp(tag);
+        if (comp) {
+            let instance = new comp(data, children);
 
             if ('model' in data) {
                 this.value = data['model']['value'];
@@ -265,10 +299,23 @@ export default class vue {
         }
     }
 
+    /**
+     * 子类会override这个方法，只有new Vue() 会调用这个方法
+     */
+    _render(data=[]) {
+        let requestURI = '';
+        if ('REQUEST_URI' in _SERVER) {
+            requestURI = _SERVER["REQUEST_URI"];
+        }
+        let entry = this.ssrEntry;
+        let instance = new entry();
+        return instance.render(data);
+    }
+
     render(data = {}) {
         for (key in data) {
             this[key] = data[key];
         }
-        return this._jump(this._render());
+        return this._jump(this._render(data));
     }
 }

@@ -38,7 +38,15 @@ function Scope(root, parent) {
 
     } else if (node.type == 'Identifier') {
       name = node.name;
-    } else if (node.type === 'MemberExpression'&& node.object.type === 'ThisExpression' && node.property.type === 'Identifier') {
+    } else if (
+        node.type === 'MemberExpression'
+        && (
+            node.object.type === 'ThisExpression'
+            || node.object.type === 'Identifier'
+                && node.object.name === 'self'
+        )
+        && node.property.type === 'Identifier'
+    ) {
       name = node.property.name
     } else if (node.type == 'MethodDefinition') {
       if (node.kind == "get") {

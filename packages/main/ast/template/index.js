@@ -74,7 +74,8 @@ export default function (ast) {
             // do stuff
         }
     });
-    let functionDeclaration = ast.body[0];
-    functionDeclaration.id.name = '_render';
-    return functionDeclaration;
+    return ast;
+    // let functionDeclaration = ast.body[0];
+    // functionDeclaration.id.name = '_render';
+    // return functionDeclaration;
 }

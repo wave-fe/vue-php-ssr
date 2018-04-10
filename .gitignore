@@ -4,3 +4,4 @@ packages/php-generator/node_modules
 *.php
 packages/main/test/homepage
 packages/main/output
+*.swo

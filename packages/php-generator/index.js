@@ -141,7 +141,7 @@ function generate(ast) {
       var identifier = (node.name || node.value);
       identifier = identifier.replace(/\$/g, '_');
 
-      if (!node.static && !node.isCallee && !node.isMemberExpression && identifier !== '__FILE__') {
+      if (!node.static && !node.isCallee && !node.isMemberExpression && identifier !== '__FILE__' && identifier !== 'self' && !/^Class_/.test(identifier)) {
         scope.get(node).getDefinition(node);
         content = "$";
       }
@@ -330,20 +330,25 @@ function generate(ast) {
         } else {
           accessor = "->"; // instance
         }
-
-        if (node.computed) {
-          if (node.object.type === "ThisExpression") {
-              // this[xxx] 会被解析成 this->$xxx
-              // 但是aaa[xxx]不会改变
-            content = visit(node.object, node) + "->" + visit(node.property, node);
-          }
-          else {
-            content = visit(node.object, node) + "[" + visit(node.property, node) + "]";
-          }
-        } else {
-          node.property.isMemberExpression = true;
-          content = visit(node.object, node) + accessor + visit(node.property, node);
+        if (object.type === 'Identifier' && object.name === 'self') {
+            content = "self::" + visit(node.property, node);
         }
+        else {
+          if (node.computed) {
+            if (node.object.type === "ThisExpression") {
+                // this[xxx] 会被解析成 this->$xxx
+                // 但是aaa[xxx]不会改变
+              content = visit(node.object, node) + "->" + visit(node.property, node);
+            }
+            else {
+              content = visit(node.object, node) + "[" + visit(node.property, node) + "]";
+            }
+          } else {
+            node.property.isMemberExpression = true;
+            content = visit(node.object, node) + accessor + visit(node.property, node);
+          }
+        }
+
       }
 
     } else if (node.type == "FunctionDeclaration" ||
@@ -473,6 +478,10 @@ function generate(ast) {
 
       content += "\n}\n";
 
+      if (node.namespace) {
+          content += `const ${node.id.name} = '${node.namespace}\\${node.id.name}';\n`;  
+      }
+
 
     } else if (node.type == "MethodDefinition") {
       scope.get(node).register(node);
@@ -498,7 +507,12 @@ function generate(ast) {
         for(var i in definitions) {
           if (definitions[i] && definitions[i].type == "MemberExpression") {
             definitions[i].property.isMemberExpression = false;
-            content += "public " + visit(definitions[i].property, null) + ";\n";
+            if (definitions[i].object.name === 'self') {
+                content += "static " + visit(definitions[i].property, null) + " = " + visit(definitions[i].parent.right) + ";\n";
+            }
+            else {
+                content += "public " + visit(definitions[i].property, null) + ";\n";
+            }
           }
         }
       }
@@ -656,6 +670,15 @@ function generate(ast) {
               content += " as " + node.local.name;
           }
           content += ";\n";
+          if (node.local && /^Class_/.test(node.local.name)) {
+              content += 'use const';
+              content += "\\" + namespace + (node.raw === undefined ? "" : "\\" + node.raw);
+              // alias
+              if (node.local) {
+                  content += " as " + node.local.name;
+              }
+              content += ";\n";
+          }
       }
 
     } else if (node.type == "ImportSpecifier") {

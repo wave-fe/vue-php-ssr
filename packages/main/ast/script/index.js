@@ -217,7 +217,7 @@ export function processImport(ast, options) {
         let originalPath = item.source.value;
 
         item.source.value = path.relative(dir, importPath);
-        let {namespace} = getPackageInfo(importPath);
+        let {namespace, useNamespaceConverted} = getPackageInfo(importPath);
         // 最后把修改import后路径保存在namespace字段
         // 如果找到的是php就不增加命名空间
         // 毕竟人家写的代码，也不知道用没用命名空间

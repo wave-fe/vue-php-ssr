@@ -106,6 +106,7 @@ export async function compileJsFile(filePath) {
             let {
                 dir,
                 namespace,
+                namespaceConverted,
                 name
             } = getPackageInfo(filePath);
 
@@ -120,7 +121,7 @@ export async function compileJsFile(filePath) {
             let ast = parse(content);
             defaultExport2NamedExport(ast, filePath);
             let importPaths = processImport(ast, {filePath});
-            addNamespace(ast, namespace);
+            addNamespace(ast, namespace, namespaceConverted);
             let phpCode = phpGenerator.generate(ast);
             // 把生成的代码写入文件
             let phpPath = path.resolve(dir, name + '.php');
@@ -150,7 +151,8 @@ export function compileSFC(vueContent, options = {}) {
     let filePath = options.filePath;
     let {
         dir,
-        namespace
+        namespace,
+        namespaceConverted
     } = getPackageInfo(filePath);
 
     let vueName = 'vue';
@@ -162,10 +164,19 @@ export function compileSFC(vueContent, options = {}) {
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);
 
     // 用ssrCompile对template模块进行处理
-    let vdom = vueTemplateCompiler.ssrCompileToFunctions(template.content);
+    let vdom = vueTemplateCompiler.ssrCompile(template.content);
+
+    let templateCode = `
+        function _render(data=[]) {
+            ${vdom.render}
+        }
+    `;
 
     // 对ssrCompile生成的代码进行ast解析
-    let templateAst = parse(vdom.render, {sourceType: 'script'});
+    let templateAst = parse(templateCode, {
+        sourceType: 'script',
+        ecmaVersion: 9
+    });
 
     // 改造template的ast
     templateAst = templateProcess(templateAst);
@@ -194,7 +205,7 @@ export function compileSFC(vueContent, options = {}) {
     addProperty(classAst, props);
 
     scriptAst = replace(scriptAst, exportObject, classAst);
-    addNamespace(scriptAst, namespace);
+    addNamespace(scriptAst, namespace, namespaceConverted);
 
 
     // 把改造完的ast生成php code

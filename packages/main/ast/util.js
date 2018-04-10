@@ -23,13 +23,14 @@ export function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
-export function addNamespace(ast, name) {
+export function addNamespace(ast, namespace, namespaceConverted) {
+    esquery(ast, 'ClassDeclaration').map(clazz => clazz.namespace = namespaceConverted);
     let programBody = ast.body;
     programBody.unshift({
         type: 'NamespaceDeclaration',
         id: {
             type: 'Identifier',
-            name: name
+            name: namespace
         }
     });
 }
@@ -42,11 +43,11 @@ function getNamespaceFromFilepath(filePath) {
     // src/main/xxx.js#function yyy
     // namespace => src.main.xxx
     let namespace = relativeToRoot.split(path.sep).join('.').replace(/-/g, '');
-    let namespaceConverted = namespace.split('.').join('\\');
+    let namespaceConverted = '\\' + namespace.split('.').join('\\');
     // useNamespace => src.main.xxx.yyy
     let useNamespace = namespace + '.' + defaultExportName;
     // useNamespaceConverted => src\main\xxx\yyy
-    let useNamespaceConverted = useNamespace.split('.').join('\\');
+    let useNamespaceConverted = '\\' + useNamespace.split('.').join('\\');
     return {
         namespace,
         namespaceConverted,
@@ -62,6 +63,7 @@ export function getPackageInfo(filePath) {
     let {dir, name} = path.parse(filePath);
     let {
         namespace,
+        namespaceConverted,
         useNamespace,
         useNamespaceConverted
     } = getNamespaceFromFilepath(filePath);
@@ -70,7 +72,8 @@ export function getPackageInfo(filePath) {
         dir,
         useNamespace,
         useNamespaceConverted,
-        namespace
+        namespace,
+        namespaceConverted
     };
 }
 

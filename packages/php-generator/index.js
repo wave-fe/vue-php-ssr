@@ -330,7 +330,7 @@ function generate(ast) {
         } else {
           accessor = "->"; // instance
         }
-        if (object.type === 'Identifier' && object.name === 'self') {
+        if (node.object.type === 'Identifier' && node.object.name === 'self') {
             content = "self::" + visit(node.property, node);
         }
         else {

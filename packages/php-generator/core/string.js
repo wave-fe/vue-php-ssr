@@ -18,7 +18,9 @@ module.exports = {
         && /^\//.test(args[0].raw)
     ){
       // 正则表达式的处理
-      var regexpData = args[0].raw.match(/^\/([^\/]+)\/([gimy])?$/),
+      // var regexpData = args[0].raw.match(/^\/([^\/]+)\/([gimy])?$/),
+      // 原来的正则表达式无法匹配/[^\/]/这样的模式，换成.+就好了
+      var regexpData = args[0].raw.match(/^\/(.+)\/([gimy])?$/),
           regex = regexpData && regexpData[1],
           flags = regexpData && regexpData[2] || "",
           isGroup = flags.indexOf('g') >= 0;
@@ -164,6 +166,7 @@ module.exports = {
   match: function(node) {
     var args = utils.clone(node.parent.arguments);
     args.push(node.parent.callee.object);
+
 
     var regexpData = args[0].raw.match(/^\/([^\/]+)\/([gimy])?$/),
         regex = regexpData && regexpData[1],

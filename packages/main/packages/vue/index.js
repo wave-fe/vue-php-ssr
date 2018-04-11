@@ -30,6 +30,15 @@ export default class Vue {
         if ('attrs' in data) {
             this.setProps(data['attrs']);
         }
+
+        if ('router' in data) {
+            this.router = data['router'];
+        }
+
+        if ('components' in data) {
+            this.components = data['components'];
+        }
+
         // 处理data
         let d = this.data();
         for (var key in d) {
@@ -42,17 +51,9 @@ export default class Vue {
             this.ssrEntry = data['ssrEntry'];
         }
 
-        if ('router' in data) {
-            this.router = data['router'];
-        }
-
-        if ('components' in data) {
-            this.components = data['components'];
-        }
     }
 
     static use(Comp) {
-        // var_dump(new Comp());
     }
 
     static component(name, comp) {
@@ -127,9 +128,9 @@ export default class Vue {
         if (isset(this.components) && array_key_exists(tag, this.components)) {
             return this.components[tag];
         }
-        // else if (array_key_exists(tag, staticClass)) {
-        //     return staticClass[tag];
-        // }
+        else if (array_key_exists(tag, self.staticComponents)) {
+            return self.staticComponents[tag];
+        }
         return null;
     }
 
@@ -147,10 +148,11 @@ export default class Vue {
         // 抄到这，下面是自己写的了
 
         // 子组件
-        tag = tag.replace(/-/g, '').toLowerCase();
-        this.tag = tag;
-        let comp = this._getComp(tag);
+        let comp = this._getComp(tag.replace(/-/g, '').toLowerCase());
         if (comp) {
+            if (property_exists(this, 'router')) {
+                data['router'] = this.router;
+            }
             let instance = new comp(data, children);
 
             if ('model' in data) {
@@ -158,7 +160,6 @@ export default class Vue {
             }
 
             return function () {
-                // print(">>>"+tag+"<<<\n");
                 instance.$parent = this.childrenInstance[0];
                 this.childrenInstance.unshift(instance);
                 let html = instance.render();
@@ -303,12 +304,12 @@ export default class Vue {
      * 子类会override这个方法，只有new Vue() 会调用这个方法
      */
     _render(data=[]) {
-        let requestURI = '';
-        if ('REQUEST_URI' in _SERVER) {
-            requestURI = _SERVER["REQUEST_URI"];
-        }
         let entry = this.ssrEntry;
-        let instance = new entry();
+        let constructorData = {};
+        if (property_exists(this, 'router')) {
+            constructorData['router'] = this.router;
+        }
+        let instance = new entry(constructorData);
         return instance.render(data);
     }
 

@@ -672,6 +672,7 @@ function generate(ast) {
               content += "function ";
           }
           var namespace = utils.classize(node.parent.namespace.value);
+          console.log('>>>', node.parent.source);
           content += "\\" + namespace + (node.raw === undefined ? "" : "\\" + node.raw);
           // alias
           if (node.local) {

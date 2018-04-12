@@ -14,7 +14,7 @@ if (fs.existsSync(rcPath)) {
 // short name
 let cc = customConfig;
 
-export const baseDir = cc.baseDir || path.resolve(__dirname);
+export const baseDir = cc.baseDir ? path.resolve(runPath, cc.baseDir) : path.resolve(runPath);
 
 // export const baseClassPath = cc.baseClassPath || path.resolve('./base/vue');
 

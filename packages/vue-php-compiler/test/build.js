@@ -1,5 +1,5 @@
 import path from 'path';
-import {compile, recursiveCompile} from '../index';
+import {compile, recursiveCompile} from '../src/index';
 
 (async function () {
     await recursiveCompile(path.resolve(__dirname, './index.js'));

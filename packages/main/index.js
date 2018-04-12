@@ -167,7 +167,7 @@ export function compileSFC(vueContent, options = {}) {
     let vdom = vueTemplateCompiler.ssrCompile(template.content);
 
     let templateCode = `
-        function _render(data=[]) {
+        function _render(_ssrRenderData=[]) {
             ${vdom.render}
         }
     `;

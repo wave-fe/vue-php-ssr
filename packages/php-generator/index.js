@@ -341,6 +341,10 @@ function generate(ast) {
               content = visit(node.object, node) + "->" + visit(node.property, node);
             }
             else {
+              // a['$xxx'] => a['_xxx']
+              if (node.property.type === 'Literal') {
+                  node.property.raw = node.property.raw.replace(/\$/g, '_');
+              }
               content = visit(node.object, node) + "[" + visit(node.property, node) + "]";
             }
           } else {
@@ -505,7 +509,11 @@ function generate(ast) {
         node.key.name = "__construct";
         var definitions = scope.get(node.value).definitions;
         for(var i in definitions) {
-          if (definitions[i] && definitions[i].type == "MemberExpression") {
+          if (
+              definitions[i]
+              && definitions[i].type == "MemberExpression"
+              && !/^["']/.test(definitions[i].property.raw)
+          ) {
             definitions[i].property.isMemberExpression = false;
             if (definitions[i].object.name === 'self') {
                 content += "static " + visit(definitions[i].property, null) + " = " + visit(definitions[i].parent.right) + ";\n";

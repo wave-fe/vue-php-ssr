@@ -1,5 +1,5 @@
 <template>
-    <component :is="type" :data="data"/>
+    <component :is="type"/>
 </template>
 
 <script>
@@ -10,16 +10,18 @@ export default {
         if ('REQUEST_URI' in _SERVER) {
             requestURI = _SERVER["REQUEST_URI"];
         }
-        let info = this.router.matchRoute(requestURI);
+        let info = this.$route.matchRoute(requestURI);
+        // for test
+        // let info = this.$route.matchRoute('/');
         let type = '';
-        let data = [];
+        let param = [];
         if (info) {
             type = info['component'];
-            data = info['data'];
+            this.$route.params = info['data'];
         }
         return {
-            type,
-            data
+            passThroughData: true,
+            type
         }
     }
 }

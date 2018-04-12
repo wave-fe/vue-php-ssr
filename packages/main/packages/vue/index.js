@@ -31,12 +31,19 @@ export default class Vue {
             this.setProps(data['attrs']);
         }
 
+        if ('_route' in data) {
+            this.$route = data['$route'];
+        }
+
         if ('router' in data) {
-            this.router = data['router'];
+            this.$route = data['router'];
         }
 
         if ('components' in data) {
             this.components = data['components'];
+        }
+        if ('_parentData' in data) {
+            this._parentData = data['_parentData'];
         }
 
         // 处理data
@@ -125,6 +132,11 @@ export default class Vue {
     }
 
     _getComp(tag) {
+        if (/^\\\\/.test(tag)) {
+            // 如果已经是一个类的namespace则直接返回
+            return tag;
+        }
+        tag = tag.replace(/-/g, '').toLowerCase();
         if (isset(this.components) && array_key_exists(tag, this.components)) {
             return this.components[tag];
         }
@@ -148,10 +160,17 @@ export default class Vue {
         // 抄到这，下面是自己写的了
 
         // 子组件
-        let comp = this._getComp(tag.replace(/-/g, '').toLowerCase());
+        let comp = this._getComp(tag);
         if (comp) {
-            if (property_exists(this, 'router')) {
-                data['router'] = this.router;
+            // print('>>><<<');
+            //     var_dump(data);
+            // if (tag === 'component') {
+            // }
+            if (property_exists(this, '_route')) {
+                data['$route'] = this.$route;
+            }
+            if (property_exists(this, '_parentData')) {
+                data['_parentData'] = this._parentData;
             }
             let instance = new comp(data, children);
 
@@ -162,7 +181,14 @@ export default class Vue {
             return function () {
                 instance.$parent = this.childrenInstance[0];
                 this.childrenInstance.unshift(instance);
-                let html = instance.render();
+                let html = '';
+                if (property_exists(this, 'passThroughData')) {
+
+                    html = instance.render(this._parentData);
+                }
+                else {
+                    html = instance.render();
+                }
                 this.childrenInstance.shift();
                 return html;
             };
@@ -303,14 +329,15 @@ export default class Vue {
     /**
      * 子类会override这个方法，只有new Vue() 会调用这个方法
      */
-    _render(data=[]) {
+    _render(_ssrRenderData=[]) {
         let entry = this.ssrEntry;
         let constructorData = {};
-        if (property_exists(this, 'router')) {
-            constructorData['router'] = this.router;
+        if (property_exists(this, '_route')) {
+            constructorData['$route'] = this.$route;
         }
+        constructorData['_parentData'] = _ssrRenderData;
         let instance = new entry(constructorData);
-        return instance.render(data);
+        return instance.render(_ssrRenderData);
     }
 
     render(data = {}) {

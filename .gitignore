@@ -5,3 +5,5 @@ packages/php-generator/node_modules
 packages/main/test/homepage
 packages/main/output
 *.swo
+packages/vue-php-compiler/output
+packages/vue-php-compiler/test/homepage

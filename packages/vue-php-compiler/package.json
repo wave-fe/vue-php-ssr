@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "bin": {
+        "vue-php-compile": "scripts/vue-php-compile.js"
+    },
     "scripts": {
         "lint": "eslint .",
         "dev": "babel-node index.js",
@@ -23,10 +26,10 @@
     "author": "li-yinan",
     "license": "MIT",
     "dependencies": {
+        "commander": "^2.15.1",
         "escodegen": "^1.9.1",
         "escope": "^3.6.0",
         "espree": "^3.5.4",
-        "espurify": "^1.7.0",
         "esquery": "^1.0.0",
         "estemplate": "^0.5.1",
         "estraverse": "^4.2.0",

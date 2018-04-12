@@ -7,3 +7,4 @@ packages/main/output
 *.swo
 packages/vue-php-compiler/output
 packages/vue-php-compiler/test/homepage
+packages/test

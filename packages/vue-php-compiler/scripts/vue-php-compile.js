@@ -2,7 +2,7 @@ var commander = require('commander');
 var packageJSON = require('../package.json');
 var path = require('path');
 
-var compiler = require('../src/index');
+var compiler = require('../lib/index');
 
 var runPath = process.cwd();
 

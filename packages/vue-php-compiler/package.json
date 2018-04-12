@@ -10,7 +10,7 @@
         "lint": "eslint .",
         "dev": "babel-node index.js",
         "server": "open http://localhost:8000/output/test/ && php -S localhost:8000",
-        "test": "npm run build;php output/test/index.php",
+        "test": "sh scripts/test.sh",
         "build": "sh scripts/build.sh"
     },
     "devDependencies": {

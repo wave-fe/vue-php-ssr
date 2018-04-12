@@ -5,3 +5,4 @@ import {compile, recursiveCompile} from '../src/index';
     await recursiveCompile(path.resolve(__dirname, './index.js'));
     //await compile(path.resolve(__dirname, './dataset/index.vue'));
 })();
+

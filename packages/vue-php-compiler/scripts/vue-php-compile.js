@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var commander = require('commander');
 var packageJSON = require('../package.json');
 var path = require('path');

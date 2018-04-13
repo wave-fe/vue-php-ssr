@@ -1,0 +1,41 @@
+{
+  "_from": "git+http://gitlab.baidu.com/third-party/npm-smarty.git",
+  "_id": "npm-smarty@3.1.13",
+  "_inBundle": false,
+  "_location": "/npm-smarty",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "npm-smarty@git+http://gitlab.baidu.com/third-party/npm-smarty.git",
+    "name": "npm-smarty",
+    "escapedName": "npm-smarty",
+    "rawSpec": "git+http://gitlab.baidu.com/third-party/npm-smarty.git",
+    "saveSpec": "git+http://gitlab.baidu.com/third-party/npm-smarty.git",
+    "fetchSpec": "http://gitlab.baidu.com/third-party/npm-smarty.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "git+http://gitlab.baidu.com/third-party/npm-smarty.git#2c8bc8919a4d11ad71a1af81e64083e4dfcc1925",
+  "_spec": "npm-smarty@git+http://gitlab.baidu.com/third-party/npm-smarty.git",
+  "_where": "/Users/liyinan/code/cambrian-front/sdk",
+  "author": {
+    "name": "junmer"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "smarty in npm",
+  "license": "ISC",
+  "main": "index.js",
+  "name": "npm-smarty",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "ssh://g@gitlab.baidu.com:8022/third-party/npm-smarty.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "3.1.13"
+}

@@ -8,3 +8,4 @@ packages/main/output
 packages/vue-php-compiler/output
 packages/vue-php-compiler/test/homepage
 packages/test
+packages/vue-php-demo/basic/output

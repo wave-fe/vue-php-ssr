@@ -1,0 +1,5 @@
+{
+    "defaultExportName": "defaultexport",
+    "baseDir": ".",
+    "outputPath": "./output"
+}

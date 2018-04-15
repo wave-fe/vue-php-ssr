@@ -7,6 +7,7 @@ import scriptProcess, {processImport} from './ast/script/index';
 import {outputPath, defaultExportName} from './config';
 import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
 import {getOutputFilePath, getFilePath} from './utils';
+import {markResource, resolveTemplateResource} from './resolveTemplateResource';
 import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
@@ -65,7 +66,7 @@ export async function compile(filePath) {
 export async function compileSFCFile(filePath) {
     return new Promise(function (resolve, reject) {
         // 读取文件
-        fs.readFile(filePath, function (err, data) {
+        fs.readFile(filePath, async function (err, data) {
             if (err) {
                 reject(err);
                 return;
@@ -74,7 +75,7 @@ export async function compileSFCFile(filePath) {
                 dir,
                 name
             } = getPackageInfo(filePath);
-            let ret = compileSFC(data.toString(),{filePath});
+            let ret = await compileSFC(data.toString(),{filePath});
             // 把生成的代码写入文件
             let phpPath = path.resolve(dir, name + '.php');
             let {
@@ -147,7 +148,7 @@ export async function compileJsFile(filePath) {
     });
 }
 
-export function compileSFC(vueContent, options = {}) {
+export async function compileSFC(vueContent, options = {}) {
     let filePath = options.filePath;
     let {
         dir,
@@ -164,13 +165,15 @@ export function compileSFC(vueContent, options = {}) {
     let {template, script} = vueTemplateCompiler.parseComponent(vueContent);
 
     // 用ssrCompile对template模块进行处理
-    let vdom = vueTemplateCompiler.ssrCompile(template.content);
+    let vdom = vueTemplateCompiler.ssrCompile(template.content, {
+        modules: [markResource()]
+    });
 
-    let templateCode = `
+    let templateCode = await resolveTemplateResource(`
         function _render(_ssrRenderData=[]) {
             ${vdom.render}
         }
-    `;
+    `, {dir});
 
     // 对ssrCompile生成的代码进行ast解析
     let templateAst = parse(templateCode, {

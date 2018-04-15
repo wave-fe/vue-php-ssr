@@ -3,5 +3,12 @@
   "packages": [
     "packages/*"
   ],
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "vue-php-demo"
+      ]
+    }
+  },
   "version": "0.1.7"
 }

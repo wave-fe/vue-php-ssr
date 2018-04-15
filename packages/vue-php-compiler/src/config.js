@@ -24,6 +24,8 @@ if (defaultExportName === 'default') {
     throw '"default" is a key word in php, please DON\'T use "default" as default export name.';
 }
 
-export const outputPath = cc.outputPath ? path.resolve(runPath, cc.outputPath) : path.resolve('./output');
+export const outputPath = cc.outputPath ? path.resolve(runPath, cc.outputPath) : path.resolve(runPath, './output');
 
-export const packagePath = cc.packagePath ? path.resolve(runPath, cc.packagePath) : path.resolve('./packages');
+export const packagePath = cc.packagePath ? path.resolve(runPath, cc.packagePath) : path.resolve(runPath, './packages');
+
+export const webpackConfigPath = cc.webpackConfigPath ? path.resolve(runPath, cc.webpackConfigPath) : path.resolve(runPath, './webpack.config.js');

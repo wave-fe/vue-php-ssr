@@ -2,8 +2,12 @@ import path from 'path';
 import fs from 'fs';
 import {
     baseDir,
-    outputPath
+    outputPath,
+    webpackConfigPath
 } from './config';
+
+// require("@babel/register");
+
 
 export function getOutputFilePath(filePath) {
     let relativePath = path.relative(baseDir, filePath);
@@ -30,6 +34,18 @@ export function getFilePath(importPath) {
                 };
             }
         }
+    }
+    return;
+}
+
+let webpackConfig;
+export function getWebpackConfig() {
+    if (webpackConfig) {
+        return webpackConfig;
+    }
+    if (fs.existsSync(webpackConfigPath)) {
+        webpackConfig = require(webpackConfigPath);
+        return webpackConfig
     }
     return;
 }

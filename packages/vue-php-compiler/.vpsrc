@@ -1,4 +1,5 @@
 {
     "defaultExportName": "defaultexport",
+    "webpackConfigPath": "./test/webpack.config.js",
     "outputPath": "./output"
 }

@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
        '/output/index.php': {
-           target: 'http://[::1]:8090/'
+           target: 'http://0.0.0.0:8090/'
        }
     },
 

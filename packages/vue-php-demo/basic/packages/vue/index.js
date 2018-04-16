@@ -60,8 +60,9 @@ export default class Vue {
 
     }
 
-    static use(Comp) {
-    }
+    // php 5.6会把use识别为关键字，然后就报错了，暂时屏蔽
+    // static use(Comp) {
+    // }
 
     static component(name, comp) {
         self.staticComponents[name] = comp;

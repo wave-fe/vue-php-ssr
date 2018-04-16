@@ -5,7 +5,7 @@
   "author": "li-yinan <biline@163.com>",
   "private": true,
   "scripts": {
-    "dev": "php -S 0.0.0.0:8090& vue-php-compile -r index.js && cp -r packages/Smarty output/packages/ && webpack-dev-server --host 0.0.0.0 --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "sh scripts/start.sh",
     "start": "npm run dev",
     "build": "node build/build.js"
   },

@@ -23,10 +23,22 @@ let resolvedLoaders = resolveLoaders();
 function resolveLoaders() {
     let rules = getWebpackRules();
     let dir = path.parse(webpackConfigPath).dir;
+    function getLoaderStr(loaderName, options) {
+        console.log(loaderName);
+        return require.resolve(loaderName, { paths: [dir] }) + '?' + JSON.stringify(options);
+    }
     return rules.map(function (rule) {
-        return {
-            test: rule.test,
-            loader: require.resolve(rule.loader, {paths: [dir]}) + '?' + JSON.stringify(rule.options)
+        if (rule.loader) {
+            return {
+                test: rule.test,
+                loader: getLoaderStr(rule.loader, rule.options)
+            };
+        }
+        else if (rule.use) {
+            return {
+                test: rule.test,
+                loader: rule.use.map(item => getLoaderStr(item.loader, item.options)).join('!')
+            };
         }
     })
 }

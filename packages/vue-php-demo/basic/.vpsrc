@@ -1,5 +1,6 @@
 {
     "defaultExportName": "defaultexport",
     "baseDir": ".",
+    "webpackConfigPath": "./build/webpack.prod.conf.js",
     "outputPath": "./output"
 }

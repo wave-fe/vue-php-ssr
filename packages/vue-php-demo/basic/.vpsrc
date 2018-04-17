@@ -2,5 +2,8 @@
     "defaultExportName": "defaultexport",
     "baseDir": ".",
     "webpackConfigPath": "./build/webpack.prod.conf.js",
+    "keyWordReplace": {
+        "use": "_use"
+    },
     "outputPath": "./output"
 }

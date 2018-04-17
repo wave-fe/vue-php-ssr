@@ -1,5 +1,8 @@
 {
     "defaultExportName": "defaultexport",
     "webpackConfigPath": "./test/webpack.config.js",
+    "keyWordReplace": {
+        "use": "_use"
+    },
     "outputPath": "./output"
 }

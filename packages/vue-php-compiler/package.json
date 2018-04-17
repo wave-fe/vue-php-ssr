@@ -35,6 +35,7 @@
         "escope": "^3.6.0",
         "espree": "^3.5.4",
         "esquery": "^1.0.0",
+        "esrecurse": "^4.2.1",
         "estemplate": "^0.5.1",
         "estraverse": "^4.2.0",
         "file-loader": "^1.1.11",

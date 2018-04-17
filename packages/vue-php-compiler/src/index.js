@@ -3,7 +3,7 @@ let phpGenerator = require('php-generator');
 import {parse, replace} from './ast/index';
 import {addNamespace, getPackageInfo, getBaseInfo, defaultExport2NamedExport} from './ast/util';
 import templateProcess from './ast/template/index';
-import scriptProcess, {processImport} from './ast/script/index';
+import scriptProcess, {processImport, processKeyWordReplace} from './ast/script/index';
 import {outputPath, defaultExportName} from './config';
 import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
 import {getOutputFilePath, getFilePath} from './utils';
@@ -122,6 +122,7 @@ export async function compileJsFile(filePath) {
             let ast = parse(content);
             defaultExport2NamedExport(ast, filePath);
             let importPaths = processImport(ast, {filePath});
+            processKeyWordReplace(ast);
             addNamespace(ast, namespace, namespaceConverted);
             let phpCode = phpGenerator.generate(ast);
             // 把生成的代码写入文件

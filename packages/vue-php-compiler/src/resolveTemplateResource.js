@@ -24,7 +24,6 @@ function resolveLoaders() {
     let rules = getWebpackRules();
     let dir = path.parse(webpackConfigPath).dir;
     function getLoaderStr(loaderName, options) {
-        console.log(loaderName);
         return require.resolve(loaderName, { paths: [dir] }) + '?' + JSON.stringify(options);
     }
     return rules.map(function (rule) {

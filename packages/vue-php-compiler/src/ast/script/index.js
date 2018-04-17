@@ -1,10 +1,12 @@
 import esquery from 'esquery';
+import esrecurse from 'esrecurse';
 import {analyze} from 'escope';
 import {getPackageInfo, defAnalyze} from '../util';
 import {getFilePath} from '../../utils';
 import {defaultExportName, packagePath} from '../../config';
 import path from 'path';
 import parseOptions from '../parseOptions';
+import {customConfig} from '../../config';
 
 function getExportObject(ast, scope) {
     let exportObject = esquery(ast, 'ExportDefaultDeclaration')[0];
@@ -249,6 +251,18 @@ export function processImport(ast, options) {
         .filter(item => !!item);
 }
 
+export function processKeyWordReplace(ast) {
+    let keyWordReplace = customConfig.keyWordReplace || {};
+    esrecurse.visit(ast, {
+        Identifier: function (node) {
+            Object.keys(keyWordReplace).map(key => {
+                if (node.name === key) {
+                    node.name = keyWordReplace[key];
+                }
+            });
+        }
+    });
+}
 
 export default function (ast,options) {
     let scopeManager = analyze(ast, {
@@ -260,6 +274,7 @@ export default function (ast,options) {
     let importPaths = processImport(ast, options);
     // 查找export default {}
     let exportObject = getExportObject(ast, scopeManager);
+    processKeyWordReplace(ast);
     return {
         exportObject,
         importPaths,

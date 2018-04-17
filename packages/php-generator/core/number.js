@@ -22,9 +22,29 @@ function method(node, name) {
   }
 }
 
-module.exports = {
+function instanceMethod(node, name) {
+    var args = utils.clone(node.parent.arguments);
+    args.unshift(node.object);
+    node.parent.arguments = false;
+    return {
+        type: 'CallExpression',
+        callee: {
+            type: 'Identifier',
+            name: name
+        },
+        arguments: args
+    };
+}
 
-  isInteger: function(node) { return method(node, 'is_int'); },
-  isFinite: function(node) { return method(node, 'is_finite'); },
+module.exports = {
+  toFixed: function (node) {
+      return instanceMethod(node, 'number_format');
+  },
+  isInteger: function(node) {
+      return method(node, 'is_int');
+  },
+  isFinite: function(node) {
+      return method(node, 'is_finite');
+  },
 
 }

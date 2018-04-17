@@ -11,8 +11,11 @@ if (fs.existsSync(rcPath)) {
     customConfig = JSON.parse(fs.readFileSync(rcPath));
 }
 
+export {customConfig};
+
 // short name
 let cc = customConfig;
+
 
 export const baseDir = cc.baseDir ? path.resolve(runPath, cc.baseDir) : path.resolve(runPath);
 

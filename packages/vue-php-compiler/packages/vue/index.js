@@ -1,6 +1,8 @@
 import {hyphenate as func_hyphenate} from './util';
 export default class Vue {
     constructor(data=[], children=[]) {
+        // 会由父元素在new的时候赋值，这里写出来是为了php-generator编译时产生类的实例属性
+        this.isRoot = false;
         if (!isset(self.staticComponents)) {
             self.staticComponents = {};
         }
@@ -18,6 +20,9 @@ export default class Vue {
                     this[key] = null;
                 }
             }
+        }
+        else {
+            this.props = {};
         }
         this._slot = {
             default: function (props=[]) {
@@ -159,6 +164,7 @@ export default class Vue {
         }
         // 抄到这，下面是自己写的了
 
+
         // 子组件
         let comp = this._getComp(tag);
         if (comp) {
@@ -173,6 +179,10 @@ export default class Vue {
                 data['_parentData'] = this._parentData;
             }
             let instance = new comp(data, children);
+            // 把当前的root状态传递下去
+            // 因为可能用了component或者router，当前组件不会创建dom，所以要传递下去
+            // 在实际创建dom的组件里去设置
+            instance.isRoot = this.isRoot;
 
             if ('model' in data) {
                 this.value = data['model']['value'];
@@ -201,6 +211,10 @@ export default class Vue {
                 arr = [children];
             }
             let attrs = [];
+            if (this.isRoot) {
+                this.isRoot = false;
+                attrs.push('data-server-rendered="true"');
+            }
             // 处理attrs
             if ('attrs' in data) {
                 for (key in data['attrs']) {
@@ -337,6 +351,7 @@ export default class Vue {
         }
         constructorData['_parentData'] = _ssrRenderData;
         let instance = new entry(constructorData);
+        instance.isRoot = true;
         return instance.render(_ssrRenderData);
     }
 

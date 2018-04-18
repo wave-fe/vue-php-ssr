@@ -8,6 +8,7 @@
 <script>
 import HelloWorld from './components/HelloWorld'
 
+// console.log(HelloWorld);
 export default {
   name: 'App',
   components: {

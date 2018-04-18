@@ -8,6 +8,22 @@ var utils = require('./utils'),
     _object = require('./core/object'),
     _math = require('./core/math'),
     _number = require('./core/number');
+    _console = require('./core/console');
+
+function getHandle(method, namespace) {
+    let modules = [_array, _date, _function, _json, _string, _math, _number, _regexp, _object, _console];
+    let key = namespace + method;
+    let handler = modules.find(module => module[key]);
+    if (handler) {
+        return handler[key];
+    }
+    else {
+        handler = modules.find(module => module[method]);
+        if (handler) {
+            return handler[method];
+        }
+    }
+}
 
 module.exports = {
 
@@ -25,8 +41,7 @@ module.exports = {
         //   node.parent.arguments = false;
         //   return { type: 'CallExpression', callee: { type: 'Identifier', name: 'isset', }, arguments: args };
         // }
-
-        var handler = _array[method] || _date[method] || _function[method] || _json[method] || _string[method] || _math[method] || _number[method] || _regexp[method] || _object[method];
+        let handler = getHandle(method, node.object.name);
 
         return (handler) ? handler(node) : node;
     }

@@ -14,7 +14,7 @@ import mkdirp from 'mkdirp';
 
 let baseName = 'base';
 function ifNeedProcess(filePath) {
-    return /\.js$|\.vue$|\.jsx$|\.es6/.test(filePath);
+    return /\.js$|\.vue$|\.jsx$|\.es6$/.test(filePath);
 }
 
 export async function recursiveCompile(filePath) {
@@ -32,11 +32,11 @@ export async function recursiveCompile(filePath) {
             return;
         }
 
-        if (compiledPath[filePath]) {
+        if (compiledPath[existsPath]) {
             return;
         }
 
-        compiledPath[filePath] = true;
+        compiledPath[existsPath] = true;
 
         console.log('compiling file: ', existsPath);
 
@@ -47,7 +47,12 @@ export async function recursiveCompile(filePath) {
 
         return await Promise.all(promises);
     }
-    return await rCompile(filePath);
+    if (Array.isArray(filePath)) {
+        return Promise.all(filePath.map(async filePath => await rCompile(filePath)));
+    }
+    else {
+        return await rCompile(filePath);
+    }
 }
 
 export async function compile(filePath) {

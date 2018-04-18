@@ -2,7 +2,7 @@
     "name": "vue-php-compiler",
     "version": "0.2.6",
     "description": "",
-    "main": "index.js",
+    "main": "lib/index.js",
     "bin": {
         "vue-php-compile": "scripts/vue-php-compile.js"
     },

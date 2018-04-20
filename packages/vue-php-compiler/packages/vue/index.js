@@ -235,6 +235,9 @@ export default class Vue {
             if (classArr.length) {
                 attrs.push('class="' + classArr.join(' ') + '"');
             }
+            if (this.hasScoped) {
+                attrs.push(this.scopeId);
+            }
             let attrStr = '';
             if (attrs.length) {
                 attrStr = ' ' + attrs.join(' ');

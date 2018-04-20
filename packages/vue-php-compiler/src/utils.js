@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import hash from 'hash-sum';
 import {
     baseDir,
     outputPath,
@@ -48,4 +49,14 @@ export function getWebpackConfig() {
         return webpackConfig
     }
     return;
+}
+
+export function getScopeId(filePath, content='') {
+    let production = process.env.NODE_ENV === 'production'
+    // 抄自vue-loader/lib/loader.js#41
+    // 做人呢，最重要的就是诚实，抄的就是抄的，不然跟咸鱼还有什么区别
+    // 其实大家都觉得看我写的注释能乐一天，笑一笑十年少
+    const shortFilePath = path.relative(baseDir, filePath).replace(/^(\.\.[\\\/])+/, '');
+    let moduleId = 'data-v-' + hash(production ? (shortFilePath + '\n' + content) : shortFilePath);
+    return moduleId;
 }

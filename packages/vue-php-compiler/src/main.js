@@ -6,7 +6,7 @@ import templateProcess from './ast/template/index';
 import scriptProcess, {processImport, processKeyWordReplace} from './ast/script/index';
 import {outputPath, defaultExportName} from './config';
 import {genClass, addMethod, addMethods, addProperty} from './ast/genClass';
-import {getOutputFilePath, getFilePath} from './utils';
+import {getOutputFilePath, getFilePath, getScopeId} from './utils';
 import {markResource, resolveTemplateResource} from './resolveTemplateResource';
 import fs from 'fs';
 import path from 'path';
@@ -167,13 +167,18 @@ export async function compileSFC(vueContent, options = {}) {
     let classAst = genClass(defaultExportName, vueName);
 
     // 把vue文件拆分成template、script、style几个模块
-    // style 不处理了，使用webpack extract出来的css，省心
-    let {template, script} = vueTemplateCompiler.parseComponent(vueContent);
+    // style 内容不处理了，使用webpack extract出来的css，省心
+    // 只要得到style的scopeId就可以
+    let {template, script, styles} = vueTemplateCompiler.parseComponent(vueContent);
 
+    let hasScoped = styles.some(style => style.scoped);
+    let scopeId = hasScoped ? getScopeId(filePath, vueContent) : '';
     // 用ssrCompile对template模块进行处理
     let vdom = vueTemplateCompiler.ssrCompile(template.content, {
+        scopeId: scopeId,
         modules: [markResource()]
     });
+    // console.log(vdom);
 
     let templateCode = await resolveTemplateResource(`
         function _render(_ssrRenderData=[]) {
@@ -184,11 +189,12 @@ export async function compileSFC(vueContent, options = {}) {
     // 对ssrCompile生成的代码进行ast解析
     let templateAst = parse(templateCode, {
         sourceType: 'script',
+        tokens : false,
         ecmaVersion: 9
     });
 
     // 改造template的ast
-    templateAst = templateProcess(templateAst);
+    templateAst = templateProcess(templateAst, {scopeId});
     addMethod(classAst, templateAst);
 
 
@@ -212,6 +218,30 @@ export async function compileSFC(vueContent, options = {}) {
     addProperty(classAst, components);
     addProperty(classAst, data);
     addProperty(classAst, props);
+    addProperty(classAst, {
+        type: 'Property',
+        key: {
+          type: 'Identifier',
+          name: 'hasScoped'
+        },
+        value: {
+          type: 'Literal',
+          value: hasScoped,
+          raw: '' + hasScoped
+        }
+    });
+    addProperty(classAst, {
+        type: 'Property',
+        key: {
+          type: 'Identifier',
+          name: 'scopeId'
+        },
+        value: {
+          type: 'Literal',
+          value: scopeId,
+          raw: "'" + scopeId + "'"
+        }
+    });
 
     scriptAst = replace(scriptAst, exportObject, classAst);
     addNamespace(scriptAst, namespace, namespaceConverted);

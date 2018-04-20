@@ -8,7 +8,8 @@
     "escope": "^3.6.0",
     "espree": "^3.5.4",
     "estemplate": "^0.5.1",
-    "estraverse": "^4.2.0"
+    "estraverse": "^4.2.0",
+    "vue-php-packages": "^0.0.1"
   },
   "keywords": [
     "javascript",
@@ -16,6 +17,6 @@
     "transpiler",
     "transcompiler"
   ],
-  "author": "liyinan",
-  "license": "MIT"
+  "author": "li-yinan",
+  "license": "BSD-2-Clause"
 }

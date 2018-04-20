@@ -29,6 +29,6 @@ if (defaultExportName === 'default') {
 
 export const outputPath = cc.outputPath ? path.resolve(runPath, cc.outputPath) : path.resolve(runPath, './output');
 
-export const packagePath = cc.packagePath ? path.resolve(runPath, cc.packagePath) : path.resolve(runPath, './packages');
+export const packagePath = cc.packagePath ? path.resolve(runPath, cc.packagePath) : path.resolve(runPath, './node_modules/vue-php-packages');
 
 export const webpackConfigPath = cc.webpackConfigPath ? path.resolve(runPath, cc.webpackConfigPath) : path.resolve(runPath, './webpack.config.js');

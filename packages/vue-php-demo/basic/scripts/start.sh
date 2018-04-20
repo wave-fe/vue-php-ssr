@@ -24,7 +24,20 @@ php -S 0.0.0.0:8090&
 vue-php-compile -r index.js
 
 # cp php module to output
-cp -r packages/Smarty output/packages/
+#cp -r packages/Smarty output/packages/
+if [ -f ".vpsrc" ];then
+    packagePath=`cat .vpsrc|awk -F "[:]" '/packagePath/{print$2}'`;
+else
+    packagePath="node_modules/vue-php-packages"
+fi
+
+if [ -n "$packagePath" ];then
+    echo '';
+else
+    packagePath="node_modules/vue-php-packages"
+fi
+
+cp -r $packagePath/Smarty ./output/$packagePath/
 
 # start webpack dev server
 webpack-dev-server --host 0.0.0.0 --inline --progress --config build/webpack.dev.conf.js

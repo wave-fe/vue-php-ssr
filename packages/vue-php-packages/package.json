@@ -1,0 +1,11 @@
+{
+  "name": "vue-php-packages",
+  "version": "0.0.1",
+  "description": "vue php packages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "li-yinan",
+  "license": "BSD-2-Clause"
+}

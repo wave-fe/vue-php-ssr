@@ -1,0 +1,23 @@
+0 silly input [ 'vue-php-packages' ]
+1 silly flags { _: [ 'add' ],
+1 silly flags   'reject-cycles': false,
+1 silly flags   rejectCycles: false,
+1 silly flags   args: [ 'vue-php-packages' ] }
+2 verbose rootPath /Users/liyinan/code/vue-php-ssr
+3 info version 2.10.1
+4 silly isInitialized
+5 silly isInitialized true
+6 silly existsSync /Users/liyinan/code/vue-php-ssr/VERSION
+7 silly initialize attempt
+8 warn Will not add vue-php-packages to itself.
+9 error initialize callback with error
+10 error TypeError: Invalid comparator: latest
+10 error     at Comparator.parse (/usr/local/lib/node_modules/lerna/node_modules/semver/semver.js:690:11)
+10 error     at new Comparator (/usr/local/lib/node_modules/lerna/node_modules/semver/semver.js:674:8)
+10 error     at /usr/local/lib/node_modules/lerna/node_modules/semver/semver.js:840:12
+10 error     at Array.map (<anonymous>)
+10 error     at Range.parseRange (/usr/local/lib/node_modules/lerna/node_modules/semver/semver.js:839:13)
+10 error     at Range.<anonymous> (/usr/local/lib/node_modules/lerna/node_modules/semver/semver.js:781:17)
+10 error     at Array.map (<anonymous>)
+10 error     at new Range (/usr/local/lib/node_modules/lerna/node_modules/semver/semver.js:780:40)
+10 error     at Function.intersects (/usr/local/lib/node_modules/lerna/node_modules/semver/semver.js:1305:8)

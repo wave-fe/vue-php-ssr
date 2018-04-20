@@ -27,7 +27,7 @@
         "postcss-loader": "^2.1.4"
     },
     "author": "li-yinan",
-    "license": "MIT",
+    "license": "BSD-2-Clause",
     "dependencies": {
         "async-replace": "^1.0.1",
         "commander": "^2.15.1",
@@ -40,6 +40,7 @@
         "estraverse": "^4.2.0",
         "file-loader": "^1.1.11",
         "hash-sum": "^1.0.2",
+        "vue-php-packages": "^0.0.1",
         "loader-runner": "^2.3.0",
         "mkdirp": "^0.5.1",
         "php-generator": "^0.2.6",

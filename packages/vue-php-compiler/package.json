@@ -1,6 +1,6 @@
 {
     "name": "vue-php-compiler",
-    "version": "0.2.9",
+    "version": "0.2.10",
     "description": "",
     "main": "lib/index.js",
     "bin": {
@@ -40,11 +40,11 @@
         "estraverse": "^4.2.0",
         "file-loader": "^1.1.11",
         "hash-sum": "^1.0.2",
-        "vue-php-packages": "^0.0.1",
         "loader-runner": "^2.3.0",
         "mkdirp": "^0.5.1",
-        "php-generator": "^0.2.6",
+        "php-generator": "^0.2.10",
         "url-loader": "^1.0.1",
+        "vue-php-packages": "^0.2.10",
         "vue-template-compiler": "^2.5.13"
     }
 }

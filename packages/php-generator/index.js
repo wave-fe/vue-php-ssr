@@ -3,6 +3,13 @@ var core = require('./core'),
     utils = require('./utils'),
     espree = require('espree');
 
+// 用来记录当前状态是不是进入到了init，
+// 处理array的时候需要包装一层用->和[]都能读取的方法，就会要求有这样的格式
+// arr(array('xxx'=>'xxx'))
+// 但是函数默认值和类属性初始化不能用，所以要记录状态，是否进入到这两个状态里
+// 每次进入设置为true，退出状态设置为false
+let initState = false;
+
 function compile(code) {
     let ast = parse(code);
     return generate(ast);
@@ -177,7 +184,6 @@ function generate(ast) {
         }, node);
 
       } else if (node.operator === "+") {
-        // 字符串连接用点号，但是数字相加还要再考虑怎么做
         content = 'func_add(' + visit(node.left, node) + "," + visit(node.right, node) + ')';
       } else {
         let operator;
@@ -409,18 +415,46 @@ function generate(ast) {
       content += "}\n";
 
     } else if (node.type == "ObjectExpression") {
+      let enterInitState = false;
+      if (
+          utils.isArgument(node.parent)
+          || utils.isClassProperty(node.parent)
+      ) {
+          enterInitState = true;
+          initState = true;
+      }
       var properties = [];
       for (var i=0; i < node.properties.length; i++) {
         properties.push( visit(node.properties[i], node) )
       }
       content = "array(" + properties.join(", ") + ")";
+      if (!initState) {
+          content = 'func_arr(' + content + ')';
+      }
+      if (enterInitState) {
+          initState = false;
+      }
 
     } else if (node.type == "ArrayExpression") {
+      let enterInitState = false;
+      if (
+          utils.isArgument(node.parent)
+          || utils.isClassProperty(node.parent)
+      ) {
+          enterInitState = true;
+          initState = true;
+      }
       var elements = [];
       for (var i=0; i < node.elements.length; i++) {
         elements.push( visit(node.elements[i], node) )
       }
       content = "array(" + elements.join(", ") + ")";
+      if (!initState) {
+          content = 'func_arr(' + content + ')';
+      }
+      if (enterInitState) {
+          initState = false;
+      }
 
     } else if (node.type == "Property") {
         var property = '';
@@ -453,7 +487,12 @@ function generate(ast) {
       content = "class " + node.id.name
 
       if (node.superClass) {
-        content += " extends " + node.superClass.name;
+        if (node.superClass.name === 'ArrayAccess') {
+          content += " implements \\" + node.superClass.name;
+        } 
+        else {
+          content += " extends " + node.superClass.name;
+        }
       }
 
       var s = scope.create(node);
@@ -497,10 +536,14 @@ function generate(ast) {
 
       var isConstructor = (node.key.name == "constructor");
       if (isConstructor) { node.key.name = "__construct"; }
+      if (node.key.name === '__invoke') {
+        node.key.name = '&__invoke';
+      }
 
       // Re-use FunctionDeclaration structure for method definitions
       node.value.type = "FunctionDeclaration";
       node.value.id = { name: node.key.name };
+        // console.log(node.value);
 
       var tmpContent = visit(node.value, node);
 
@@ -514,12 +557,19 @@ function generate(ast) {
               && definitions[i].type == "MemberExpression"
               && !/^["']/.test(definitions[i].property.raw)
           ) {
-            definitions[i].property.isMemberExpression = false;
+            let property = definitions[i].property;
+            property.isMemberExpression = false;
             if (definitions[i].object.name === 'self') {
-                content += "static " + visit(definitions[i].property, null) + " = " + visit(definitions[i].parent.right) + ";\n";
+                content += "static " + visit(property, null) + " = " + visit(definitions[i].parent.right) + ";\n";
             }
             else {
-                content += "public " + visit(definitions[i].property, null) + ";\n";
+                if (/priv_/.test(property.name)) {
+                    content += 'private ';
+                }
+                else {
+                    content += 'public ';
+                }
+                content += visit(property, null) + ";\n";
             }
           }
         }

@@ -43,6 +43,7 @@
         "loader-runner": "^2.3.0",
         "mkdirp": "^0.5.1",
         "php-generator": "^0.2.10",
+        "shelljs": "^0.8.1",
         "url-loader": "^1.0.1",
         "vue-php-packages": "^0.2.10",
         "vue-template-compiler": "^2.5.13"

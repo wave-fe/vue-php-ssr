@@ -232,6 +232,7 @@ export function processImport(ast, options) {
                 type: 'Literal',
                 value: originalPath 
             };
+            // item.namespace = null;
         }
         else {
             item.namespace = {

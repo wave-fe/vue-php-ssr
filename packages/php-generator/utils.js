@@ -93,5 +93,25 @@ module.exports = {
             return true;
         }
         return false;
+    },
+    isArgument: function (node) {
+        let parent = node.parent;
+        if (/Function/.test(parent.type)) {
+            return parent.params.some(arg => arg === node);
+            
+        }
+        else {
+            return false;
+        }
+    },
+    isClassProperty: function (node) {
+        let parent = node.parent;
+        if (parent.type === 'ClassBody') {
+            return parent.body.some(arg => arg === node);
+            
+        }
+        else {
+            return false;
+        }
     }
 };

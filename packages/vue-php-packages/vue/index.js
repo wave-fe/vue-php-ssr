@@ -4,10 +4,10 @@ export default class Vue {
         // 会由父元素在new的时候赋值，这里写出来是为了php-generator编译时产生类的实例属性
         this.isRoot = false;
         if (!isset(self.staticComponents)) {
-            self.staticComponents = {};
+            self.staticComponents = array();
         }
         if (!isset(self.plugins)) {
-            self.plugins = {};
+            self.plugins = array();
         }
         // 处理props
         if (isset(this.props)) {

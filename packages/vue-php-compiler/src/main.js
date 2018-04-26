@@ -11,10 +11,17 @@ import {markResource, resolveTemplateResource} from './resolveTemplateResource';
 import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
+import {cp} from 'shelljs';
 
 let baseName = 'base';
+
 function ifNeedProcess(filePath) {
     return /\.js$|\.vue$|\.jsx$|\.es6$/.test(filePath);
+}
+
+function copyToOutput(filePath) {
+    let {outputFilePath} = getOutputFilePath(filePath);
+    return cp(filePath, outputFilePath);
 }
 
 export async function recursiveCompile(filePath) {
@@ -28,15 +35,16 @@ export async function recursiveCompile(filePath) {
 
         let existsPath = filePathInfo.filePath;
         
-        if (!ifNeedProcess(existsPath)) {
-            return;
-        }
-
         if (compiledPath[existsPath]) {
             return;
         }
 
         compiledPath[existsPath] = true;
+
+        if (!ifNeedProcess(existsPath)) {
+            copyToOutput(existsPath);
+            return;
+        }
 
         console.log('compiling file: ', existsPath);
 
@@ -120,7 +128,7 @@ export async function compileJsFile(filePath) {
             // base文件本身就不import base了
             if (!/base\.index/.test(namespace)) {
                 content = `
-                    import {func_add} from '${baseName}';
+                    import {add as func_add, arr as func_arr} from '${baseName}';
                     ${data}
                 `;
             }
@@ -199,7 +207,7 @@ export async function compileSFC(vueContent, options = {}) {
 
 
     let content = `
-        import {func_add} from '${baseName}';
+        import {add as func_add, arr as func_arr} from '${baseName}';
         import ${vueName} from '${vueName}';
         ${script.content}
     `;

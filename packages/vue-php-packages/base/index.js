@@ -50,9 +50,6 @@ class Arr extends ArrayAccess {
         unset(this.priv_data[offset]);
     }
 
-    /*ref*/__invoke() {
-        return this.priv_data;
-    }
 
     /*ref*/toArray() {
         return this.priv_data;
@@ -69,3 +66,4 @@ export function arr(arg) {
         return arg;
     }
 }
+

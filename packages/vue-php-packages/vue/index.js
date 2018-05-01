@@ -152,12 +152,15 @@ export default class Vue {
     }
 
     _c(tag, data = [], children = [], normalizationType = 0, alwaysNormalize = false) {
+        children = func_getArr(children);
+        data = func_getArr(data);
         // 这段抄的vue/src/core/vdom/create-element.js#createElement
         if (this.isPlainArray(data) || this.isPrimitive(data)) {
             normalizationType = children;
             children = data;
             data = [];
         }
+        // console.log(tag);
 
         if (alwaysNormalize) {
             normalizationType = 2;
@@ -298,15 +301,18 @@ export default class Vue {
     }
 
     _ssrStyle(staticStyle={}, dynamic={}, extra={}) {
-        let style = {};
+        let style = [];
+        // 判断是因为如果传入null是不会走默认值的
+        // 然鹅，函数的默认返回就是null
+        // 所以除非未填这个值，否则一定不走默认值
         if (staticStyle) {
-            style = array_merge(style, staticStyle);
+            style = style.concat(staticStyle);
         }
         if (dynamic) {
-            style = array_merge(style, dynamic);
+            style = style.concat(dynamic);
         }
         if (extra) {
-            style = array_merge(style, extra);
+            style = style.concat(extra);
         }
         let styleText = '';
         for (var key in style) {
@@ -328,19 +334,18 @@ export default class Vue {
     }
 
     _jump(d) {
-        if (typeof d === 'object') {
-            return this._jump(d());
-        }
-        if (typeof d === 'array') {
+        if (typeof d === 'array' || method_exists(d, 'toArray')) {
             let html = '';
             for (var i = 0; i < d.length; i++) {
                 html = html + this._jump(d[i]);
             }
             return html;
         }
-        else {
-            return d;
+        if (typeof d === 'object') {
+            let html = this._jump(d());
+            return html;
         }
+        return d;
     }
 
     /**

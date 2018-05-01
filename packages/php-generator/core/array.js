@@ -56,14 +56,21 @@ module.exports = {
     var args = utils.clone(node.parent.arguments);
     node.parent.arguments = false;
 
-    return {
-      type: 'CallExpression',
-      callee: {
-        type: 'Identifier',
-        name: 'array_merge',
-      },
-      arguments: args.length ? [ wrapArrGetter(node.parent.callee.object), wrapArrGetter(args[0]) ] : [wrapArrGetter(node.parent.callee.object)]
-    };
+    if (args.length) {
+        args.unshift(node.parent.callee.object);
+        args = args.map(wrapArrGetter);
+        return {
+          type: 'CallExpression',
+          callee: {
+            type: 'Identifier',
+            name: 'array_merge',
+          },
+          arguments: args
+        };
+    }
+    else {
+        return node.parent.callee.object;
+    }
   },
 
   push: function(node) {

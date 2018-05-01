@@ -15,6 +15,14 @@ import {cp} from 'shelljs';
 
 let baseName = 'base';
 
+let importBaseStr = `
+    import {
+        add as func_add,
+        arr as func_arr,
+        getArr as func_getArr
+    } from '${baseName}';
+`;
+
 function ifNeedProcess(filePath) {
     return /\.js$|\.vue$|\.jsx$|\.es6$/.test(filePath);
 }
@@ -127,10 +135,7 @@ export async function compileJsFile(filePath) {
             let content = data;
             // base文件本身就不import base了
             if (!/base\.index/.test(namespace)) {
-                content = `
-                    import {add as func_add, arr as func_arr, getArr as func_getArr} from '${baseName}';
-                    ${data}
-                `;
+                content = importBaseStr + data;
             }
             let ast = parse(content);
             defaultExport2NamedExport(ast, filePath);
@@ -207,7 +212,7 @@ export async function compileSFC(vueContent, options = {}) {
 
 
     let content = `
-        import {add as func_add, arr as func_arr, getArr as func_getArr} from '${baseName}';
+        ${importBaseStr}
         import ${vueName} from '${vueName}';
         ${script.content}
     `;

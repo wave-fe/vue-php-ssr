@@ -1,6 +1,6 @@
 {
   "name": "php-generator",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "description": "JavaScript to PHP transpiler.",
   "main": "index.js",
   "dependencies": {
@@ -9,7 +9,7 @@
     "espree": "^3.5.4",
     "estemplate": "^0.5.1",
     "estraverse": "^4.2.0",
-    "vue-php-packages": "^0.2.10"
+    "vue-php-packages": "^0.3.0"
   },
   "keywords": [
     "javascript",

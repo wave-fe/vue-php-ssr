@@ -5,6 +5,18 @@ export function add(a, b) {
     return `${a}${b}`;
 }
 
+export function /*ref*/getArr(/*ref*/arg) {
+    if (typeof arg === 'array') {
+        return arg;
+    }
+    else if (method_exists(arg, 'toArray')) {
+        return arg.toArray();
+    }
+    else {
+        return arg;
+    }
+}
+
 class Arr extends ArrayAccess {
 
     constructor(init = array()) {
@@ -12,7 +24,9 @@ class Arr extends ArrayAccess {
     }
 
     __get(prop) {
-        return this.priv_data[prop];
+        if (array_key_exists(prop, this.priv_data)) {
+            return arr(this.priv_data[prop]);
+        }
     }
 
     __set(prop, val) {
@@ -25,7 +39,7 @@ class Arr extends ArrayAccess {
     }
 
     offsetGet(offset) {
-        return this.priv_data[offset];
+        return arr(this.priv_data[offset]);
     }
 
     offsetSet(offset, value) {
@@ -36,13 +50,22 @@ class Arr extends ArrayAccess {
         unset(this.priv_data[offset]);
     }
 
-    __invoke() {
+    /*ref*/__invoke() {
+        return this.priv_data;
+    }
+
+    /*ref*/toArray() {
         return this.priv_data;
     }
 
 
 }
 
-export function arr($arr) {
-    return new Arr($arr);
+export function arr(arg) {
+    if (typeof arg === 'array') {
+        return new Arr(arg);
+    }
+    else {
+        return arg;
+    }
 }

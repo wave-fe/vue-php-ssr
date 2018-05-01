@@ -2,6 +2,17 @@ var utils = require('../utils'),
     scope = require('../scope');
     string = require('./string');
 
+function wrapArrGetter(arg) {
+    return {
+      type: 'CallExpression',
+      callee: {
+        type: 'Identifier',
+        name: 'func_getArr',
+      },
+      arguments: [arg]
+    };
+}
+
 module.exports = {
 
   unshift: function(node) {
@@ -14,7 +25,7 @@ module.exports = {
         type: 'Identifier',
         name: 'array_unshift',
       },
-      arguments: [node.parent.callee.object, args[0]]
+      arguments: [wrapArrGetter(node.parent.callee.object), args[0]]
     };
   },
 
@@ -26,7 +37,7 @@ module.exports = {
         type: 'Identifier',
         name: 'array_shift',
       },
-      arguments: [ node.parent.callee.object ]
+      arguments: [ wrapArrGetter(node.parent.callee.object) ]
     };
   },
 
@@ -37,7 +48,7 @@ module.exports = {
         type: 'Identifier',
         name: 'array_reverse',
       },
-      arguments: [ node.parent.callee.object ]
+      arguments: [ wrapArrGetter(node.parent.callee.object) ]
     };
   },
 
@@ -51,7 +62,7 @@ module.exports = {
         type: 'Identifier',
         name: 'array_merge',
       },
-      arguments: args.length ? [ node.parent.callee.object, args[0] ] : [node.parent.callee.object]
+      arguments: args.length ? [ wrapArrGetter(node.parent.callee.object), wrapArrGetter(args[0]) ] : [wrapArrGetter(node.parent.callee.object)]
     };
   },
 
@@ -65,7 +76,7 @@ module.exports = {
         type: 'Identifier',
         name: 'array_push',
       },
-      arguments: [ node.parent.callee.object, args[0] ]
+      arguments: [ wrapArrGetter(node.parent.callee.object), args[0] ]
     };
   },
 
@@ -76,7 +87,7 @@ module.exports = {
         type: 'Identifier',
         name: 'array_pop',
       },
-      arguments: [ node.parent.callee.object ]
+      arguments: [ wrapArrGetter(node.parent.callee.object) ]
     };
   },
 
@@ -90,13 +101,13 @@ module.exports = {
         type: 'Identifier',
         name: 'join',
       },
-      arguments: [ args[0], node.parent.callee.object ]
+      arguments: [ args[0], wrapArrGetter(node.parent.callee.object) ]
     };
   },
 
   splice: function(node) {
     var args = utils.clone(node.parent.arguments);
-    args.unshift(node.parent.callee.object);
+    args.unshift(wrapArrGetter(node.parent.callee.object));
 
     node.parent.arguments = false;
 
@@ -119,10 +130,10 @@ module.exports = {
     var targetDefinition = scope.get(node).getDefinition(node.parent.callee.object);
     if (utils.isString(node.parent.callee.object) || (targetDefinition && targetDefinition.dataType == "String")) {
       method = "strpos";
-      args = [ node.parent.callee.object, args[0] ];
+      args = [ wrapArrGetter(node.parent.callee.object), args[0] ];
 
     } else {
-      args = [ args[0], node.parent.callee.object ];
+      args = [ args[0], wrapArrGetter(node.parent.callee.object) ];
     }
 
     return {
@@ -156,8 +167,8 @@ module.exports = {
         type: 'Identifier',
         name: method,
       },
-      arguments: [ object ]
+      arguments: [ wrapArrGetter(object) ]
     };
-  },
+  }
 
 }

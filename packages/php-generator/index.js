@@ -147,10 +147,14 @@ function generate(ast) {
     } else if (node.type == "Identifier") {
       var identifier = (node.name || node.value);
       identifier = identifier.replace(/\$/g, '_');
+      content = '';
+      if (node.leadingComments && /^\s*ref/.test(node.leadingComments[0].value)) {
+          content += '&';
+      }
 
       if (!node.static && !node.isCallee && !node.isMemberExpression && identifier !== '__FILE__' && identifier !== 'self' && !/^Class_/.test(identifier)) {
         scope.get(node).getDefinition(node);
-        content = "$";
+        content += "$";
       }
 
       content += identifier;
@@ -393,8 +397,12 @@ function generate(ast) {
 
       var func_contents = visit(node.body, node),
         using = scope.get(node).using;
-
-      content = "function " + ((node.id) ? node.id.name : "");
+      content = 'function ';
+      if (node.id && node.id.leadingComments && /^\s*ref/.test(node.id.leadingComments[0].value)) {
+          console.log('hello');
+          content += '&';
+      }
+      content += (node.id) ? node.id.name : "";
       content += "(" + parameters.join(", ") + ") ";
 
       // try to use parent's variables
@@ -536,13 +544,16 @@ function generate(ast) {
 
       var isConstructor = (node.key.name == "constructor");
       if (isConstructor) { node.key.name = "__construct"; }
-      if (node.key.name === '__invoke') {
-        node.key.name = '&__invoke';
-      }
 
       // Re-use FunctionDeclaration structure for method definitions
       node.value.type = "FunctionDeclaration";
-      node.value.id = { name: node.key.name };
+      if (node.leadingComments && /^\s*ref/.test(node.leadingComments[0].value)) {
+        node.value.id = { name: '&' + node.key.name };
+      }
+      else {
+        node.value.id = { name: node.key.name };
+      }
+
         // console.log(node.value);
 
       var tmpContent = visit(node.value, node);
@@ -634,7 +645,7 @@ function generate(ast) {
       content += "}";
 
     } else if (node.type == "ForInStatement" || node.type == "ForOfStatement") {
-      content = "foreach (" + visit(node.right, node) + " as " + visit(node.left, node)+ " => $___)";
+      content = "foreach (func_getArr(" + visit(node.right, node) + ") as " + visit(node.left, node)+ " => $___)";
       content += "{" + visit(node.body, node) + "}";
 
     } else if (node.type == "UpdateExpression") {

@@ -3,6 +3,7 @@ export default {
     range : true,
     // tokens : true,
     comment : true,
+    attachComment: true,
     sourceType: 'module',
     ecmaFeatures: {
         ecmaVersion: 9, // ecmascript 2018

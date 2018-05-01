@@ -128,7 +128,7 @@ export async function compileJsFile(filePath) {
             // base文件本身就不import base了
             if (!/base\.index/.test(namespace)) {
                 content = `
-                    import {add as func_add, arr as func_arr} from '${baseName}';
+                    import {add as func_add, arr as func_arr, getArr as func_getArr} from '${baseName}';
                     ${data}
                 `;
             }
@@ -207,7 +207,7 @@ export async function compileSFC(vueContent, options = {}) {
 
 
     let content = `
-        import {add as func_add, arr as func_arr} from '${baseName}';
+        import {add as func_add, arr as func_arr, getArr as func_getArr} from '${baseName}';
         import ${vueName} from '${vueName}';
         ${script.content}
     `;

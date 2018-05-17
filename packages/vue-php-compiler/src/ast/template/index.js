@@ -2,7 +2,12 @@ import estraverse from 'estraverse';
 import esquery from 'esquery';
 import {analyze} from 'escope';
 // let escodegen = require('escodegen');
-import {isClosureVariable} from '../util';
+import {
+    isParam,
+    isGlobalVariable,
+    isClosureVariable
+} from '../util';
+
 import parseOptions from '../parseOptions';
 
 export default function (ast) {
@@ -39,6 +44,7 @@ export default function (ast) {
             ) {
                 node.value.raw = '\'' + node.value.value + '\'';
             }
+
             // 处理所有的Identifier，也就是变量名
             // 判断是否是闭包变量，不是闭包的就需要添加this指针
             if (
@@ -51,7 +57,7 @@ export default function (ast) {
                     && parent.type === 'MemberExpression'
                     && parent.object.name === node.name)
             ) {
-                if (!isClosureVariable(node, currentScope)) {
+                if (!isGlobalVariable(node) && !isClosureVariable(node, currentScope)) {
                     //  一定要skip，不然会死循环，因为内部有ident的结构，会递归调用
                     this.skip();
                     // 返回一个this.xxx的结构

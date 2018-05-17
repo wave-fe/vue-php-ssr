@@ -211,11 +211,21 @@ export async function compileSFC(vueContent, options = {}) {
     addMethod(classAst, templateAst);
 
 
-    let content = `
-        ${importBaseStr}
-        import ${vueName} from '${vueName}';
-        ${script.content}
-    `;
+    let vueReg = /import\svue/i;
+    let content = '';
+    if (vueReg.test(script.content)) {
+        content = `
+            ${importBaseStr}
+            ${script.content}
+        `;
+    }
+    else {
+        content = `
+            ${importBaseStr}
+            import ${vueName} from '${vueName}';
+            ${script.content}
+        `;
+    }
     let scriptAst = parse(content);
     let {
         components,

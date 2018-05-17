@@ -151,6 +151,26 @@ export default class Vue {
         return null;
     }
 
+    // loose equal，vue的实现是基本数据结构就双等，复杂数据结构挨个比较
+    // php里简单搞一下双等，里面的内容自动比就够了，以后再完善
+    _q(a, b) {
+        return a == b;
+    }
+
+    // 转数字，没法区分float和int，就直接用float了
+    _n(str) {
+        return floatval(str);
+    }
+
+    _i(data, val) {
+        for (var i = 0; i < data.length; i++) {
+            if (data == val) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     _c(tag, data = [], children = [], normalizationType = 0, alwaysNormalize = false) {
         children = func_getArr(children);
         data = func_getArr(data);

@@ -511,7 +511,16 @@ function generate(ast) {
         content += "function __get($_property) {\n";
         for (var i=0;i<s.getters.length;i++) {
           content += "if ($_property === '"+s.getters[i].key.name+"') {\n";
-          content += visit(s.getters[i].value.body, node);
+          let value = s.getters[i].value;
+          if (value.type === 'ObjectExpression') {
+              let property = value.properties.find(property => property.key.name === 'get');
+              if (property) {
+                  content += visit(property.value.body, node);
+              }
+          }
+          else {
+              content += visit(value.body, node);
+          }
           content += "}\n";
         }
         content += "}\n";
@@ -521,7 +530,16 @@ function generate(ast) {
         content += "function __set($_property, $value) {\n";
         for (var i=0;i<s.setters.length;i++) {
           content += "if ($_property === '"+s.setters[i].key.name+"') {\n";
-          content += visit(s.setters[i].value.body, node);
+          let value = s.setters[i].value;
+          if (value.type === 'ObjectExpression') {
+              let property = value.properties.find(property => property.key.name === 'set');
+              if (property) {
+                  content += visit(property.value.body, node);
+              }
+          }
+          else {
+              content += visit(value.body, node);
+          }
           content += "}\n";
         }
         content += "}\n";

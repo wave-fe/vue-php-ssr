@@ -13,7 +13,48 @@ function wrapArrGetter(arg) {
     };
 }
 
+function isArrayClass(node) {
+  return node.object.name == "Array";
+}
+
 module.exports = {
+
+  filter: function(node) {
+    if (node.parent.type !== 'CallExpression') {
+        return node;
+    }
+    var args = utils.clone(node.parent.arguments);
+    args.push(node.parent.callee.object)
+
+    node.parent.arguments = false;
+
+    return {
+      type: 'CallExpression',
+      callee: {
+        type: 'Identifier',
+        name: 'array_filter',
+      },
+      arguments: args
+    };
+  },
+
+  isArray: function(node) {
+    if (isArrayClass(node)) {
+      var args = utils.clone(node.parent.arguments);
+      node.parent.arguments = false;
+
+      return {
+        type: 'CallExpression',
+        callee: {
+          type: 'Identifier',
+          name: 'is_array',
+        },
+        arguments: args
+      };
+    } else {
+      return node;
+    }
+  },
 
   unshift: function(node) {
     var args = utils.clone(node.parent.arguments);

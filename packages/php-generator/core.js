@@ -31,10 +31,10 @@ module.exports = {
         var method = node.property.name;
         // 防止hasOwnProperty这样的方法返回native的hasOwnProperty，
         // 而不是需要处理hasOwnProperty的方法
-        let testObj = {};
-        if (method in testObj) {
-            method = '_' + method;
-        }
+        // let testObj = {};
+        // if (method in testObj) {
+        //     method = '_' + method;
+        // }
 
         // if (method == "hasOwnProperty") {
         //   var args = utils.clone(node.parent.arguments);
@@ -43,7 +43,24 @@ module.exports = {
         // }
         let handler = getHandle(method, node.object.name);
 
-        return (handler) ? handler(node) : node;
+        if (handler) {
+            return handler(node);
+            // if (
+            //     // 大写的都是常量
+            //     /^[A-Z]/.test(method)
+            //     // 或者原始代码就是方法执行
+            //     || node.parent.type === 'CallExpression'
+            // ) {
+            //     return handler(node);
+            // }
+            // else {
+            //     // 其他的就是原始代码不是执行，但是名字撞上了
+            //     return node;
+            // }
+        }
+        else {
+            return node;
+        }
     }
 
 }

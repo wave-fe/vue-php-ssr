@@ -1,6 +1,6 @@
 {
   "name": "basic",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "vue-php-ssr demo",
   "author": "li-yinan <biline@163.com>",
   "private": true,
@@ -15,8 +15,8 @@
     "sass-loader": "^7.0.1",
     "stylus-loader": "^3.0.2",
     "vue": "^2.5.2",
-    "vue-php-compiler": "^0.3.0",
-    "vue-php-packages": "^0.3.0"
+    "vue-php-compiler": "^0.3.1",
+    "vue-php-packages": "^0.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

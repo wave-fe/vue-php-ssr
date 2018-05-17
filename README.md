@@ -24,6 +24,9 @@ npm i; npm start
 ## 联系我
 
 任何使用意向或问题请联系我~
-欢迎各大公司技术人员与我联系，非常期待与您的技术交流~
+
 [提issue](https://github.com/wave-fe/vue-php-ssr/issues/new)
-[baidu hi 联系 李毅楠](baidu://message/?id=biline)
+
+求打赏
+
+![打赏](reward.png)

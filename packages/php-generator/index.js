@@ -399,7 +399,6 @@ function generate(ast) {
         using = scope.get(node).using;
       content = 'function ';
       if (node.id && node.id.leadingComments && /^\s*ref/.test(node.id.leadingComments[0].value)) {
-          console.log('hello');
           content += '&';
       }
       content += (node.id) ? node.id.name : "";

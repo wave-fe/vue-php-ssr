@@ -1,6 +1,6 @@
 {
   "name": "todo",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "vue-php-ssr demo",
   "author": "li-yinan <biline@163.com>",
   "private": true,
@@ -16,7 +16,7 @@
     "stylus-loader": "^3.0.2",
     "sweetalert": "^2.1.0",
     "vue": "^2.5.2",
-    "vue-php-compiler": "^0.3.1",
+    "vue-php-compiler": "^0.3.2",
     "vue-php-packages": "^0.3.1"
   },
   "devDependencies": {

@@ -31,10 +31,10 @@ module.exports = {
         var method = node.property.name;
         // 防止hasOwnProperty这样的方法返回native的hasOwnProperty，
         // 而不是需要处理hasOwnProperty的方法
-        // let testObj = {};
-        // if (method in testObj) {
-        //     method = '_' + method;
-        // }
+        let testObj = {};
+        if (method in testObj) {
+            method = '_' + method;
+        }
 
         // if (method == "hasOwnProperty") {
         //   var args = utils.clone(node.parent.arguments);

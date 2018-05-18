@@ -23,9 +23,13 @@ npm i; npm start
 ## 特性
 
 目前已支持绝大多数vue特性，以下内容仅是主要功能罗列
+
 支持es6包管理
+
 支持computed属性
+
 支持在template里调用方法
+
 支持vue-router，暂不支持vuex，未来会考虑支持
 
 ## 联系我

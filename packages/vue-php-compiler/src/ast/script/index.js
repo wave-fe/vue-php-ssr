@@ -228,10 +228,22 @@ export function processImport(ast, options) {
             filePath = filePathInfo.filePath;
         }
         if (/php$/.test(filePath)) {
-            item.namespace = {
-                type: 'Literal',
-                value: originalPath 
-            };
+            if (/^\./.test(originalPath)) {
+                // 原始路径是相对路径，比如./util.php，则需要转成命名空间
+                item.namespace = {
+                    type: 'Literal',
+                    value: namespace
+                };
+            }
+            else {
+                // 原始路径是绝对路径，比如Smarty， 就不需要转成命名空间，用原名就行了
+                // 因为单独的包形式php一般是公用库，是不使用命名空间的
+                // 如果namespace给null会导致没有命名空间生命，在当前命名空间下找不到这个类，就挂了，所以还是要namespace的
+                item.namespace = {
+                    type: 'Literal',
+                    value: originalPath 
+                };
+            }
             // item.namespace = null;
         }
         else {

@@ -3,7 +3,7 @@
 //
 var js2php = require('../index.js'),
     fs = require('fs'),
-    fixturePath = './test/fixtures/',
+    fixturePath = './test/mytest/',
     fixtures = fs.readdirSync(fixturePath),
     target = process.argv[2];
 
@@ -27,10 +27,10 @@ for(var i=0;i<fixtures.length;i++) {
       output = file.replace(/\.js$/, ".php");
   if (file.match(target)) {
     try {
-      fs.writeFileSync(output, js2php(fs.readFileSync(file).toString()));
+      fs.writeFileSync(output, js2php.compile(fs.readFileSync(file).toString()));
       console.log("OK: " + output);
     } catch (e) {
-      console.log("FAILED: " + file + " => '" + e.message + "'");
+      console.log("FAILED: " + file + " => '" + e.message + "'", e);
     }
   }
 }

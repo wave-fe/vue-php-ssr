@@ -3,7 +3,7 @@ $str = "Hello";
 echo(trim(trim(trim(substr(trim(trim("    trimmed    ")), 1)))));
 var_dump(strtoupper(str_replace("lo", "ium", "hello")));
 var_dump(strtoupper("something"));
-var_dump(strpos("something", "meth"));
+var_dump(strpos(func_getArr("something"), "meth"));
 echo(ltrim("    trimmed"));
 echo(rtrim("trimmed    "));
 echo(substr(strtoupper($str), 1));

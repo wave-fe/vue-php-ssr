@@ -21,8 +21,8 @@ function parse(code) {
     // range : true,
     // tokens : true,
     comment : true,
+    ecmaVersion: 9, // ecmascript 2018
     ecmaFeatures: {
-      ecmaVersion: 9, // ecmascript 2018
       arrowFunctions: true, // enable parsing of arrow functions
       blockBindings: true, // enable parsing of let/const
       destructuring: true, // enable parsing of destructured arrays and objects
@@ -166,6 +166,9 @@ function generate(ast) {
 
       var value = (node.raw.match(/^["']undefined["']$/)) ? "NULL" : node.raw;
       if (/^\//.test(value)) {
+          value = '\'' + value + '\'';
+      }
+      if (/JSX/.test(node.parent.type)) {
           value = '\'' + value + '\'';
       }
       content = value;
@@ -829,10 +832,46 @@ function generate(ast) {
       semicolon = true;
     } else if (node.type === "EmptyStatement") {
         // nothing;
+    } else if (node.type === 'JSXElement') {
+
+        content += 'array(';
+        content += '    "tag" => ' + visit(node.openingElement.name, node) + ',\n';
+        content += '    "attr" => ' + visit(node.openingElement, node) + ',\n';
+        content += '    "children" => array(';
+        var children = node.children;
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            content += visit(child, node) + ',\n';
+        }
+        content += '    )';
+        content += ')';
+
+    } else if (node.type === 'JSXOpeningElement') {
+
+        content += 'array(';
+        for (var i = 0; i < node.attributes.length; i++) {
+            content += visit(node.attributes[i], node) + ',';
+        }
+        content += ')';
+
+    } else if (node.type === 'JSXClosingElement') {
+        // nothing
+
+    } else if (node.type === 'JSXAttribute') {
+
+        content += visit(node.name, node) + ' => ' + visit(node.value, node);
+
+    } else if (node.type === 'JSXIdentifier') {
+
+        content = '\'' + node.name + '\'';
+
+    } else if (node.type === 'JSXExpressionContainer') {
+
+        content += visit(node.expression, node);
+
     } else {
       console.log("'" + node.type + "' not implemented.", node);
     }
-
     // append semicolon when required
     if (semicolon && !content.match(/;\n?$/)) {
       content += ";\n";

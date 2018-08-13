@@ -1,7 +1,6 @@
 packages/main/node_modules
 *.swp
 packages/php-generator/node_modules
-*.php
 packages/main/test/homepage
 packages/main/output
 *.swo
@@ -9,3 +8,5 @@ packages/vue-php-compiler/output
 packages/vue-php-compiler/test/homepage
 packages/test
 packages/vue-php-demo/basic/output
+packages/vue-php-compiler/templates_c
+packages/vue-php-demo/todo/output
